@@ -17,6 +17,8 @@ ui <- dashboardPage(
   header = dashboardHeader(
     title = "KPI Lib"
   ),
+  
+  
   sidebar = dashboardSidebar(
     sidebarMenu(
       menuItem("KPIs", tabName = "ContentArea", icon = icon("dashboard")),
@@ -29,11 +31,19 @@ ui <- dashboardPage(
       width = "auto"
     ),
     helpText("... help ..."),
-    # sidebarSearchForm(textId = "searchText", buttonId = "searchButton",
-    #                   label = "Search..."),
     pickerInput(
       inputId = "filterName",
       label = "Names", 
+      choices = "",
+      options = list(
+        `actions-box` = TRUE, size = 10L
+      ),
+      multiple = TRUE,
+      width = "100%"
+    ),
+    pickerInput(
+      inputId = "filterTag",
+      label = "Tags", 
       choices = "",
       options = list(
         `actions-box` = TRUE, size = 10L
@@ -48,6 +58,8 @@ ui <- dashboardPage(
       textOutput("infoNTotal")
     )
   ),
+  
+  
   body = dashboardBody(
     tabItems(
       tabItem(tabName = "ContentArea",
@@ -90,13 +102,29 @@ server <- function(input, output, session) {
   )
   
   
-  
+  # Update drop down lists once it's been initialised
   observeEvent(LiveKpi, {
+    Names <- LiveKpi()$name |>
+      unique() |>
+      sort()
+    
     updatePickerInput(
       session = session, inputId = "filterName",
-      choices = unique(LiveKpi()$name)
+      choices = Names
     )
-  })
+    
+    Tags <- sapply(LiveKpi()$tags, \(x) strsplit(x, ",")) |>
+      unlist() |>
+      unname() |>
+      trimws() |>
+      tolower() |>
+      na.omit() |>
+      unique() |>
+      sort()
+    
+    updatePickerInput(
+      session = session, inputId = "filterTag", choices = Tags)
+  }, ignoreInit = FALSE)
   
   
   
@@ -118,19 +146,24 @@ server <- function(input, output, session) {
   
   
   output$KpiList <- renderUI({
+    data <- head(LiveKpi())
     .html <- tagList(
-    statiCard(
-      "KPI",
-      "Long value text with icon. THis KPI is meant to measure absolutekly nothing.",
-      icon = icon("gauge"),
-      left = TRUE
-    ),
-    box(
-      title = "Inputs", solidHeader = TRUE,
-      "Box content here", br(), "More box content",
-      sliderInput("slider", "Slider input:", 1, 100, 50),
-      textInput("text", "Text input:")
-    ))
+      mapply(\(t, descr) box(title=t, solidHeader = TRUE, width = 3L, descr), data$title, data$description, SIMPLIFY = FALSE)
+    )
+    # .html <- tagList(
+    #   # statiCard(
+    #   #   "KPI",
+    #   #   "Long value text with icon. THis KPI is meant to measure absolutely nothing.",
+    #   #   icon = icon("gauge"),
+    #   #   left = TRUE
+    #   # ),
+    #   box(
+    #     title = "Inputs", solidHeader = TRUE, width = 3L,
+    #     "Box content here", br(), "More box content",
+    #     sliderInput("slider", "Slider input:", 1, 100, 50),
+    #     textInput("text", "Text input:")
+    #   )
+    # )
     .html
   })
   
