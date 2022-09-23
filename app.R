@@ -1,17 +1,14 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
+library(jsonlite)
 
 source("utils.R")
+
+RunningMode <- FALSE#"Admin"
+
 
 
 
@@ -21,6 +18,10 @@ ui <- dashboardPage(
     title = "KPI Lib"
   ),
   sidebar = dashboardSidebar(
+    sidebarMenu(
+      menuItem("KPIs", tabName = "ContentArea", icon = icon("dashboard")),
+      menuItemOutput("AdminMenu")
+    ),
     searchInput(
       inputId = "filterFree", label = "Find a KPI",
       placeholder = "Enter text",
@@ -48,12 +49,33 @@ ui <- dashboardPage(
     )
   ),
   body = dashboardBody(
-    uiOutput("KpiList")
+    tabItems(
+      tabItem(tabName = "ContentArea",
+              h2("KPIs"),
+              fluidRow(
+                uiOutput("KpiList")
+              )
+      ),
+      
+      tabItem(
+        tabName = "AdminArea",
+        h2("KPI Administration"),
+        infoBoxOutput("AdminDuplicateCount", width = 4L),
+        box(tableOutput("AdminDuplicates"), "Duplicated Titles", width = 4L, height = 400),
+        box(tableOutput("AdminUppwerLowerTags"), "Tags", width = 4L, height = 400)
+      )
+    )
+    
   )
 )
 
 
-# Define server logic required to draw a histogram
+
+
+
+# 
+#
+#
 server <- function(input, output, session) {
 
   kpi <- readKpiData("./www/kpis.json")
@@ -110,6 +132,50 @@ server <- function(input, output, session) {
       textInput("text", "Text input:")
     ))
     .html
+  })
+  
+  
+  output$AdminMenu <- renderMenu(
+    if (RunningMode == "Admin") {
+      menuItem("Admin", tabName = "AdminArea", icon = icon("dashboard"))
+    }
+  )
+  
+  
+  output$AdminDuplicateCount <- renderInfoBox({
+    Count <- sum(duplicated(kpi$title))
+    Icon <- if (Count < nrow(kpi) * 0.1) 
+              icon("thumbs-up", lib = "glyphicon")
+            else
+              icon("thumbs-down", lib = "glyphicon")
+    Color <- if (Count < nrow(kpi) * 0.1)
+               "green"
+             else
+               "yellow"
+    infoBox(
+      "Duplicates", Count, "Duplicated by Title",
+      icon = Icon,
+      color = Color
+    )
+  })
+  
+  output$AdminDuplicates <- renderTable({
+    Dups <- kpi$title |> duplicated()
+    Dups <- kpi$title[Dups] |> unique()
+    data.frame(Duplicates = Dups)
+  })
+  
+  
+  output$AdminUppwerLowerTags <- renderTable({
+    Tags <- sapply(LiveKpi()$tags, \(x) strsplit(x, ",")) |>
+      unlist() |>
+      unname() |>
+      trimws() |>
+      na.omit() |>
+      unique()
+    TagsIroned <- tolower(Tags)
+    Dups <- TagsIroned |> duplicated()
+    data.frame(Duplicates = Tags[Dups])
   })
 }
 
