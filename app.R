@@ -64,9 +64,10 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "ContentArea",
               h2("KPIs"),
-              fluidRow(
-                uiOutput("KpiList")
-              )
+              # fluidRow(
+              #   uiOutput("KpiList")
+              # )
+              dataTableOutput("KpiTable")
       ),
       
       tabItem(
@@ -94,6 +95,8 @@ server <- function(input, output, session) {
   
   LiveKpi <- reactiveVal(kpi)
   
+  ShowMax <- reactiveVal(25L)
+  
   output$infoNFiltered <- renderText(
     paste("Selected:", nrow(LiveKpi()))
   )
@@ -102,7 +105,7 @@ server <- function(input, output, session) {
   )
   
   
-  # Update drop down lists once it's been initialised
+  # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
     Names <- LiveKpi()$name |>
       unique() |>
@@ -128,14 +131,16 @@ server <- function(input, output, session) {
   
   
   
-  observeEvent(list(input$filterName, input$filterFree), {
+  observeEvent(list(input$filterName, input$filterFree, input$filterTag), {
     RowFilter <- rep(FALSE, nrow(kpi))
-    if (isTruthy(input$filterName) || isTruthy(input$filterFree)) {
+    if (isTruthy(input$filterName) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
       
       if (isTruthy(input$filterName))
         RowFilter <- RowFilter | kpi$name %in% input$filterName
       if (isTruthy(input$filterFree))
         RowFilter <- RowFilter | grepl(input$filterFree, kpi$title, fixed = TRUE)
+      if (isTruthy(input$filterTag))
+        RowFilter <- RowFilter | grepl(input$filterTag, kpi$tags, fixed = TRUE)
       
       LiveKpi(kpi[RowFilter, ])
     }
@@ -144,29 +149,26 @@ server <- function(input, output, session) {
   })
   
   
-  
-  output$KpiList <- renderUI({
-    data <- head(LiveKpi())
-    .html <- tagList(
-      mapply(\(t, descr) box(title=t, solidHeader = TRUE, width = 3L, descr), data$title, data$description, SIMPLIFY = FALSE)
-    )
-    # .html <- tagList(
-    #   # statiCard(
-    #   #   "KPI",
-    #   #   "Long value text with icon. THis KPI is meant to measure absolutely nothing.",
-    #   #   icon = icon("gauge"),
-    #   #   left = TRUE
-    #   # ),
-    #   box(
-    #     title = "Inputs", solidHeader = TRUE, width = 3L,
-    #     "Box content here", br(), "More box content",
-    #     sliderInput("slider", "Slider input:", 1, 100, 50),
-    #     textInput("text", "Text input:")
-    #   )
-    # )
-    .html
+  output$KpiTable <- renderDataTable({
+    head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowMax())
   })
   
+  
+  
+  # output$KpiList <- renderUI({
+  #   data <- head(LiveKpi())
+  #   .html <- tagList(
+  #     mapply(\(t, descr) box(title=t, solidHeader = TRUE, width = 3L, descr), data$title, data$description, SIMPLIFY = FALSE)
+  #   )
+  #   .html
+  # })
+
+  
+  #
+  #
+  #
+  ### ADMIN SSECTION ###################################
+  #
   
   output$AdminMenu <- renderMenu(
     if (RunningMode == "Admin") {
