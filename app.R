@@ -31,6 +31,14 @@ ui <- dashboardPage(
         disabled = FALSE
       )
     ),
+    userOutput("uiAuthorAbout"),
+    dropdownBlock(
+      id = "uiAppABout",
+      title = "About KPIlab",
+      icon = icon("chalkboard", verify_fa = FALSE),
+      badgeStatus = NULL,
+      div("")
+    ),
     controlbarIcon = shiny::icon("filter")
   ),
   
@@ -83,6 +91,7 @@ ui <- dashboardPage(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
     ),
+    setShadow(class = "dropdown-menu"),
     tabItems(
       tabItem(tabName = "ContentArea",
               h2("KPIs"),
@@ -124,6 +133,9 @@ server <- function(input, output, session) {
   output$infoNTotal <- renderText(
     paste("Available:", nrow(kpi))
   )
+  
+  
+  
   
   #
   #
@@ -190,9 +202,23 @@ server <- function(input, output, session) {
       front = fixedRow(
         column(10L,
           class = "text-left",
-          height = "300px",
+          height = "340px",
           h4(x$title, class="truncate"),
-          p(x$description)
+          p(x$description),
+          # navPills(
+          #   id = "pillItem",
+          #   navPillsItem(
+          #     left = "Item 1", 
+          #     color = "green",
+          #     right = 10
+          #   ),
+          #   navPillsItem(
+          #     left = "Item 2", 
+          #     color = "red",
+          #     icon = icon("angle-down"), 
+          #     right = "10%"
+          #   )
+          # )
         ), 
         column(2L, UnitIcon), #icon("thermometer-half", verify_fa = FALSE, style="font-size: 32px")),
         class = "box-body"
@@ -282,6 +308,44 @@ server <- function(input, output, session) {
     Dups <- TagsIroned |> duplicated()
     data.frame(Duplicates = Tags[Dups])
   })
+  
+  
+  
+  
+  output$uiAuthorAbout <- renderUser({
+    dashboardUser(
+      name = "Author", 
+      image = "https://www.seifseit.de/images/Jan2013c.jpg", 
+      title = "Dr. Jan Seifert",
+      subtitle = "", 
+      footer = p("The footer", class = "text-center"),
+      fluidRow(
+        dashboardUserItem(
+          width = 4L,
+          socialButton(
+            href = "https://twitter.com/usernaut",
+            icon = icon("twitter")
+          )
+        ),
+        dashboardUserItem(
+          width = 4L,
+          socialButton(
+            href = "https://github.com/SigurdJanson",
+            icon = icon("github")
+          )
+        ),
+        dashboardUserItem(
+          width = 4L,
+          socialButton(
+            href = "https://de.linkedin.com/in/jan-seifert-3194951b1",
+            icon = icon("linkedin")
+          )
+        )
+      )
+    )
+  })
+  
+  
 }
 
 # Run the application 
