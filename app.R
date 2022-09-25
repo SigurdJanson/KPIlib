@@ -1,5 +1,3 @@
-
-
 library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
@@ -15,47 +13,65 @@ RunningMode <- FALSE #"Admin"
 
 
 
+
+
+
 # UI ==================================
 ui <- dashboardPage(
-  skin = "black",
+  skin = "black", # try "midnight" eventually
+  scrollToTop = TRUE,
   header = dashboardHeader(
-    title = "KPI Lib"
+    title = "KPI Lib",
+    leftUi = tagList(
+      radioGroupButtons(
+        inputId = "KpiViewingMode",
+        choices = c(`<i class='fa fa-table'></i>` = "table", 
+                    `<i class="fa fa-grip-horizontal"></i>` = "grid"),
+        justified = FALSE, size = "normal",
+        disabled = TRUE
+      )
+    ),
+    controlbarIcon = shiny::icon("filter")
   ),
   
-  
   sidebar = dashboardSidebar(
+    minified = (RunningMode == "Admin"), collapsed = TRUE,
     sidebarMenu(
-      menuItem("KPIs", tabName = "ContentArea", icon = icon("dashboard")),
+      menuItem("KPIs", tabName = "ContentArea", icon = icon("dashboard", verify_fa = FALSE)),
       menuItemOutput("AdminMenu")
-    ),
-    searchInput(
-      inputId = "filterFree", label = "Find a KPI",
-      placeholder = "Enter text",
-      btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
-      width = "auto"
-    ),
-    pickerInput(
-      inputId = "filterName",
-      label = "Names", 
-      choices = "",
-      options = list(
-        `actions-box` = TRUE, size = 10L
+    )
+  ),
+  
+  controlbar = dashboardControlbar(
+    width = 280L, overlay = FALSE,
+    div(class="content",
+      searchInput(
+        inputId = "filterFree", label = "Find a KPI",
+        placeholder = "Enter text",
+        btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
+        width = "auto"
       ),
-      multiple = TRUE,
-      width = "100%"
-    ),
-    pickerInput(
-      inputId = "filterTag",
-      label = "Tags", 
-      choices = "",
-      options = list(
-        `actions-box` = TRUE, size = 10L
+      pickerInput(
+        inputId = "filterName",
+        label = "Names", 
+        choices = "",
+        options = list(
+          `actions-box` = TRUE, size = 10L
+        ),
+        multiple = TRUE,
+        width = "100%"
       ),
-      multiple = TRUE,
-      width = "100%"
-    ),
-    br(),
-    div(class="form-group shiny-input-container",
+      pickerInput(
+        inputId = "filterTag",
+        label = "Tags", 
+        choices = "",
+        options = list(
+          `actions-box` = TRUE, size = 10L
+        ),
+        multiple = TRUE,
+        width = "100%"
+      ),
+      br(),
       "KPIs",
       textOutput("infoNFiltered"),
       textOutput("infoNTotal")
@@ -81,8 +97,9 @@ ui <- dashboardPage(
         box(tableOutput("AdminUppwerLowerTags"), "Tags", width = 4L, height = 400)
       )
     )
-    
-  )
+  ),
+  
+  footer = dashboardFooter(left = "", right = "Created by Jan Seifert")
 )
 
 
