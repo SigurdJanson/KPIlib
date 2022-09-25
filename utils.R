@@ -1,11 +1,19 @@
 
 
 readKpiData <- function(location) {
-  x <- read_json(location, simplifyVector = TRUE)
-  x$direction <- as.factor(x$direction)
-  x$unit <- as.factor(x$unit)
-  x$created_at <- as.POSIXct(x$created_at)
-  x$updated_at <- as.POSIXct(x$updated_at)
+browser()
+  x <- NULL
+  for (.loc in location) {
+    x2 <- read_json(.loc, simplifyVector = TRUE)
+    x2$direction <- as.factor(x2$direction)
+    x2$unit <- as.factor(x2$unit)
+    x2$created_at <- as.POSIXct(x2$created_at)
+    x2$updated_at <- as.POSIXct(x2$updated_at)
+    if (is.null(x))
+      x <- x2
+    else
+      x <- rbind(x, x2)
+  }
   return(x)
 }
 

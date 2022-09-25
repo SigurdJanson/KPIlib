@@ -121,7 +121,7 @@ ui <- dashboardPage(
 # SERVER ==================================
 server <- function(input, output, session) {
 
-  kpi <- readKpiData("./www/kpis.json")
+  kpi <- readKpiData(c("./www/kpis_digitalproducts.json", "./www/kpis.json"))
   
   LiveKpi <- reactiveVal(kpi)
   
