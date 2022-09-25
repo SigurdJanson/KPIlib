@@ -80,6 +80,9 @@ ui <- dashboardPage(
   
   
   body = dashboardBody(
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+    ),
     tabItems(
       tabItem(tabName = "ContentArea",
               h2("KPIs"),
@@ -95,9 +98,9 @@ ui <- dashboardPage(
         box(tableOutput("AdminUppwerLowerTags"), "Tags", width = 4L, height = 400)
       )
     )
-  ),
+  )#,
   
-  footer = dashboardFooter(left = "", right = "Created by Jan Seifert")
+  #footer = dashboardFooter(left = "", right = "Created by Jan Seifert")
 )
 
 
@@ -173,6 +176,38 @@ server <- function(input, output, session) {
   
   
   
+  # OUTPUT ===================
+  
+  MakeKpiBox <- function(x) { # x is a kpi row
+    # TODO: Icons: "Distance", "Energy", "Money", "Number", "Percentage", "Ratio", 
+    # "Score", "Time", "Volume", "Weight", "Weight/m²" 
+    UnitIcon <- mapUnit2Icon(x$unit)
+    UnitIcon <- tagAppendAttributes(UnitIcon, style="font-size: 32px")
+    
+    flipBox(
+      id = x$title,
+      width = 4L,
+      front = fixedRow(
+        column(10L,
+          class = "text-left",
+          height = "300px",
+          h4(x$title, class="truncate"),
+          p(x$description)
+        ), 
+        column(2L, UnitIcon), #icon("thermometer-half", verify_fa = FALSE, style="font-size: 32px")),
+        class = "box-body"
+      ),
+      back = fixedRow( 
+        column(11L,
+          class = "text-left",
+          h4("Flip on click"),
+          p("Direction:", x$direction),
+          p("Tags:", x$tags)
+        ),
+        class = "box-body"
+      )
+    )#flipbox
+  }
   
   output$KpiTable <- DT::renderDataTable({
     head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
@@ -185,12 +220,16 @@ server <- function(input, output, session) {
       dataTableOutput("KpiTable")
     } else if (input$KpiViewingMode == "grid") {
       data <- head(LiveKpi())
+      Boxes <- tagList()
+      for (i in 1:nrow(data)) {
+        Boxes <- c(Boxes, tagList(MakeKpiBox(data[i,])))
+      }
+      #Boxes <- tagList(Boxes)
+      
       .html <- tagList(
-        fluidRow(
-          mapply(\(t, descr) box(title=t, solidHeader = TRUE, width = 3L, descr), data$title, data$description, SIMPLIFY = FALSE)
-        )
+        fluidRow(Boxes)
       )
-      .html
+      return(.html)
     }
   })
 
@@ -198,7 +237,7 @@ server <- function(input, output, session) {
   #
   #
   #
-  ### ADMIN SSECTION ========================
+  # ADMIN SSECTION ========================
   #
   
   output$AdminMenu <- renderMenu(
