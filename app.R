@@ -28,7 +28,7 @@ ui <- dashboardPage(
         choices = c(`<i class='fa fa-table'></i>` = "table", 
                     `<i class="fa fa-grip-horizontal"></i>` = "grid"),
         justified = FALSE, size = "normal",
-        disabled = TRUE
+        disabled = FALSE
       )
     ),
     controlbarIcon = shiny::icon("filter")
@@ -83,10 +83,8 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "ContentArea",
               h2("KPIs"),
-              # fluidRow(
-              #   uiOutput("KpiList")
-              # )
-              dataTableOutput("KpiTable")
+              uiOutput("KpiList")
+              #dataTableOutput("KpiTable")
       ),
       
       tabItem(
@@ -174,19 +172,27 @@ server <- function(input, output, session) {
   })
   
   
+  
+  
   output$KpiTable <- DT::renderDataTable({
     head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
   }, options = list(searching=FALSE, pageLength = ShowPageLength()))
   
   
   
-  # output$KpiList <- renderUI({
-  #   data <- head(LiveKpi())
-  #   .html <- tagList(
-  #     mapply(\(t, descr) box(title=t, solidHeader = TRUE, width = 3L, descr), data$title, data$description, SIMPLIFY = FALSE)
-  #   )
-  #   .html
-  # })
+  output$KpiList <- renderUI({
+    if (input$KpiViewingMode == "table") {
+      dataTableOutput("KpiTable")
+    } else if (input$KpiViewingMode == "grid") {
+      data <- head(LiveKpi())
+      .html <- tagList(
+        fluidRow(
+          mapply(\(t, descr) box(title=t, solidHeader = TRUE, width = 3L, descr), data$title, data$description, SIMPLIFY = FALSE)
+        )
+      )
+      .html
+    }
+  })
 
   
   #
