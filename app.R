@@ -2,16 +2,20 @@
 
 library(shiny)
 library(shinydashboard)
+library(shinydashboardPlus)
 library(shinyWidgets)
 library(jsonlite)
+library(DT)
 
 source("utils.R")
 
-RunningMode <- FALSE#"Admin"
+
+
+RunningMode <- FALSE #"Admin"
 
 
 
-
+# UI ==================================
 ui <- dashboardPage(
   skin = "black",
   header = dashboardHeader(
@@ -30,7 +34,6 @@ ui <- dashboardPage(
       btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
       width = "auto"
     ),
-    helpText("... help ..."),
     pickerInput(
       inputId = "filterName",
       label = "Names", 
@@ -88,14 +91,14 @@ ui <- dashboardPage(
 
 # 
 #
-#
+# SERVER ==================================
 server <- function(input, output, session) {
 
   kpi <- readKpiData("./www/kpis.json")
   
   LiveKpi <- reactiveVal(kpi)
   
-  ShowMax <- reactiveVal(25L)
+  ShowPageLength <- reactiveVal(25L)
   
   output$infoNFiltered <- renderText(
     paste("Selected:", nrow(LiveKpi()))
@@ -104,6 +107,11 @@ server <- function(input, output, session) {
     paste("Available:", nrow(kpi))
   )
   
+  #
+  #
+  #
+  #
+  # KPI FILTER ========================
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
@@ -149,9 +157,9 @@ server <- function(input, output, session) {
   })
   
   
-  output$KpiTable <- renderDataTable({
-    head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowMax())
-  })
+  output$KpiTable <- DT::renderDataTable({
+    head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
+  }, options = list(searching=FALSE, pageLength = ShowPageLength()))
   
   
   
@@ -167,7 +175,7 @@ server <- function(input, output, session) {
   #
   #
   #
-  ### ADMIN SSECTION ###################################
+  ### ADMIN SSECTION ========================
   #
   
   output$AdminMenu <- renderMenu(
