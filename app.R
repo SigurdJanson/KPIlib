@@ -88,9 +88,10 @@ ui <- dashboardPage(
   
   
   body = dashboardBody(
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-    ),
+    # tags$head(
+    #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+    # ),
+    includeCSS("www/custom.css"),
     setShadow(class = "dropdown-menu"),
     tabItems(
       tabItem(tabName = "ContentArea",
