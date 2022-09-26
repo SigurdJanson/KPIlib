@@ -1,7 +1,6 @@
 
 
 readKpiData <- function(location) {
-browser()
   x <- NULL
   for (.loc in location) {
     x2 <- read_json(.loc, simplifyVector = TRUE)
