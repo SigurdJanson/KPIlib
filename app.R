@@ -197,6 +197,16 @@ server <- function(input, output, session) {
     UnitIcon <- mapUnit2Icon(x$unit)
     UnitIcon <- tagAppendAttributes(UnitIcon, style="font-size: 32px")
     
+    if (!is.null(x$formula_description)) {
+      if (grepl("$$", x$formula_description, fixed=TRUE)) {
+        Formula <- p(withMathJax(x$formula_description))
+      } else {
+        Formula <- p(x$formula_description, class="truncate")
+      }
+    } else {
+      Formula <- p("Not available", class="h-inline")
+    }
+    
     flipBox(
       id = x$title,
       width = 4L,
@@ -216,6 +226,7 @@ server <- function(input, output, session) {
         column(11L,
           class = "text-left",
           h4(x$title, class="truncate"),
+          Formula,
           tags$table(
             tags$tr(
               tags$td(span("direction", class="h-inline")), 
@@ -242,7 +253,7 @@ server <- function(input, output, session) {
     if (input$KpiViewingMode == "table") {
       dataTableOutput("KpiTable")
     } else if (input$KpiViewingMode == "grid") {
-      data <- head(LiveKpi())
+      data <- head(LiveKpi(), n = ShowPageLength())
       Boxes <- tagList()
       for (i in 1:nrow(data)) {
         Boxes <- c(Boxes, tagList(MakeKpiBox(data[i,])))
