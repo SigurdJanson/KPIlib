@@ -51,7 +51,7 @@ ui <- dashboardPage(
   ),
   
   controlbar = dashboardControlbar(
-    width = 280L, overlay = FALSE,
+    width = 280L, overlay = FALSE, collapsed = FALSE,
     div(class="content",
       searchInput(
         inputId = "filterFree", label = "Find a KPI",
@@ -59,12 +59,18 @@ ui <- dashboardPage(
         btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
         width = "auto"
       ),
+      checkboxGroupButtons(
+        inputId = "cbCaseSensitivity", label = NULL,
+        choices = c(`<b>Aa</b>` = "CaseSensitive") # fa-font-case
+      ),
+
       pickerInput(
         inputId = "filterName",
-        label = "Names", 
+        label = "Domains", 
         choices = "",
         options = list(
-          `actions-box` = TRUE, size = 10L
+          `actions-box` = TRUE, size = 10L,
+          `live-search` = TRUE, dropdownAlignRight = TRUE
         ),
         multiple = TRUE,
         width = "100%"
@@ -74,7 +80,8 @@ ui <- dashboardPage(
         label = "Tags", 
         choices = "",
         options = list(
-          `actions-box` = TRUE, size = 10L
+          `actions-box` = TRUE, size = 10L,
+          `live-search` = TRUE, dropdownAlignRight = "auto"
         ),
         multiple = TRUE,
         width = "100%"
@@ -108,9 +115,7 @@ ui <- dashboardPage(
         box(tableOutput("AdminUppwerLowerTags"), "Tags", width = 4L, height = 400)
       )
     )
-  )#,
-  
-  #footer = dashboardFooter(left = "", right = "Created by Jan Seifert")
+  )
 )
 
 
@@ -170,14 +175,20 @@ server <- function(input, output, session) {
   
   
   
-  observeEvent(list(input$filterName, input$filterFree, input$filterTag), {
+  observeEvent(list(input$filterName, input$filterFree, input$filterTag, input$cbCaseSensitivity), {
+    IgnoreCase <- length(input$cbCaseSensitivity) == 0
+
     RowFilter <- rep(FALSE, nrow(kpi))
     if (isTruthy(input$filterName) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
       
       if (isTruthy(input$filterName))
         RowFilter <- RowFilter | kpi$name %in% input$filterName
+
       if (isTruthy(input$filterFree))
-        RowFilter <- RowFilter | grepl(input$filterFree, kpi$title, fixed = TRUE)
+        RowFilter <- RowFilter | 
+          grepl(input$filterFree, kpi$title, 
+                fixed = FALSE, ignore.case = IgnoreCase)
+
       if (isTruthy(input$filterTag))
         RowFilter <- RowFilter | grepl(input$filterTag, kpi$tags, fixed = TRUE)
       
@@ -272,7 +283,7 @@ server <- function(input, output, session) {
   #
   #
   # ADMIN SSECTION ========================
-  #
+
   
   output$AdminMenu <- renderMenu(
     if (RunningMode == "Admin") {
