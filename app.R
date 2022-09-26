@@ -6,6 +6,7 @@ library(jsonlite)
 library(DT)
 
 source("utils.R")
+source("uiTooltip.R")
 
 
 
@@ -53,43 +54,49 @@ ui <- dashboardPage(
   controlbar = dashboardControlbar(
     width = 280L, overlay = FALSE, collapsed = FALSE,
     div(class="content",
-      searchInput(
-        inputId = "filterFree", label = "Find a KPI",
-        placeholder = "Enter text",
-        btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
-        width = "auto"
-      ),
-      checkboxGroupButtons(
-        inputId = "cbCaseSensitivity", label = NULL,
-        choices = c(`<b>Aa</b>` = "CaseSensitive") # fa-font-case
-      ),
-
-      pickerInput(
-        inputId = "filterName",
-        label = "Domains", 
-        choices = "",
-        options = list(
-          `actions-box` = TRUE, size = 10L,
-          `live-search` = TRUE, dropdownAlignRight = TRUE
-        ),
-        multiple = TRUE,
-        width = "100%"
-      ),
-      pickerInput(
-        inputId = "filterTag",
-        label = "Tags", 
-        choices = "",
-        options = list(
-          `actions-box` = TRUE, size = 10L,
-          `live-search` = TRUE, dropdownAlignRight = "auto"
-        ),
-        multiple = TRUE,
-        width = "100%"
-      ),
-      br(),
-      "KPIs",
-      textOutput("infoNFiltered"),
-      textOutput("infoNTotal")
+        tags$div(title="Search title and description fields",
+                 searchInput(
+                   inputId = "filterFree", label = "Find a KPI",
+                   placeholder = "Enter text to search for KPIs",
+                   btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
+                   width = "auto"
+                 )),
+        #tooltip("filterFree", "Search title and description fields"),
+        tags$div(title="If activated the search will be case sensitive",
+                 checkboxGroupButtons(
+                   inputId = "cbCaseSensitivity", label = NULL,
+                   choices = c(`<b>Aa</b>` = "CaseSensitive") # fa-font-case
+                 )),
+        # tooltip("cbCaseSensitivity", "If activated this option the search will be case sensitive"),
+        
+        tags$div(title="Filter for one or several domains",
+                 pickerInput(
+                   inputId = "filterName",
+                   label = "Domain", 
+                   choices = "",
+                   options = list(
+                     `actions-box` = TRUE, size = 10L,
+                     `live-search` = TRUE, dropdownAlignRight = TRUE
+                   ),
+                   multiple = TRUE,
+                   width = "100%"
+                 )),
+        tags$div(title="Filter for one or several tags",
+                 pickerInput(
+                   inputId = "filterTag",
+                   label = "Tag", 
+                   choices = "",
+                   options = list(
+                     `actions-box` = TRUE, size = 10L,
+                     `live-search` = TRUE, dropdownAlignRight = "auto"
+                   ),
+                   multiple = TRUE,
+                   width = "100%"
+        )),
+        br(),
+        "KPIs",
+        textOutput("infoNFiltered"),
+        textOutput("infoNTotal")
     )
   ),
   

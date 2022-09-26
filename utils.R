@@ -21,7 +21,7 @@ readKpiData <- function(location) {
 # "Score", "Time", "Volume", "Weight", "Weight/m²" 
 
 mapUnit2Icon <- function(unit) {
-  switch (as.character(unit),
+  .icon <- switch (as.character(unit),
           Distance = icon("exchange", verify_fa = FALSE),
           Energy   = icon("battery-bolt", verify_fa = FALSE),
           Money    = icon("money-bill", verify_fa = FALSE),
@@ -35,4 +35,6 @@ mapUnit2Icon <- function(unit) {
           icon("question", verify_fa = FALSE)
           #thermometer-half
   )
+  #browser()
+  tags$div(title=paste("Unit:", unit), .icon)
 }
