@@ -5,3 +5,18 @@
   text-overflow: ellipsis;
 }
 
+.highlight {
+  font-weight: bold;
+}
+
+.h-inline {
+  color: rgba(64, 79, 80, 0.67); /*taken from .ace_comment */
+}
+
+.h-inline:hover {
+  color: #3C4C72; /*taken from .ace_comment-highlight */
+}
+
+.card-back td {
+  padding:2px 4px 0px;
+}

@@ -122,7 +122,7 @@ ui <- dashboardPage(
 # SERVER ==================================
 server <- function(input, output, session) {
 
-  kpi <- readKpiData(c("./www/kpis_digitalproducts.json", "./www/kpis.json"))
+  kpi <- readKpiData(c("./www/kpis.json", "./www/kpis_digitalproducts.json"))
   
   LiveKpi <- reactiveVal(kpi)
   
@@ -206,30 +206,26 @@ server <- function(input, output, session) {
           height = "340px",
           h4(x$title, class="truncate"),
           p(x$description),
-          # navPills(
-          #   id = "pillItem",
-          #   navPillsItem(
-          #     left = "Item 1", 
-          #     color = "green",
-          #     right = 10
-          #   ),
-          #   navPillsItem(
-          #     left = "Item 2", 
-          #     color = "red",
-          #     icon = icon("angle-down"), 
-          #     right = "10%"
-          #   )
-          # )
+          div(span("domain", class="h-inline"), 
+              span(x$name, class="highlight"))
         ), 
-        column(2L, UnitIcon), #icon("thermometer-half", verify_fa = FALSE, style="font-size: 32px")),
+        column(2L, UnitIcon),
         class = "box-body"
       ),
       back = fixedRow( 
         column(11L,
           class = "text-left",
-          h4("Flip on click"),
-          p("Direction:", x$direction),
-          p("Tags:", x$tags)
+          h4(x$title, class="truncate"),
+          tags$table(
+            tags$tr(
+              tags$td(span("direction", class="h-inline")), 
+              tags$td(span(x$direction, class="highlight"))
+            ),
+            tags$tr(
+              tags$td(span("tags", class="h-inline")),
+              tags$td(span(x$tags, class="highlight"))
+            )
+          )
         ),
         class = "box-body"
       )
