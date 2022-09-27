@@ -1,8 +1,13 @@
 .truncate {
-  width: 200px;
+  width:calc((100vw-280px)*0.0625); /*16vw;*/
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.tileicon {
+  font-size:1.8vw
+  /* style="font-size:1.8vw" */
 }
 
 .highlight {
@@ -17,7 +22,36 @@
   color: #3C4C72; /*taken from .ace_comment-highlight */
 }
 
+/* FlipBox CARDS */
+.flipbox {
+  min-height:200px;
+  overflow-y: scroll;
+}
+
 .card-back td {
   padding:2px 4px 0px;
 }
 
+#KpiList .row {
+/*   display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-rows: masonry; */
+  -moz-column-count: 1;
+  column-count: 1;
+  -moz-column-gap: 20px;
+  column-gap: 20px;
+  -moz-column-fill: balance;
+  column-fill: balance;
+  margin: 20px auto 0;
+  padding: 2rem;
+}
+
+#KpiList .row .col-sm-4 {
+  display: inline-block;
+  margin: 0 0 10px;
+  page-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  break-inside: avoid;
+  /* width: 100%; */
+}

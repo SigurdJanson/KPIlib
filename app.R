@@ -6,8 +6,6 @@ library(jsonlite)
 library(DT)
 
 source("utils.R")
-source("uiTooltip.R")
-
 
 
 RunningMode <- FALSE #"Admin"
@@ -210,29 +208,30 @@ server <- function(input, output, session) {
   # OUTPUT ===================
   
   MakeKpiBox <- function(x) { # x is a kpi row
-    # TODO: Icons: "Distance", "Energy", "Money", "Number", "Percentage", "Ratio", 
-    # "Score", "Time", "Volume", "Weight", "Weight/m²" 
     UnitIcon <- mapUnit2Icon(x$unit)
-    UnitIcon <- tagAppendAttributes(UnitIcon, style="font-size: 32px")
+    UnitIcon <- tagAppendAttributes(UnitIcon, class="tileicon")
     
-    if (!is.null(x$formula_description)) {
+    if (isTruthy(x$formula_description)) {
       if (grepl("$$", x$formula_description, fixed=TRUE)) {
         Formula <- p(withMathJax(x$formula_description))
       } else {
         Formula <- p(x$formula_description, class="truncate")
       }
     } else {
-      Formula <- p("Not available", class="h-inline")
+      Formula <- p("Formula not available", class="h-inline")
     }
     
-    flipBox(
+    Box <- flipBox(
       id = x$title,
-      width = 4L,
+      width = 6L, # width: class="col-sm-6"
       front = fixedRow(
         column(10L,
           class = "text-left",
-          height = "340px",
-          h4(x$title, class="truncate"),
+          #height = "400px",
+          div(
+            h4(x$title, class="truncate"),
+            title=x$title
+          ),
           p(x$description),
           div(span("domain", class="h-inline"), 
               span(x$name, class="highlight"))
@@ -240,11 +239,11 @@ server <- function(input, output, session) {
         column(2L, UnitIcon),
         class = "box-body"
       ),
-      back = fixedRow( 
-        column(11L,
+      back = fixedRow(
+        column(12L,
           class = "text-left",
           h4(x$title, class="truncate"),
-          Formula,
+          Formula, #if (isTruthy(Formula)) 
           tags$table(
             tags$tr(
               tags$td(span("direction", class="h-inline")), 
@@ -259,6 +258,9 @@ server <- function(input, output, session) {
         class = "box-body"
       )
     )#flipbox
+    
+    Box <- tagAppendAttributes(Box, class="col-xs-12 col-md-6 col-lg-4")
+    Box
   }
   
   output$KpiTable <- DT::renderDataTable({
@@ -279,7 +281,7 @@ server <- function(input, output, session) {
       #Boxes <- tagList(Boxes)
       
       .html <- tagList(
-        fluidRow(Boxes)
+        fluidPage(fluidRow(Boxes))
       )
       return(.html)
     }
@@ -336,6 +338,10 @@ server <- function(input, output, session) {
   })
   
   
+  #
+  #
+  #
+  # HEADER SSECTION ========================
   
   
   output$uiAuthorAbout <- renderUser({
