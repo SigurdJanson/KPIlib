@@ -9,7 +9,7 @@ source("utils.R")
 source("tagstr.R")
 
 
-RunningMode <- FALSE #"Admin"
+RunningMode <- "Admin"
 
 
 
@@ -116,9 +116,19 @@ ui <- dashboardPage(
       tabItem(
         tabName = "AdminArea",
         h2("KPI Administration"),
-        infoBoxOutput("AdminDuplicateCount", width = 4L),
-        box(tableOutput("AdminDuplicates"), "Duplicated Titles", width = 4L, height = 400),
-        box(tableOutput("AdminUppwerLowerTags"), "Tags", width = 4L, height = 400)
+        column(3L,
+          infoBoxOutput("AdminDuplicateCount", width = 12L),
+          box(tableOutput("AdminDuplicates"), "Duplicated Titles", width = 12L, height = 400)
+        ),
+        column(3L,
+          box(tableOutput("AdminUpperLowerTags"), "Mixed Case Tags", width = 12L, height = 400),
+          infoBoxOutput("AdminLonelyTagCount", width = 12L),
+          box(tableOutput("AdminLonelyTags"), "Lonely Tags", width = 12L, height = 400)
+        ),
+        column(3L,
+          infoBoxOutput("AdminLonelyNameCount", width = 12L),
+          box(tableOutput("AdminLonelyNames"), "Lonely Titles", width = 12L, height = 400)
+        )
       )
     )
   )
@@ -331,7 +341,43 @@ server <- function(input, output, session) {
   })
   
   
-  output$AdminUppwerLowerTags <- renderTable({
+  
+  AdminLonelyNames <- reactive({
+    Names <- sapply(kpi$name, \(x) strsplit(x, ",")) |>
+      unlist() |>
+      unname() |>
+      trimws() |>
+      na.omit() |>
+      sort()
+    Runs <- Names |> rle()
+    Runs$values[Runs$lengths == 1]
+  })
+  
+  output$AdminLonelyNameCount <- renderInfoBox({
+    Count <- length(AdminLonelyNames())
+    Icon <- if (Count < nrow(kpi) * 0.01) 
+      icon("thumbs-up", lib = "glyphicon")
+    else
+      icon("thumbs-down", lib = "glyphicon")
+    Color <- if (Count < nrow(kpi) * 0.01)
+      "green"
+    else
+      "yellow"
+    
+    infoBox(
+      "Lonelies", Count, 
+      "Singular Names",
+      icon = Icon,
+      color = Color
+    )
+  })
+  
+  output$AdminLonelyNames <- renderTable({
+    return(data.frame(Lonelies = AdminLonelyNames()))
+  })
+  
+  
+  output$AdminUpperLowerTags <- renderTable({
     Tags <- sapply(LiveKpi()$tags, \(x) strsplit(x, ",")) |>
       unlist() |>
       unname() |>
@@ -341,6 +387,40 @@ server <- function(input, output, session) {
     TagsIroned <- tolower(Tags)
     Dups <- TagsIroned |> duplicated()
     data.frame(Duplicates = Tags[Dups])
+  })
+  
+  AdminLonelyTags <- reactive({
+    Tags <- sapply(kpi$tags, \(x) strsplit(x, ",")) |>
+      unlist() |>
+      unname() |>
+      trimws() |>
+      na.omit() |>
+      sort()
+    Runs <- Tags |> rle()
+    Runs$values[Runs$lengths == 1]
+  })
+  
+  output$AdminLonelyTagCount <- renderInfoBox({
+    Count <- length(AdminLonelyTags())
+    Icon <- if (Count < nrow(kpi) * 0.1) 
+      icon("thumbs-up", lib = "glyphicon")
+    else
+      icon("thumbs-down", lib = "glyphicon")
+    Color <- if (Count < nrow(kpi) * 0.1)
+      "green"
+    else
+      "yellow"
+    
+    infoBox(
+      "Lonelies", Count, 
+      "Singular Tags",
+      icon = Icon,
+      color = Color
+    )
+  })
+  
+  output$AdminLonelyTags <- renderTable({
+    return(data.frame(Lonelies = AdminLonelyTags()))
   })
   
   

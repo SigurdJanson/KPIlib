@@ -6,7 +6,7 @@
         "unit": "Money",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "Value",
+        "tags": "value",
         "name": "Product Development",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
@@ -19,7 +19,7 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, online",
-        "name": "",
+        "name": "Retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
     },
@@ -45,7 +45,7 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, search, information retrieval, document management",
-        "name": "",
+        "name": "Search",
         "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
@@ -60,7 +60,8 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, search, information retrieval, document management",
-        "name": "https://en.wikipedia.org/wiki/Precision_and_recall",
+        "name": "Search",
+        "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
     },
