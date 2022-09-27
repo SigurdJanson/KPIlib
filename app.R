@@ -6,6 +6,7 @@ library(jsonlite)
 library(DT)
 
 source("utils.R")
+source("tagstr.R")
 
 
 RunningMode <- FALSE #"Admin"
@@ -194,8 +195,13 @@ server <- function(input, output, session) {
           grepl(input$filterFree, kpi$title, 
                 fixed = FALSE, ignore.case = IgnoreCase)
 
-      if (isTruthy(input$filterTag))
-        RowFilter <- RowFilter | grepl(input$filterTag, kpi$tags, fixed = TRUE)
+      if (isTruthy(input$filterTag)) {
+        if (length(input$filterTag) > 1)
+          RowFilter <- RowFilter | apply(input$filterTag %isin% kpi$tags, 1L, any)
+        else
+          RowFilter <- RowFilter | input$filterTag %isin% kpi$tags
+        #RowFilter <- RowFilter | grepl(input$filterTag, kpi$tags, fixed = TRUE)
+      }
       
       LiveKpi(kpi[RowFilter, ])
     }
