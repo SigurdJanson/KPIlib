@@ -38,3 +38,8 @@ mapUnit2Icon <- function(unit) {
   #browser()
   tags$div(title=paste("Unit:", unit), .icon)
 }
+
+
+RuningLocally <- function() {
+  grepl(r"{\\JS\\}", tempdir())
+}

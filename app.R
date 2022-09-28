@@ -9,9 +9,7 @@ source("utils.R")
 source("tagstr.R")
 
 
-RunningMode <- "Admin"
-
-
+RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
 
 
 
