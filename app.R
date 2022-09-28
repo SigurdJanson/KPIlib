@@ -21,7 +21,7 @@ ui <- dashboardPage(
   skin = "black", # try "midnight" eventually
   scrollToTop = TRUE,
   header = dashboardHeader(
-    title = "KPI Lib",
+    title = "KPi Kluster",
     leftUi = tagList(
       radioGroupButtons(
         inputId = "KpiViewingMode",
@@ -32,13 +32,6 @@ ui <- dashboardPage(
       )
     ),
     userOutput("uiAuthorAbout"),
-    dropdownBlock(
-      id = "uiAppABout",
-      title = "About KPIlab",
-      icon = icon("chalkboard", verify_fa = FALSE),
-      badgeStatus = NULL,
-      div("")
-    ),
     controlbarIcon = shiny::icon("filter")
   ),
   
@@ -46,7 +39,8 @@ ui <- dashboardPage(
     minified = (RunningMode == "Admin"), collapsed = TRUE,
     sidebarMenu(
       menuItem("KPIs", tabName = "ContentArea", icon = icon("dashboard", verify_fa = FALSE)),
-      menuItemOutput("AdminMenu")
+      menuItemOutput("AdminMenu"),
+      menuItem("About KPi Kluster", tabName = "AboutApp", icon = icon("hand-sparkles", verify_fa = FALSE))
     )
   ),
   
@@ -117,6 +111,7 @@ ui <- dashboardPage(
         tabName = "AdminArea",
         h2("KPI Administration"),
         column(3L,
+          infoBoxOutput("AdminExactDuplicateCount", width = 12L),
           infoBoxOutput("AdminDuplicateCount", width = 12L),
           box(tableOutput("AdminDuplicates"), "Duplicated Titles", width = 12L, height = 400)
         ),
@@ -129,6 +124,61 @@ ui <- dashboardPage(
           infoBoxOutput("AdminLonelyNameCount", width = 12L),
           box(tableOutput("AdminLonelyNames"), "Lonely Titles", width = 12L, height = 400)
         )
+      ),
+      
+      tabItem(
+        tabName = "AboutApp",
+        column(width = 8L, offset = 2L,
+          wellPanel(
+            h2("About KPi Kluster"),
+            div(
+              p("The KPi Kluster is a large data base to get inspiration for 
+                (Key) Performance Indicators you may want to track in your organisation."),
+              h4("Origins"),
+              p("Some of the KPIs in the cluster are provided by the author collected
+                from various sources like books and professional experience."),
+              p("Some of the KPIs have been gathered from the KPI Library. For almost 10 years 
+                the KPI Library offered professionals a platform to share, search, and discuss KPIs. 
+                The collection now available for download is the result of a community effort. 
+                The platform behind it was the KPI Library. It was founded in 2007 by Mirror42. 
+                Mirror42 was acquired by ServiceNow in July 2013."),
+              p("These data were extensively improved by the author. Over 2000 KPIs were merged 
+                or eliminated."),
+              tags$ul(
+                tags$li("Removal of duplicate indicators"),
+                tags$li("Removal of indicators not complete enough to be understandable"),
+                tags$li("Spelling correction"),
+                tags$li("Removal of \"lonely\" tags that existed only once for clarity"),
+                tags$li("Combination of redundancies between KPIs for clarity"),
+                tags$li("Correction of empty fields")
+              ),
+              p("Despite all these efforts the library may still contain ambiguities, vagueness, 
+                and mistakes. It was not possible so far to fill all missing information.",
+                tags$b("Please note that you use KPi Kluster at your own risk.")),
+              h4("Working with KPIs"),
+              p("Looking up KPIs in a data base means that the function you want to improve has
+                become a 'hygiene factor' of your business. You cannot excel in this area over
+                your competitors. You cannot win anything by improving it ... but you will lose
+                if you don't."),
+              p("If you - however - need to track something to compete over, you need to find
+                ways to differentiate yourself from your competitors. Which means: you need
+                to differentiate your KPIs. Because - in general - if two organisations measure
+                the same thing, they will end up doing the same thing."),
+              p("If you want to find ways to be different, you can use a KPI data base as inspiration.
+                But you will track and work your KPIs in very different ways."),
+              p("If you have never worked intensively with numbers and KPIs, I can only recommend
+                that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
+                'scale level', I can only recommend that you get some help."),
+              h4("Mentions"),
+              p("I am a Changitor and I probably would never have done this without the support
+                from the ", 
+                tags$a("Changitor team", href="https://www.changitors.com/en", .noWS = "after"), 
+                "."),
+              p("Thank you", tags$a("ServiceNow", href="https://www.servicenow.com"), 
+                "for hosting the KPI library for many years.")
+            )
+          )
+        )#col
       )
     )
   )
@@ -312,10 +362,26 @@ server <- function(input, output, session) {
   
   output$AdminMenu <- renderMenu(
     if (RunningMode == "Admin") {
-      menuItem("Admin", tabName = "AdminArea", icon = icon("dashboard"))
+      menuItem("Admin", tabName = "AdminArea", icon = icon("users-cog", verify_fa = FALSE))
     }
   )
   
+  output$AdminExactDuplicateCount <- renderInfoBox({
+    Count <- sum(duplicated(kpi))
+    Icon <- if (Count < 1) 
+      icon("thumbs-up", lib = "glyphicon")
+    else
+      icon("thumbs-down", lib = "glyphicon")
+    Color <- if (Count < 1)
+      "green"
+    else
+      "yellow"
+    infoBox(
+      "Duplicates", Count, "Exact Duplicate (total entry)",
+      icon = Icon,
+      color = Color
+    )
+  })
   
   output$AdminDuplicateCount <- renderInfoBox({
     Count <- sum(duplicated(kpi$title))
@@ -335,7 +401,7 @@ server <- function(input, output, session) {
   })
   
   output$AdminDuplicates <- renderTable({
-    Dups <- kpi$title |> duplicated()
+    Dups <- kpi$title |> tolower() |> duplicated()
     Dups <- kpi$title[Dups] |> unique()
     data.frame(Duplicates = Dups)
   })
@@ -436,7 +502,9 @@ server <- function(input, output, session) {
       image = "https://www.seifseit.de/images/Jan2013c.jpg", 
       title = "Dr. Jan Seifert",
       subtitle = "", 
-      footer = p("The footer", class = "text-center"),
+      footer = p("A service secretly supported by", 
+                 tags$a("changitors", href="https://www.changitors.com/en"), 
+                 class = "text-center"),
       fluidRow(
         dashboardUserItem(
           width = 4L,
