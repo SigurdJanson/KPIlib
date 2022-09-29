@@ -1,3 +1,8 @@
+* {
+  --dark: #222d32;
+  --light: #b8c7ce;
+}
+
 .truncate {
   width:calc((100vw-280px)*0.0625); /*16vw;*/
   white-space: nowrap;
@@ -26,6 +31,19 @@
 .flipbox {
   min-height:200px;
   overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dark) var(--light);
+}
+.flipbox::-webkit-scrollbar {
+    width: 10px;
+}
+.flipbox::-webkit-scrollbar-track {
+  background: var(--light);
+}
+.flipbox::-webkit-scrollbar-thumb {
+  background-color: var(--dark);
+  border-radius: 5px;
+  border: 3px solid var(--light);
 }
 
 .card-back td {
