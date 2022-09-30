@@ -21,7 +21,10 @@ readKpiData <- function(location) {
 # "Score", "Time", "Volume", "Weight", "Weight/m²" 
 
 mapUnit2Icon <- function(unit) {
-  .icon <- switch (as.character(unit),
+  .icon <- switch (
+    as.character(unit),
+          Area     = icon("square-full", verify_fa = FALSE),
+          Data     = icon("server", verify_fa = FALSE),
           Distance = icon("exchange", verify_fa = FALSE),
           Energy   = icon("battery-bolt", verify_fa = FALSE),
           Money    = icon("money-bill", verify_fa = FALSE),
