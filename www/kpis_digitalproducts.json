@@ -319,14 +319,16 @@
         "updated_at": "2022-09-25 00:00:00"
     },
     {
-        "title": "",
-        "description": "",
-        "direction": "",
-        "unit": "",
+        "title": "Average Cost per Study Participant",
+        "description": "The sum of all cost for each participant in the studies. That includes personnel cost, participants' recruiting cost and expense allowance, lab rental, etc.",
+        "formula_description": "$$\frac{\\text{Total Research Costs}}{\\text{# Participants}} \\cdot 100$$",
+        "interpretation": "",
+        "direction": "Minimize",
+        "unit": "Money",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "",
-        "name": "",
+        "tags": "usability, user experience, user research, research ops",
+        "name": "Research",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
     },
@@ -334,12 +336,12 @@
         "title": "Ratio of Fixed Usability Problems",
         "description": "The ratio between the identified usability problem and those that could be fixed.",
         "formula_description": "$$\\frac{\\text{Fixed Problems}}{\\text{Total Problems Identified}} \\cdot 100$$",
-        "interpretation": "",
+        "interpretation": "Finding usability issues is only worth something if you manage to fix those issues. This indicator tells you how well you do. If the value is low, you may want to invest less time in testing and more time in communication the results.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "usability, user experience, user research",
+        "tags": "usability, user experience, user research, research ops",
         "name": "Usability",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
@@ -347,13 +349,27 @@
     {
         "title": "Research Study Compliance Rate",
         "description": "No-shows in a study are a risk. This indicator measures the performance selecting and handling study participants.",
+        "formula_description": "$$\frac{\\text{# No-Shows}}{\\text{# Invited Participants}} \\cdot 100$$",
         "direction": "Minimize",
         "unit": "Percentage",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "compliance, usability, user experience, user research",
+        "tags": "compliance, usability, user experience, user research, research ops",
         "name": "Research",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00"
+    },
+    {
+        "title": "System Usability Scale (SUS)",
+        "description": "The System Usability Scale yields a single number representing a composite measure of the overall usability of the system being studied.",
+        "direction": "Maximize",
+        "unit": "Score",
+        "rating_count": 3,
+        "rating_avg": 4,
+        "tags": "satisfaction, usability, user experience",
+        "name": "Software development",
+        "created_at": "2008-05-27 08:55:00",
+        "updated_at": "2020-11-27 20:57:00",
+        "url": "http://en.wikipedia.org/wiki/System_Usability_Scale"
     }
 ]
