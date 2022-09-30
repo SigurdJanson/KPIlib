@@ -110,17 +110,23 @@ ui <- dashboardPage(
         h2("KPI Administration"),
         column(3L,
           infoBoxOutput("AdminExactDuplicateCount", width = 12L),
-          infoBoxOutput("AdminDuplicateCount", width = 12L),
-          box(tableOutput("AdminDuplicates"), "Duplicated Titles", width = 12L, height = 400)
+          infoBoxOutput("AdminLongTitleCount", width = 12L),
+          infoBoxOutput("AdminTitleDuplicateCount", width = 12L),
+          box(tableOutput("AdminTitleDuplicates"), "Duplicated Titles", 
+              width = 12L, height = 400, collapsible = TRUE)
         ),
         column(3L,
-          box(tableOutput("AdminUpperLowerTags"), "Mixed Case Tags", width = 12L, height = 400),
-          infoBoxOutput("AdminLonelyTagCount", width = 12L),
-          box(tableOutput("AdminLonelyTags"), "Lonely Tags", width = 12L, height = 400)
+           infoBoxOutput("AdminUpperLowerTagCount", width = 12L),
+           box(tableOutput("AdminUpperLowerTags"), "Mixed Case Tags", 
+              width = 12L, height = 400, collapsible = TRUE),
+           infoBoxOutput("AdminLonelyTagCount", width = 12L),
+           box(tableOutput("AdminLonelyTags"), "Lonely Tags", 
+              width = 12L, height = 400, collapsible = TRUE)
         ),
         column(3L,
           infoBoxOutput("AdminLonelyNameCount", width = 12L),
-          box(tableOutput("AdminLonelyNames"), "Lonely Titles", width = 12L, height = 400)
+          box(tableOutput("AdminLonelyNames"), "Lonely Names", 
+              width = 12L, height = 400, collapsible = TRUE)
         )
       ),
       
@@ -307,7 +313,7 @@ server <- function(input, output, session) {
         column(12L,
           class = "text-left",
           h4(x$title, class="truncate"),
-          Formula, #if (isTruthy(Formula)) 
+          Formula,
           tags$table(
             tags$tr(
               tags$td(span("direction", class="h-inline")), 
@@ -364,41 +370,55 @@ server <- function(input, output, session) {
     }
   )
   
+  ## Exact Duplicates =====
   output$AdminExactDuplicateCount <- renderInfoBox({
     Count <- sum(duplicated(kpi))
-    Icon <- if (Count < 1) 
-      icon("thumbs-up", lib = "glyphicon")
-    else
-      icon("thumbs-down", lib = "glyphicon")
-    Color <- if (Count < 1)
-      "green"
-    else
-      "yellow"
+    
+    if (Count < 1L) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- "No exactly duplicate KPIs"
+    } else if (Count < 5L) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- "Less than 5 duplicated KPIs"
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- "MORE than 5 duplicated KPIs"
+    }
+      
     infoBox(
-      "Duplicates", Count, "Exact Duplicate (total entry)",
-      icon = Icon,
-      color = Color
+      "Exact Duplicates", InfoTxt, "Exact Duplicate (complete entry)",
+      icon = Icon, color = Color
     )
   })
   
-  output$AdminDuplicateCount <- renderInfoBox({
-    Count <- sum(duplicated(kpi$title))
-    Icon <- if (Count < nrow(kpi) * 0.1) 
-              icon("thumbs-up", lib = "glyphicon")
-            else
-              icon("thumbs-down", lib = "glyphicon")
-    Color <- if (Count < nrow(kpi) * 0.1)
-               "green"
-             else
-               "yellow"
+  
+  ## Title Duplicates =====
+  output$AdminTitleDuplicateCount <- renderInfoBox({
+    Count <- sum(duplicated(tolower(kpi$title)))
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- "Less than 5% duplicate titles"
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- "Less than 10% duplicated titles"
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- "MORE than 10% duplicated titles"
+    }
+    
     infoBox(
-      "Duplicates", Count, "Duplicated by Title",
-      icon = Icon,
-      color = Color
+      "Title Duplicates", InfoTxt, "Duplicated titles (case insensitive)",
+      icon = Icon, color = Color
     )
   })
-  
-  output$AdminDuplicates <- renderTable({
+  output$AdminTitleDuplicates <- renderTable({
     Dups <- kpi$title |> tolower() |> duplicated()
     Dups <- kpi$title[Dups] |> unique()
     data.frame(Duplicates = Dups)
@@ -406,6 +426,33 @@ server <- function(input, output, session) {
   
   
   
+  
+  ## Long Titles =====
+  output$AdminLongTitleCount <- renderInfoBox({
+    Count <- sum(nchar(kpi$title) > 30L)
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- "Less than 5% long titles"
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- "Less than 10% long titles"
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- "MORE than 10% long titles"
+    }
+    
+    infoBox(
+      "Long Titles", InfoTxt, "Long titles with > 30 character",
+      icon = Icon, color = Color
+    )
+  })
+  
+
+    
+  ## Lonely Names =====
   AdminLonelyNames <- reactive({
     Names <- sapply(kpi$name, \(x) strsplit(x, ",")) |>
       unlist() |>
@@ -419,20 +466,24 @@ server <- function(input, output, session) {
   
   output$AdminLonelyNameCount <- renderInfoBox({
     Count <- length(AdminLonelyNames())
-    Icon <- if (Count < nrow(kpi) * 0.01) 
-      icon("thumbs-up", lib = "glyphicon")
-    else
-      icon("thumbs-down", lib = "glyphicon")
-    Color <- if (Count < nrow(kpi) * 0.01)
-      "green"
-    else
-      "yellow"
+    
+    if (Count < nrow(kpi) * 0.01) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- "Less than 1% lonely names"
+    } else if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- "Less than 5% lonely names"
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- "MORE than 5% lonely names"
+    }
     
     infoBox(
-      "Lonelies", Count, 
-      "Singular Names",
-      icon = Icon,
-      color = Color
+      "Lonely Names", InfoTxt, "Names existing only once",
+      icon = Icon, color = Color
     )
   })
   
@@ -441,7 +492,8 @@ server <- function(input, output, session) {
   })
   
   
-  output$AdminUpperLowerTags <- renderTable({
+  ## Tags  =====
+  AdminUpperLowerTags <- reactive({
     Tags <- sapply(LiveKpi()$tags, \(x) strsplit(x, ",")) |>
       unlist() |>
       unname() |>
@@ -449,10 +501,41 @@ server <- function(input, output, session) {
       na.omit() |>
       unique()
     TagsIroned <- tolower(Tags)
-    Dups <- TagsIroned |> duplicated()
-    data.frame(Duplicates = Tags[Dups])
+    TagsIroned
   })
   
+  output$AdminUpperLowerTagCount <- renderInfoBox({
+    Dups <- AdminUpperLowerTags() |> duplicated()
+    Count <- sum(Dups)
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- "Less than 5% mixed tags"
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- "Less than 10% mixed tags"
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- "MORE than 10% mixed tags"
+    }
+    
+    infoBox(
+      "Mixed Tags", InfoTxt, "Tags with mixed upper/lower case",
+      icon = Icon, color = Color
+    )
+  })
+  
+  
+  output$AdminUpperLowerTags <- renderTable({
+    Dups <- AdminUpperLowerTags() |> duplicated()
+    data.frame(Duplicates = AdminUpperLowerTags()[Dups])
+  })
+
+  
+  ## Lonely Tags  =====
   AdminLonelyTags <- reactive({
     Tags <- sapply(kpi$tags, \(x) strsplit(x, ",")) |>
       unlist() |>
@@ -466,20 +549,24 @@ server <- function(input, output, session) {
   
   output$AdminLonelyTagCount <- renderInfoBox({
     Count <- length(AdminLonelyTags())
-    Icon <- if (Count < nrow(kpi) * 0.1) 
-      icon("thumbs-up", lib = "glyphicon")
-    else
-      icon("thumbs-down", lib = "glyphicon")
-    Color <- if (Count < nrow(kpi) * 0.1)
-      "green"
-    else
-      "yellow"
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- "Less than 5% lonely tags"
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- "Less than 10% lonely tags"
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- "MORE than 10% lonely tags"
+    }
     
     infoBox(
-      "Lonelies", Count, 
-      "Singular Tags",
-      icon = Icon,
-      color = Color
+      "Lonely Tags", InfoTxt, "Tags that exist only once",
+      icon = Icon, color = Color
     )
   })
   
