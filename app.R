@@ -129,8 +129,9 @@ ui <- dashboardPage(
               width = 12L, height = 400, collapsible = TRUE)
         ),
         column(3L,
-          infoBoxOutput("AdminMissingDescrCount", width = 12L),
-          infoBoxOutput("AdminMissingUnitCount", width = 12L),
+               infoBoxOutput("AdminMissingNameCount", width = 12L),
+               infoBoxOutput("AdminMissingDescrCount", width = 12L),
+               infoBoxOutput("AdminMissingUnitCount", width = 12L),
           infoBoxOutput("AdminMissingTagsCount", width = 12L)
         )
       ),
@@ -608,6 +609,32 @@ server <- function(input, output, session) {
       icon = Icon, color = Color
     )
   })
+  
+  output$AdminMissingNameCount <- renderInfoBox({
+    Count <- nrow(kpi) - sum(sapply(kpi$name, isTruthy))
+    what <- "missing names"
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- paste("Less than 5%", what)
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- paste("Less than 10%", what)
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- paste("MORE than 10%", what)
+    }
+    
+    infoBox(
+      "Missing Names", InfoTxt, paste0("(", Count, ")"),
+      icon = Icon, color = Color
+    )
+  })
+  
+  
   
   output$AdminMissingTagsCount <- renderInfoBox({
     Count <- nrow(kpi) - sum(sapply(kpi$tags, isTruthy))
