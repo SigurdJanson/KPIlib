@@ -127,6 +127,11 @@ ui <- dashboardPage(
           infoBoxOutput("AdminLonelyNameCount", width = 12L),
           box(tableOutput("AdminLonelyNames"), "Lonely Names", 
               width = 12L, height = 400, collapsible = TRUE)
+        ),
+        column(3L,
+          infoBoxOutput("AdminMissingDescrCount", width = 12L),
+          infoBoxOutput("AdminMissingUnitCount", width = 12L),
+          infoBoxOutput("AdminMissingTagsCount", width = 12L)
         )
       ),
       
@@ -429,7 +434,8 @@ server <- function(input, output, session) {
   
   ## Long Titles =====
   output$AdminLongTitleCount <- renderInfoBox({
-    Count <- sum(nchar(kpi$title) > 30L)
+    Threshold <- 40L
+    Count <- sum(nchar(kpi$title) > Threshold)
     if (Count < nrow(kpi) * 0.05) {
       Icon <- icon("thumbs-up", lib = "glyphicon")
       Color <- "green"
@@ -445,7 +451,8 @@ server <- function(input, output, session) {
     }
     
     infoBox(
-      "Long Titles", InfoTxt, "Long titles with > 30 character",
+      "Long Titles", InfoTxt, 
+      sprintf("Long titles with > %d characters", Threshold),
       icon = Icon, color = Color
     )
   })
@@ -572,6 +579,82 @@ server <- function(input, output, session) {
   
   output$AdminLonelyTags <- renderTable({
     return(data.frame(Lonelies = AdminLonelyTags()))
+  })
+  
+  
+  
+  
+  ## Missing Pieces ======
+  output$AdminMissingDescrCount <- renderInfoBox({
+    Count <- nrow(kpi) - sum(sapply(kpi$description, isTruthy))
+    what <- "missing descriptions"
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- paste("Less than 5%", what)
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- paste("Less than 10%", what)
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- paste("MORE than 10%", what)
+    }
+    
+    infoBox(
+      "Missing Descriptions", InfoTxt, paste0("(", Count, ")"),
+      icon = Icon, color = Color
+    )
+  })
+  
+  output$AdminMissingTagsCount <- renderInfoBox({
+    Count <- nrow(kpi) - sum(sapply(kpi$tags, isTruthy))
+    what <- "missing tags"
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- paste("Less than 5%", what)
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- paste("Less than 10%", what)
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- paste("MORE than 10%", what)
+    }
+    
+    infoBox(
+      "Missing Tags", InfoTxt, paste0("(", Count, ")"),
+      icon = Icon, color = Color
+    )
+  })
+  
+  output$AdminMissingUnitCount <- renderInfoBox({
+    Count <- nrow(kpi) - sum(sapply(kpi$unit, isTruthy))
+    what <- "missing units"
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- paste("Less than 5%", what)
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- paste("Less than 10%", what)
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- paste("MORE than 10%", what)
+    }
+    
+    infoBox(
+      "Missing Units", InfoTxt, paste0("(", Count, ")"),
+      icon = Icon, color = Color
+    )
   })
   
   
