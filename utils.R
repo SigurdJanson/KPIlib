@@ -50,3 +50,9 @@ mapUnit2Icon <- function(unit) {
 RuningLocally <- function() {
   grepl(r"{\\JS\\}", tempdir())
 }
+
+
+#' Taken from Hmisc
+escapeRegex <- function(string) {
+  gsub('([.|()\\^{}+$*?]|\\[|\\])', '\\\\\\1', string)
+}
