@@ -349,7 +349,7 @@
     {
         "title": "Research Study Compliance Rate",
         "description": "No-shows in a study are a risk. This indicator measures the performance selecting and handling study participants.",
-        "formula": "$$\frac{\\text{# No-Shows}}{\\text{# Invited Participants}} \\cdot 100$$",
+        "formula": "$$\\frac{\\text{# No-Shows}}{\\text{# Invited Participants}} \\cdot 100$$",
         "direction": "Minimize",
         "unit": "Percentage",
         "rating_count": 0,
