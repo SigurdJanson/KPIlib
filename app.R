@@ -267,6 +267,10 @@ server <- function(input, output, session) {
       if (isTruthy(input$filterFree))
         RowFilter <- RowFilter | 
           grepl(escapeRegex(input$filterFree), kpi$title, 
+                fixed = FALSE, ignore.case = IgnoreCase)  | 
+          grepl(escapeRegex(input$filterFree), kpi$description, 
+                fixed = FALSE, ignore.case = IgnoreCase) | 
+          grepl(escapeRegex(input$filterFree), kpi$interpretation, 
                 fixed = FALSE, ignore.case = IgnoreCase)
 
       if (isTruthy(input$filterTag)) {
