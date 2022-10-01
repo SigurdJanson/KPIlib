@@ -43,6 +43,7 @@ ui <- dashboardPage(
     )
   ),
   
+  ## filter control side bar =====
   controlbar = dashboardControlbar(
     width = 280L, overlay = FALSE, collapsed = FALSE,
     div(class="content",
@@ -86,13 +87,20 @@ ui <- dashboardPage(
                    width = "100%"
         )),
         br(),
-        "KPIs",
+        h4("Search Result"),
+        sliderTextInput(
+          inputId = "inPageLength",
+          label = "Maximum number of hits to display", 
+          choices = c(20, 30, 40, 50, 100, 150, 200, 250),
+          grid = TRUE
+        ),
+        textOutput("infoNDisplayed"),
         textOutput("infoNFiltered"),
         textOutput("infoNTotal")
     )
   ),
   
-  
+  ## body =====
   body = dashboardBody(
     # tags$head(
     #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
@@ -211,13 +219,16 @@ server <- function(input, output, session) {
   
   LiveKpi <- reactiveVal(kpi)
   
-  ShowPageLength <- reactiveVal(25L)
+  ShowPageLength <- reactiveVal(20L)
   
   output$infoNFiltered <- renderText(
-    paste("Selected:", nrow(LiveKpi()))
+    paste("Filtered:", nrow(LiveKpi()))
   )
   output$infoNTotal <- renderText(
-    paste("Available:", nrow(kpi))
+    paste("Total available:", nrow(kpi))
+  )
+  output$infoNDisplayed <- renderText(
+    paste("Shown:", ShowPageLength())
   )
   
   
@@ -228,6 +239,10 @@ server <- function(input, output, session) {
   #
   #
   # KPI FILTER ========================
+  
+  observeEvent(input$inPageLength, {
+    ShowPageLength(input$inPageLength)
+  })
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
@@ -361,7 +376,7 @@ server <- function(input, output, session) {
   
   output$KpiTable <- DT::renderDataTable({
     head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
-  }, options = list(searching=FALSE, pageLength = ShowPageLength()))
+  }, options = list(searching=FALSE, paging = FALSE, pageLength = ShowPageLength()))
   
   
   
