@@ -380,7 +380,11 @@ server <- function(input, output, session) {
   }
   
   output$KpiTable <- DT::renderDataTable({
-    head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
+    result <- head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
+    # rename
+    index <- which(colnames(result) == "name")
+    colnames(result)[index] <- "domain"
+    result
   }, 
   options = list(
     searching=FALSE, 
@@ -504,7 +508,7 @@ server <- function(input, output, session) {
   
 
     
-  ## Lonely Names =====
+  ## Lonely Domains =====
   AdminLonelyNames <- reactive({
     Names <- sapply(kpi$name, \(x) strsplit(x, ",")) |>
       unlist() |>
@@ -522,19 +526,19 @@ server <- function(input, output, session) {
     if (Count < nrow(kpi) * 0.01) {
       Icon <- icon("thumbs-up", lib = "glyphicon")
       Color <- "green"
-      InfoTxt <- "Less than 1% lonely names"
+      InfoTxt <- "Less than 1% lonely domains"
     } else if (Count < nrow(kpi) * 0.05) {
       Icon <- icon("thumbs-down", lib = "glyphicon")
       Color <- "yellow"
-      InfoTxt <- "Less than 5% lonely names"
+      InfoTxt <- "Less than 5% lonely domains"
     } else {
       Icon <- icon("thumbs-down", lib = "glyphicon")
       Color <- "red"
-      InfoTxt <- "MORE than 5% lonely names"
+      InfoTxt <- "MORE than 5% lonely domains"
     }
     
     infoBox(
-      "Lonely Names", InfoTxt, "Names existing only once",
+      "Lonely Domains", InfoTxt, "Domains existing only once",
       icon = Icon, color = Color
     )
   })
@@ -656,7 +660,7 @@ server <- function(input, output, session) {
   
   output$AdminMissingNameCount <- renderInfoBox({
     Count <- nrow(kpi) - sum(sapply(kpi$name, isTruthy))
-    what <- "missing names"
+    what <- "missing domains"
     
     if (Count < nrow(kpi) * 0.05) {
       Icon <- icon("thumbs-up", lib = "glyphicon")
@@ -673,7 +677,7 @@ server <- function(input, output, session) {
     }
     
     infoBox(
-      "Missing Names", InfoTxt, paste0("(", Count, ")"),
+      "Missing Domains", InfoTxt, paste0("(", Count, ")"),
       icon = Icon, color = Color
     )
   })
