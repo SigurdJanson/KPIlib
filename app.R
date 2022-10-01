@@ -231,7 +231,15 @@ server <- function(input, output, session) {
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
-    Names <- LiveKpi()$name |>
+    # Names <- LiveKpi()$name |>
+    #   unique() |>
+    #   sort()
+    Names <- sapply(LiveKpi()$name, \(x) strsplit(x, ",")) |>
+      unlist() |>
+      unname() |>
+      trimws() |>
+      tolower() |>
+      na.omit() |>
       unique() |>
       sort()
     
@@ -261,9 +269,6 @@ server <- function(input, output, session) {
     RowFilter <- rep(FALSE, nrow(kpi))
     if (isTruthy(input$filterName) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
       
-      if (isTruthy(input$filterName))
-        RowFilter <- RowFilter | kpi$name %in% input$filterName
-
       if (isTruthy(input$filterFree))
         RowFilter <- RowFilter | 
           grepl(escapeRegex(input$filterFree), kpi$title, 
@@ -273,12 +278,19 @@ server <- function(input, output, session) {
           grepl(escapeRegex(input$filterFree), kpi$interpretation, 
                 fixed = FALSE, ignore.case = IgnoreCase)
 
+      if (isTruthy(input$filterName)) {
+        if (length(input$filterName) > 1)
+          RowFilter <- RowFilter | apply(input$filterName %isin% kpi$name, 1L, any)
+        else
+          RowFilter <- RowFilter | input$filterName %isin% kpi$name
+      }
+      #  RowFilter <- RowFilter | kpi$name %in% input$filterName
+      
       if (isTruthy(input$filterTag)) {
         if (length(input$filterTag) > 1)
           RowFilter <- RowFilter | apply(input$filterTag %isin% kpi$tags, 1L, any)
         else
           RowFilter <- RowFilter | input$filterTag %isin% kpi$tags
-        #RowFilter <- RowFilter | grepl(input$filterTag, kpi$tags, fixed = TRUE)
       }
       
       LiveKpi(kpi[RowFilter, ])
