@@ -14,6 +14,7 @@ RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
 
 
 
+
 # UI ==================================
 ui <- dashboardPage(
   skin = "black", # try "midnight" eventually
@@ -206,6 +207,7 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
 
   kpi <- readKpiData(c("./www/kpis.json", "./www/kpis_digitalproducts.json"))
+  kpi <- filterKpiData(kpi)
   
   LiveKpi <- reactiveVal(kpi)
   

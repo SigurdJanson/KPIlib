@@ -16,9 +16,13 @@ readKpiData <- function(location) {
   return(x)
 }
 
+filterKpiData <- function(x) {
+  .Filter <- !sapply(x$intervention_needed, isTRUE)
+  return(x[.Filter,])
+}
 
-# TODO: Icons: "Distance", "Energy", "Money", "Number", "Percentage", "Ratio", 
-# "Score", "Time", "Volume", "Weight", "Weight/m²" 
+
+
 
 mapUnit2Icon <- function(unit) {
   .icon <- switch (
