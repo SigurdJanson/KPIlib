@@ -296,7 +296,7 @@ server <- function(input, output, session) {
         Formula <- p(x$formula, class="truncate")
       }
     } else {
-      Formula <- p("Formula not available", class="h-inline")
+      Formula <- NULL # Formula <- p("Formula not available", class="h-inline")
     }
     
     Box <- flipBox(
