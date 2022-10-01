@@ -128,11 +128,13 @@ ui <- dashboardPage(
           box(tableOutput("AdminLonelyNames"), "Lonely Names", 
               width = 12L, height = 400, collapsible = TRUE)
         ),
-        column(3L,
-               infoBoxOutput("AdminMissingNameCount", width = 12L),
-               infoBoxOutput("AdminMissingDescrCount", width = 12L),
-               infoBoxOutput("AdminMissingUnitCount", width = 12L),
-          infoBoxOutput("AdminMissingTagsCount", width = 12L)
+        column(
+          3L,
+          infoBoxOutput("AdminMissingNameCount", width = 12L),
+          infoBoxOutput("AdminMissingDescrCount", width = 12L),
+          infoBoxOutput("AdminMissingUnitCount", width = 12L),
+          infoBoxOutput("AdminMissingTagsCount", width = 12L),
+          infoBoxOutput("AdminMissingFormulaCount", width = 12L)
         )
       ),
       
@@ -287,11 +289,11 @@ server <- function(input, output, session) {
     UnitIcon <- mapUnit2Icon(x$unit)
     UnitIcon <- tagAppendAttributes(UnitIcon, class="tileicon")
     
-    if (isTruthy(x$formula_description)) {
-      if (grepl("$$", x$formula_description, fixed=TRUE)) {
-        Formula <- p(withMathJax(x$formula_description))
+    if (isTruthy(x$formula)) {
+      if (grepl("$$", x$formula, fixed=TRUE)) {
+        Formula <- p(withMathJax(x$formula))
       } else {
-        Formula <- p(x$formula_description, class="truncate")
+        Formula <- p(x$formula, class="truncate")
       }
     } else {
       Formula <- p("Formula not available", class="h-inline")
@@ -684,6 +686,30 @@ server <- function(input, output, session) {
     )
   })
   
+  
+  output$AdminMissingFormulaCount <- renderInfoBox({
+    Count <- nrow(kpi) - sum(sapply(kpi$formula, isTruthy))
+    what <- "missing formulae"
+    
+    if (Count < nrow(kpi) * 0.05) {
+      Icon <- icon("thumbs-up", lib = "glyphicon")
+      Color <- "green"
+      InfoTxt <- paste("Less than 5%", what)
+    } else if (Count < nrow(kpi) * 0.10) {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "yellow"
+      InfoTxt <- paste("Less than 10%", what)
+    } else {
+      Icon <- icon("thumbs-down", lib = "glyphicon")
+      Color <- "red"
+      InfoTxt <- paste("MORE than 10%", what)
+    }
+    
+    infoBox(
+      "Missing Formulas", InfoTxt, paste0("(", Count, ")"),
+      icon = Icon, color = Color
+    )
+  })
   
   #
   #
