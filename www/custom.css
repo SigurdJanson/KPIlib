@@ -27,6 +27,12 @@
   color: #3C4C72; /*taken from .ace_comment-highlight */
 }
 
+/*  */
+
+#dataInfo td {
+  border:0;
+}
+
 /* FlipBox CARDS */
 .flipbox {
   min-height:200px;

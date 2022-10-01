@@ -69,7 +69,7 @@ ui <- dashboardPage(
                    choices = "",
                    options = list(
                      `actions-box` = TRUE, size = 10L,
-                     `live-search` = TRUE, dropdownAlignRight = TRUE
+                     `live-search` = TRUE, `dropdown-align-right` = "auto"
                    ),
                    multiple = TRUE,
                    width = "100%"
@@ -81,22 +81,20 @@ ui <- dashboardPage(
                    choices = "",
                    options = list(
                      `actions-box` = TRUE, size = 10L,
-                     `live-search` = TRUE, dropdownAlignRight = "auto"
+                     `live-search` = TRUE, `dropdown-align-right` = TRUE
                    ),
                    multiple = TRUE,
                    width = "100%"
         )),
         br(),
         h4("Search Result"),
+        tableOutput("dataInfo"),
         sliderTextInput(
           inputId = "inPageLength",
-          label = "Maximum number of hits to display", 
+          label = "Maximum to display", 
           choices = c(20, 30, 40, 50, 100, 150, 200, 250),
           grid = TRUE
-        ),
-        textOutput("infoNDisplayed"),
-        textOutput("infoNFiltered"),
-        textOutput("infoNTotal")
+        )
     )
   ),
   
@@ -220,18 +218,25 @@ server <- function(input, output, session) {
   LiveKpi <- reactiveVal(kpi)
   
   ShowPageLength <- reactiveVal(20L)
-  
-  output$infoNFiltered <- renderText(
-    paste("Filtered:", nrow(LiveKpi()))
-  )
-  output$infoNTotal <- renderText(
-    paste("Total available:", nrow(kpi))
-  )
-  output$infoNDisplayed <- renderText(
-    paste("Shown:", ShowPageLength())
-  )
-  
-  
+
+  output$dataInfo <- renderTable({
+    filterCount <- sum(sapply(c(input$filterName, input$filterFree, input$filterTag), isTruthy))
+    resultCount <- nrow(LiveKpi())
+    matchStr <- ifelse(resultCount == 1, "matches", "match")
+    filterStr <- if(filterCount == 0) 
+                    "same because unfiltered"
+                 else if (filterCount == 1)
+                    paste(matchStr, "the filter")
+                 else
+                    paste(matchStr, "the filters")
+    data.frame(
+      Value = format(
+        c(nrow(kpi), resultCount, min(ShowPageLength(), nrow(LiveKpi()))), 
+        justify="right", width=6L, big.mark = ","), 
+      Label = c("available in total", filterStr, "displayed")
+    )
+  }, rownames=FALSE, colnames = FALSE, align="rl", spacing="xs")
+
   
   
   #
@@ -376,7 +381,11 @@ server <- function(input, output, session) {
   
   output$KpiTable <- DT::renderDataTable({
     head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
-  }, options = list(searching=FALSE, paging = FALSE, pageLength = ShowPageLength()))
+  }, 
+  options = list(
+    searching=FALSE, 
+    paging = FALSE, 
+    pageLength = ShowPageLength(), info=FALSE))
   
   
   
