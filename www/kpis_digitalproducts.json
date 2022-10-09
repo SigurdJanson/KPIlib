@@ -9,7 +9,8 @@
         "tags": "value",
         "domain": "Product Development",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000001
     },
     {
         "title": "Rate of Inventory Growth",
@@ -21,7 +22,8 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "Retail",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000002
     },
     {
         "title": "Buyer and seller growth",
@@ -33,45 +35,44 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000003
     },
     {
         "title": "Search Effectiveness: Precision",
         "description": "Precision is a measure of search effectiveness: what are people searching for and does it match the search results.",
-        "formula": "Fraction of returned results that are relevant to your target group.",
-        "interpretation": "Precision tells you, how well the search result fits the users' search terms. The lower the precision, the less successful the search. Causes could be an insufficient search algorithm or search inventory that does not contain requested content. One difficulty is to specify 'Relevance'. It could be measured by clicks or downloads.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, search, information retrieval, document management",
         "domain": "Search",
-        "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "Fraction of returned results that are relevant to your target group.",
+        "interpretation": "Precision tells you, how well the search result fits the users' search terms. The lower the precision, the less successful the search. Causes could be an insufficient search algorithm or search inventory that does not contain requested content. One difficulty is to specify 'Relevance'. It could be measured by clicks or downloads.",
+        "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
+        "id": 3000004
     },
     {
         "title": "Search Effectiveness: Recall",
         "description": "'Recall' is a measure of search effectiveness: what are people searching for and does it match the search results.",
-        "formula": "Fraction of relevant results retrieved.",
-        "interpretation": "Recall tells you how well the search feature identifies correct items from the inventory based on the users' search request. One difficulty is to specify 'Relevance'. It could be measured by clicks or downloads.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, search, information retrieval, document management",
         "domain": "Search",
-        "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "Fraction of relevant results retrieved.",
+        "interpretation": "Recall tells you how well the search feature identifies correct items from the inventory based on the users' search request. One difficulty is to specify 'Relevance'. It could be measured by clicks or downloads.",
+        "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
+        "id": 3000005
     },
-
-
     {
         "title": "Unique Visitors",
         "description": "Unique Visitors (syn. Unique Users) are users of a web site. It shows how many people have visited the site in a specified time frame.",
-        "interpretation": "",
-        "formula": "",
         "direction": "Maximize",
         "unit": "Number",
         "rating_count": 12,
@@ -80,7 +81,10 @@
         "domain": "Web analytics",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "intervention_needed": false
+        "formula": "",
+        "interpretation": "",
+        "intervention_needed": false,
+        "id": 3000006
     },
     {
         "title": "Returning Visitors",
@@ -92,7 +96,8 @@
         "tags": "online, retail",
         "domain": "Web analytics",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000007
     },
     {
         "title": "% Returning Visitors",
@@ -104,7 +109,8 @@
         "tags": "visitor",
         "domain": "Web analytics",
         "created_at": "2007-07-12 06:20:00",
-        "updated_at": "2016-04-06 09:24:00"
+        "updated_at": "2016-04-06 09:24:00",
+        "id": 3000008
     },
     {
         "title": "Registered visitors",
@@ -116,7 +122,8 @@
         "tags": "online, retail",
         "domain": "Web analytics",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000009
     },
     {
         "title": "Visitor/seller ratio",
@@ -128,7 +135,8 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000010
     },
     {
         "title": "Buyers (1+purchase)",
@@ -140,7 +148,8 @@
         "tags": "",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000011
     },
     {
         "title": "Engaged buyers (search in last d days)",
@@ -152,12 +161,12 @@
         "tags": "retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000012
     },
     {
         "title": "Engaged buyer/active seller ratio",
         "description": "Sometimes the ratio is even limited to actual transactions in a previous time period.",
-        "formula": "$$\\frac{Buyer}{Seller}$$",
         "direction": "[None]",
         "unit": "Ratio",
         "rating_count": 0,
@@ -165,7 +174,9 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "$$\\frac{Buyer}{Seller}$$",
+        "id": 3000013
     },
     {
         "title": "Active Sellers",
@@ -177,7 +188,8 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000014
     },
     {
         "title": "Listings",
@@ -189,7 +201,8 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000015
     },
     {
         "title": "Average listings/seller",
@@ -201,7 +214,8 @@
         "tags": "two-sided market, retail, online, e-commerce",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000016
     },
     {
         "title": "Visitor to Sales Ratio (conversion rate)",
@@ -213,13 +227,12 @@
         "tags": "two-sided market, retail, online, e-commerce, conversion",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000017
     },
     {
         "title": "Engagement Rate",
         "description": "The engagement rate is used to measure the level of interaction by followers from content created by a user.",
-        "formula": "$$\\frac{Total Engagement}{Total Followers} \\cdot 100$$",
-        "interpretation": "The engagement rate provides a more accurate representation of content performance than simply looking at absolute measures such as likes, shares, and comments.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
@@ -227,13 +240,14 @@
         "tags": "social media, online, e-commerce",
         "domain": "Social media",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "$$\\frac{Total Engagement}{Total Followers} \\cdot 100$$",
+        "interpretation": "The engagement rate provides a more accurate representation of content performance than simply looking at absolute measures such as likes, shares, and comments.",
+        "id": 3000018
     },
     {
         "title": "Bounce Rate",
         "description": "The percentage of visitors who enter a site and leave (\"bounce\") rather than continuing to view other pages within the same site.",
-        "formula": "$$\\frac{\\text{Single Page Visits (#)}}{\\text{Total visits (#)}} \\cdot 100$$",
-        "interpretation": "The effectiveness or performance of an entry page to arouse the interest of visitors. A low bounce rate may be due to unclear entry pages and visitors do not understand the offer of the site. Alternatively, they could have come to the site with wrong expectations raised elsewhere.",
         "direction": "Minimize",
         "unit": "Percentage",
         "rating_count": 0,
@@ -242,12 +256,14 @@
         "domain": "Web analytics",
         "created_at": "2022-09-29 00:00:00",
         "updated_at": "2022-09-29 00:00:00",
-        "url": "https://en.wikipedia.org/wiki/Bounce_rate"
+        "formula": "$$\\frac{\\text{Single Page Visits (#)}}{\\text{Total visits (#)}} \\cdot 100$$",
+        "interpretation": "The effectiveness or performance of an entry page to arouse the interest of visitors. A low bounce rate may be due to unclear entry pages and visitors do not understand the offer of the site. Alternatively, they could have come to the site with wrong expectations raised elsewhere.",
+        "url": "https://en.wikipedia.org/wiki/Bounce_rate",
+        "id": 3000019
     },
     {
         "title": "Task-Completion Rate",
         "description": "The Task-Completion Rate quantifies the proportion of people successfully completing tasks.",
-        "formula": "$$\frac{\\text{# Tasks Completed by Participants}}{\\text{Total Tasks Performed}} \\cdot 100$$",
         "direction": "Maximize",
         "unit": "Percentage",
         "rating_count": 0,
@@ -255,12 +271,13 @@
         "tags": "usability, user experience, user research",
         "domain": "Research",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "$$\frac{\\text{# Tasks Completed by Participants}}{\\text{Total Tasks Performed}} \\cdot 100$$",
+        "id": 3000020
     },
     {
         "title": "Link Rot",
         "description": "Link rot describes the phenomenon in the internet that a site references pages that get shut down during in the meantime.",
-        "formula": "$$\frac{\\text{# Dead Links}}{\\text{Total Links}} \\cdot 100$$",
         "direction": "Minimize",
         "unit": "Percentage",
         "rating_count": 0,
@@ -268,7 +285,9 @@
         "tags": "retail, online, e-commerce",
         "domain": "Internet, Social Media & E-business",
         "created_at": "2022-09-30 00:00:00",
-        "updated_at": "2022-09-30 00:00:00"
+        "updated_at": "2022-09-30 00:00:00",
+        "formula": "$$\frac{\\text{# Dead Links}}{\\text{Total Links}} \\cdot 100$$",
+        "id": 3000021
     },
     {
         "title": "",
@@ -280,7 +299,8 @@
         "tags": "",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000022
     },
     {
         "title": "",
@@ -292,7 +312,8 @@
         "tags": "",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000023
     },
     {
         "title": "",
@@ -304,7 +325,8 @@
         "tags": "",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000024
     },
     {
         "title": "",
@@ -316,13 +338,12 @@
         "tags": "",
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "id": 3000025
     },
     {
         "title": "Average Cost per Study Participant",
         "description": "The sum of all cost for each participant in the studies. That includes personnel cost, participants' recruiting cost and expense allowance, lab rental, etc.",
-        "formula": "$$\frac{\\text{Total Research Costs}}{\\text{# Participants}} \\cdot 100$$",
-        "interpretation": "",
         "direction": "Minimize",
         "unit": "Money",
         "rating_count": 0,
@@ -330,13 +351,14 @@
         "tags": "usability, user experience, user research, research ops",
         "domain": "Research",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "$$\frac{\\text{Total Research Costs}}{\\text{# Participants}} \\cdot 100$$",
+        "interpretation": "",
+        "id": 3000026
     },
     {
         "title": "Ratio of Fixed Usability Problems",
         "description": "The ratio between the identified usability problem and those that could be fixed.",
-        "formula": "$$\\frac{\\text{Fixed Problems}}{\\text{Total Problems Identified}} \\cdot 100$$",
-        "interpretation": "Finding usability issues is only worth something if you manage to fix those issues. This indicator tells you how well you do. If the value is low, you may want to invest less time in testing and more time in communication the results.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
@@ -344,12 +366,14 @@
         "tags": "usability, user experience, user research, research ops",
         "domain": "Usability",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "$$\\frac{\\text{Fixed Problems}}{\\text{Total Problems Identified}} \\cdot 100$$",
+        "interpretation": "Finding usability issues is only worth something if you manage to fix those issues. This indicator tells you how well you do. If the value is low, you may want to invest less time in testing and more time in communication the results.",
+        "id": 3000027
     },
     {
         "title": "Research Study Compliance Rate",
         "description": "No-shows in a study are a risk. This indicator measures the performance selecting and handling study participants.",
-        "formula": "$$\\frac{\\text{# No-Shows}}{\\text{# Invited Participants}} \\cdot 100$$",
         "direction": "Minimize",
         "unit": "Percentage",
         "rating_count": 0,
@@ -357,7 +381,9 @@
         "tags": "compliance, usability, user experience, user research, research ops",
         "domain": "Research",
         "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00"
+        "updated_at": "2022-09-25 00:00:00",
+        "formula": "$$\\frac{\\text{# No-Shows}}{\\text{# Invited Participants}} \\cdot 100$$",
+        "id": 3000028
     },
     {
         "title": "System Usability Scale (SUS)",
@@ -370,6 +396,7 @@
         "domain": "Software development",
         "created_at": "2008-05-27 08:55:00",
         "updated_at": "2020-11-27 20:57:00",
-        "url": "http://en.wikipedia.org/wiki/System_Usability_Scale"
+        "url": "http://en.wikipedia.org/wiki/System_Usability_Scale",
+        "id": 3000029
     }
 ]

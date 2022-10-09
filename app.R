@@ -12,7 +12,7 @@ source("DlgKpiDetails.R")
 
 RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
 
-
+ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain")
 
 
 
@@ -383,13 +383,15 @@ server <- function(input, output, session) {
   
   
   output$KpiTable <- DT::renderDataTable({
-      result <- head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
+      result <- head(LiveKpi()[, ShownTableCols], n = ShowPageLength())
       result
     }, 
     options = list(
       searching=FALSE, 
       paging = FALSE, 
-      pageLength = ShowPageLength(), info=FALSE), 
+      pageLength = ShowPageLength(), 
+      info=FALSE, 
+      rownames = FALSE), 
     selection = "single"
   )
   
