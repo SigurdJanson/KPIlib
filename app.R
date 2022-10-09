@@ -7,6 +7,7 @@ library(DT)
 
 source("utils.R")
 source("tagstr.R")
+source("DlgKpiDetails.R")
 
 
 RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
@@ -379,17 +380,21 @@ server <- function(input, output, session) {
     Box
   }
   
+  
+  
   output$KpiTable <- DT::renderDataTable({
-    result <- head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
-    # rename
-    index <- which(colnames(result) == "name")
-    colnames(result)[index] <- "domain"
-    result
-  }, 
-  options = list(
-    searching=FALSE, 
-    paging = FALSE, 
-    pageLength = ShowPageLength(), info=FALSE))
+      result <- head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
+      # rename
+      index <- which(colnames(result) == "name")
+      colnames(result)[index] <- "domain"
+      result
+    }, 
+    options = list(
+      searching=FALSE, 
+      paging = FALSE, 
+      pageLength = ShowPageLength(), info=FALSE), 
+    selection = "single"
+  )
   
   
   
@@ -409,6 +414,12 @@ server <- function(input, output, session) {
       )
       return(.html)
     }
+  })
+  
+  
+  observeEvent(input$KpiTable_rows_selected, {
+    req(input$KpiTable_rows_selected)
+    showModal(KpiDetailsModal(LiveKpi()[input$KpiTable_rows_selected, ]))
   })
 
   

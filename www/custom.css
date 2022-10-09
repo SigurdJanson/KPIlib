@@ -52,15 +52,11 @@
   border: 3px solid var(--light);
 }
 
-.card-back td {
+.card-back td, .modal-body td { /* use it on cards and modal dialogs */
   padding:2px 4px 0px;
 }
 
 #KpiList .row {
-/*   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  grid-template-rows: masonry; */
   -moz-column-count: 1;
   column-count: 1;
   -moz-column-gap: 20px;
@@ -77,5 +73,4 @@
   page-break-inside: avoid;
   -moz-column-break-inside: avoid;
   break-inside: avoid;
-  /* width: 100%; */
 }
