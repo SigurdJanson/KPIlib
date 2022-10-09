@@ -189,6 +189,8 @@ ui <- dashboardPage(
               p("If you have never worked intensively with numbers and KPIs, I can only recommend
                 that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
                 'scale level', I can only recommend that you get some help."),
+              h4("Version"),
+              p("This App is KPI Kluster, Version 0.9"),
               h4("Mentions"),
               p("I am a Changitor and I probably would never have done this without the support
                 from the ", 
