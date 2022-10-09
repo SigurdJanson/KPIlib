@@ -16,6 +16,13 @@ readKpiData <- function(location) {
   return(x)
 }
 
+
+#' filterKpiData
+#' Filter the dataset according to pre-defined criteria.
+#' * Is the flag `intervention_needed` set? 
+#' @param x The data
+#' @return A filtered instance of x
+#' @noRd
 filterKpiData <- function(x) {
   .Filter <- !sapply(x$intervention_needed, isTRUE)
   return(x[.Filter,])
@@ -24,6 +31,12 @@ filterKpiData <- function(x) {
 
 
 
+#' Maps units from the KPI data set to icons
+#'
+#' @param unit A character vector of units.
+#'
+#' @return A vector of icons
+#' @noRd
 mapUnit2Icon <- function(unit) {
   .icon <- switch (
     as.character(unit),
@@ -47,12 +60,19 @@ mapUnit2Icon <- function(unit) {
 }
 
 
+#' RuningLocally
+#' @return If the app is running locally it returns `TRUE` otherwise `FALSE`.
+#' @noRd
 RuningLocally <- function() {
   grepl(r"{\\JS\\}", tempdir())
 }
 
 
-#' Taken from Hmisc
+#' escapeRegex
+#' @return Escapes characters in a string so that it can be used 
+#' as regular expression.
+#' @noRd
+#' @see Taken from Hmisc
 escapeRegex <- function(string) {
   gsub('([.|()\\^{}+$*?]|\\[|\\])', '\\\\\\1', string)
 }
