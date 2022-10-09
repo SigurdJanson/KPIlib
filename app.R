@@ -133,7 +133,7 @@ ui <- dashboardPage(
         ),
         column(3L,
           infoBoxOutput("AdminLonelyNameCount", width = 12L),
-          box(tableOutput("AdminLonelyNames"), "Lonely Names", 
+          box(tableOutput("AdminLonelyNames"), "Lonely Domains", 
               width = 12L, height = 400, collapsible = TRUE)
         ),
         column(
@@ -252,10 +252,10 @@ server <- function(input, output, session) {
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
-    # Names <- LiveKpi()$name |>
+    # Names <- LiveKpi()$domain |>
     #   unique() |>
     #   sort()
-    Names <- sapply(LiveKpi()$name, \(x) strsplit(x, ",")) |>
+    Names <- sapply(LiveKpi()$domain, \(x) strsplit(x, ",")) |>
       unlist() |>
       unname() |>
       trimws() |>
@@ -301,11 +301,11 @@ server <- function(input, output, session) {
 
       if (isTruthy(input$filterName)) {
         if (length(input$filterName) > 1)
-          RowFilter <- RowFilter | apply(input$filterName %isin% kpi$name, 1L, any)
+          RowFilter <- RowFilter | apply(input$filterName %isin% kpi$domain, 1L, any)
         else
-          RowFilter <- RowFilter | input$filterName %isin% kpi$name
+          RowFilter <- RowFilter | input$filterName %isin% kpi$domain
       }
-      #  RowFilter <- RowFilter | kpi$name %in% input$filterName
+      #  RowFilter <- RowFilter | kpi$domain %in% input$filterName
       
       if (isTruthy(input$filterTag)) {
         if (length(input$filterTag) > 1)
@@ -351,7 +351,7 @@ server <- function(input, output, session) {
           ),
           p(x$description),
           div(span("domain", class="h-inline"), 
-              span(x$name, class="highlight"))
+              span(x$domain, class="highlight"))
         ), 
         column(2L, UnitIcon),
         class = "box-body"
@@ -384,9 +384,6 @@ server <- function(input, output, session) {
   
   output$KpiTable <- DT::renderDataTable({
       result <- head(LiveKpi()[, c(1, 2, 3, 4, 7, 8)], n = ShowPageLength())
-      # rename
-      index <- which(colnames(result) == "name")
-      colnames(result)[index] <- "domain"
       result
     }, 
     options = list(
@@ -521,7 +518,7 @@ server <- function(input, output, session) {
     
   ## Lonely Domains =====
   AdminLonelyNames <- reactive({
-    Names <- sapply(kpi$name, \(x) strsplit(x, ",")) |>
+    Names <- sapply(kpi$domain, \(x) strsplit(x, ",")) |>
       unlist() |>
       unname() |>
       trimws() |>
@@ -670,7 +667,7 @@ server <- function(input, output, session) {
   })
   
   output$AdminMissingNameCount <- renderInfoBox({
-    Count <- nrow(kpi) - sum(sapply(kpi$name, isTruthy))
+    Count <- nrow(kpi) - sum(sapply(kpi$domain, isTruthy))
     what <- "missing domains"
     
     if (Count < nrow(kpi) * 0.05) {
