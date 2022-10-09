@@ -383,16 +383,19 @@ server <- function(input, output, session) {
   
   
   output$KpiTable <- DT::renderDataTable({
-      result <- head(LiveKpi()[, ShownTableCols], n = ShowPageLength())
-      result
+      result <- head(LiveKpi(), n = ShowPageLength()) # head(LiveKpi()[, ShownTableCols], n = ShowPageLength())
+      result <- cbind(result, Actions = renderTableButton(result$id))
+      return(result[, c(ShownTableCols, "Actions")])
     }, 
     options = list(
       searching=FALSE, 
       paging = FALSE, 
       pageLength = ShowPageLength(), 
       info=FALSE, 
-      rownames = FALSE), 
-    selection = "single"
+      processing = FALSE), # needed for buttons?
+    rownames = FALSE,
+    selection = "single",
+    escape = FALSE
   )
   
   
@@ -416,10 +419,17 @@ server <- function(input, output, session) {
   })
   
   
-  observeEvent(input$KpiTable_rows_selected, {
-    req(input$KpiTable_rows_selected)
-    showModal(KpiDetailsModal(LiveKpi()[input$KpiTable_rows_selected, ]))
+  # when "view" button is clicked show modal dialog with details
+  observeEvent(input$btnViewKpi, {
+    selectedId <- as.numeric(strsplit(input$btnViewKpi, "_")[[1]][2])
+    selectedRow <- LiveKpi()$id == selectedId
+    LiveKpi()[selectedRow, ] |>
+      KpiDetailsModal() |>
+      showModal()
   })
+
+  
+  
 
   
   #
@@ -613,6 +623,7 @@ server <- function(input, output, session) {
     Runs$values[Runs$lengths == 1]
   })
   
+  
   output$AdminLonelyTagCount <- renderInfoBox({
     Count <- length(AdminLonelyTags())
     
@@ -635,6 +646,7 @@ server <- function(input, output, session) {
       icon = Icon, color = Color
     )
   })
+  
   
   output$AdminLonelyTags <- renderTable({
     return(data.frame(Lonelies = AdminLonelyTags()))
@@ -667,6 +679,7 @@ server <- function(input, output, session) {
       icon = Icon, color = Color
     )
   })
+  
   
   output$AdminMissingNameCount <- renderInfoBox({
     Count <- nrow(kpi) - sum(sapply(kpi$domain, isTruthy))
@@ -717,6 +730,7 @@ server <- function(input, output, session) {
       icon = Icon, color = Color
     )
   })
+  
   
   output$AdminMissingUnitCount <- renderInfoBox({
     Count <- nrow(kpi) - sum(sapply(kpi$unit, isTruthy))

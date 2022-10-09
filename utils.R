@@ -76,3 +76,17 @@ RuningLocally <- function() {
 escapeRegex <- function(string) {
   gsub('([.|()\\^{}+$*?]|\\[|\\])', '\\\\\\1', string)
 }
+
+
+renderTableButton <- function(id) {
+  # "<div class = "btn-group">" # not needed at the moment
+  prefix <- "view_"
+  shiny::actionButton(
+    inputId = paste0(prefix, "%s"),
+    label = "",
+    icon = shiny::icon("eye"), 
+    class = "btn-light",
+    onclick = "Shiny.onInputChange(\"btnViewKpi\", this.id, {priority: \"event\"})") |>
+    paste0() |> 
+    sprintf(id)
+}
