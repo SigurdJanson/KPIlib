@@ -256,9 +256,6 @@ server <- function(input, output, session) {
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
-    # Names <- LiveKpi()$domain |>
-    #   unique() |>
-    #   sort()
     Names <- sapply(LiveKpi()$domain, \(x) strsplit(x, ",")) |>
       unlist() |>
       unname() |>
@@ -304,10 +301,11 @@ server <- function(input, output, session) {
                 fixed = FALSE, ignore.case = IgnoreCase)
 
       if (isTruthy(input$filterName)) {
-        if (length(input$filterName) > 1)
-          RowFilter <- RowFilter | apply(input$filterName %isin% kpi$domain, 1L, any)
+        domainFilter <- escapeRegex(input$filterName)
+        if (length(domainFilter) > 1)
+          RowFilter <- RowFilter | apply(domainFilter %isin% kpi$domain, 1L, any)
         else
-          RowFilter <- RowFilter | input$filterName %isin% kpi$domain
+          RowFilter <- RowFilter | domainFilter %isin% kpi$domain
       }
       #  RowFilter <- RowFilter | kpi$domain %in% input$filterName
       
