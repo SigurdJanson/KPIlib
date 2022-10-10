@@ -21,7 +21,7 @@ KpiDetailsModal <- function(Entry) {
                p(Entry$description),
                div(
                  span("domain", class="h-inline"), 
-                 span(Entry$name, class="highlight")
+                 span(Entry$domain, class="highlight")
                ))
       ),
       tabPanel("Interpretation",
@@ -41,7 +41,8 @@ KpiDetailsModal <- function(Entry) {
                  ),
                  tags$tr(
                    tags$td(span("last update", class="h-inline")),
-                   tags$td(span(format(Entry$updated_at, "%B %Y"), class="highlight"))
+                   tags$td(span(
+                     format(max(Entry$updated_at, Entry$created_at), "%B %Y"), class="highlight"))
                  )
                )
       ),
