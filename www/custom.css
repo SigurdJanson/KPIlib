@@ -11,7 +11,8 @@
 }
 
 .tileicon {
-  font-size:1.8vw
+  font-size:1.4vw;
+  color: var(--light);
   /* style="font-size:1.8vw" */
 }
 
@@ -33,7 +34,7 @@
   border:0;
 }
 
-/* FlipBox CARDS */
+/* Box CARDS */
 .box {
   /*min-height:200px;*/
   overflow-y: auto; /*scroll;*/

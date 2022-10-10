@@ -13,14 +13,24 @@ KpiDetailsModal <- function(Entry) {
     Formula <- NULL # Formula <- p("Formula not available", class="h-inline")
   }
   
+  domainLabel <- ifelse(length.tagstr(Entry$domain) > 1, "Domains", "Domain")
+  tagLabel <- ifelse(length.tagstr(Entry$tags) > 1, "Tags", "Tag")
+  
   modalDialog(
     tabsetPanel(
       tabPanel("Description", 
                #p(Entry$title),
                fluidPage(
                p(Entry$description),
+               if (isTruthy(Entry$url)) {
+                 p(
+                   tags$a("Further details", icon("link"), href=Entry$url)
+                 )
+               } else {
+                 NULL
+               },
                div(
-                 span("domain", class="h-inline"), 
+                 span(domainLabel, class="h-inline"), 
                  span(Entry$domain, class="highlight")
                ))
       ),
@@ -28,25 +38,25 @@ KpiDetailsModal <- function(Entry) {
                if (isTruthy(Entry$interpretation)) p(Entry$interpretation) else NULL,
                tags$table(
                  tags$tr(
-                   tags$td(span("unit", class="h-inline")), 
+                   tags$td(span(mapField2Label("unit"), class="h-inline")), 
                    tags$td(span(Entry$unit, class="highlight"))
                  ),
                  tags$tr(
-                   tags$td(span("direction", class="h-inline")), 
+                   tags$td(span(mapField2Label("direction"), class="h-inline")), 
                    tags$td(span(Entry$direction, class="highlight"))
                  ),
                  tags$tr(
-                   tags$td(span("tags", class="h-inline")),
+                   tags$td(span(tagLabel, class="h-inline")),
                    tags$td(span(Entry$tags, class="highlight"))
                  ),
                  tags$tr(
-                   tags$td(span("last update", class="h-inline")),
+                   tags$td(span("Last update", class="h-inline")),
                    tags$td(span(
                      format(max(Entry$updated_at, Entry$created_at), "%B %Y"), class="highlight"))
                  )
                )
       ),
-      tabPanel("Formula", Formula)
+      if (isTruthy(Formula)) tabPanel("Formula", Formula) else NULL
     ),
     footer = tagList(
       modalButton("Close")#,

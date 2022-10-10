@@ -13,7 +13,9 @@ source("DlgKpiDetails.R")
 RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
 
 ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain")
-
+ShownTableLabels <- c(Title = "title", Description = "description", 
+                      Direction = "direction", `Unit Type` = "unit", 
+                      Tags = "tags", Domains = "domain")
 
 
 # UI ==================================
@@ -327,19 +329,14 @@ server <- function(input, output, session) {
   # OUTPUT ===================
   
   MakeKpiBox <- function(x) { # x is a kpi row
+    domainLabel <- ifelse(length.tagstr(x$domain) > 1, "Domains", "Domain")
+    #tagLabel <- ifelse(length.tagstr(x$tags) > 1, "Tags", "Tag")
+
     UnitIcon <- mapUnit2Icon(x$unit)
     UnitIcon <- tagAppendAttributes(UnitIcon, class="tileicon")
+    DirectionIcon <- mapDirection2Icon(x$direction)
+    DirectionIcon <- tagAppendAttributes(DirectionIcon, class="tileicon")
     
-    # if (isTruthy(x$formula)) {
-    #   if (grepl("$$", x$formula, fixed=TRUE)) {
-    #     Formula <- p(withMathJax(x$formula))
-    #   } else {
-    #     Formula <- p(x$formula, class="truncate")
-    #   }
-    # } else {
-    #   Formula <- NULL # Formula <- p("Formula not available", class="h-inline")
-    # }
-
     if (nchar(x$description) > 280) 
       descr <- paste(substr(x$description, 1L, 280L), "...")
     else
@@ -353,13 +350,11 @@ server <- function(input, output, session) {
       title = x$title,
       column(12L, p(descr), class = "text-left"),
       column(12L,
-        div(span("domain", class="h-inline"),
+        div(span(domainLabel, class="h-inline"),
         span(x$domain, class="highlight truncate"))),
-      #column(12L,
-      footer = div(UnitIcon, 
+      footer = div(UnitIcon, DirectionIcon,
              HTML(renderTableButton(x$id)),
              class="box-icons")
-      #)
     )
     
     Box <- tagAppendAttributes(Box, class="truncate", .cssSelector = ".box-title")
@@ -371,7 +366,7 @@ server <- function(input, output, session) {
   
   
   output$KpiTable <- DT::renderDataTable({
-      result <- head(LiveKpi(), n = ShowPageLength()) # head(LiveKpi()[, ShownTableCols], n = ShowPageLength())
+      result <- head(LiveKpi(), n = ShowPageLength())
       result <- cbind(result, Actions = renderTableButton(result$id))
       return(result[, c(ShownTableCols, "Actions")])
     }, 
@@ -382,6 +377,7 @@ server <- function(input, output, session) {
       info=FALSE, 
       processing = FALSE), # needed for buttons?
     rownames = FALSE,
+    colnames = ShownTableLabels,
     selection = "single",
     escape = FALSE
   )

@@ -1,3 +1,6 @@
+ShownTableLabels <- c(Title = "title", Description = "description", 
+                      Direction = "direction", `Unit Type` = "unit", 
+                      Tags = "tags", Domains = "domain")
 
 
 readKpiData <- function(location) {
@@ -30,6 +33,12 @@ filterKpiData <- function(x) {
 
 
 
+mapField2Label <- function(x) {
+  #ShownTableLabels
+  names(ShownTableLabels[ShownTableLabels == x])
+}
+
+
 
 #' Maps units from the KPI data set to icons
 #'
@@ -42,7 +51,7 @@ mapUnit2Icon <- function(unit) {
     as.character(unit),
           Area     = icon("square-full", verify_fa = FALSE),
           Data     = icon("server", verify_fa = FALSE),
-          Distance = icon("exchange", verify_fa = FALSE),
+          Distance = icon("ruler-horizontal", verify_fa = FALSE),
           Energy   = icon("battery-bolt", verify_fa = FALSE),
           Money    = icon("money-bill", verify_fa = FALSE),
           Number   = icon("abacus", verify_fa = FALSE),
@@ -57,6 +66,25 @@ mapUnit2Icon <- function(unit) {
   )
   #browser()
   tags$div(title=paste("Unit:", unit), .icon)
+}
+
+
+
+#' Maps directions from the KPI data set to icons
+#'
+#' @param unit A character vector of directions.
+#'
+#' @return A vector of icons
+#' @noRd
+mapDirection2Icon <- function(dir) {
+  .icon <- switch (
+    as.character(dir),
+    Minimize = icon("arrow-down", verify_fa = FALSE),
+    Maximize = icon("arrow-up", verify_fa = FALSE),
+    Range    = icon("compress-alt", verify_fa = FALSE),
+    icon("question", verify_fa = FALSE)
+  )
+  tags$div(title=paste("Direction:", dir), .icon)
 }
 
 

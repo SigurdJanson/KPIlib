@@ -39,6 +39,15 @@ as.tagstr <- function(x) {
 }
 
 
+length.tagstr <- function(x) {
+  sep <- attr(x, "separator")
+  if (is.null(sep)) sep <- ","
+  strsplit(x, sep) |>
+    lengths()
+}
+
+
+
 # "a" %isin% c("a, b, c", "b, c, d", "c, a")
 # "a" %isin% c("ab, c", "b, c, d", "c, a")
 # "ab" %isin% c("ab, c", "b, c, d", "c, a")
