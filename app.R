@@ -330,54 +330,36 @@ server <- function(input, output, session) {
     UnitIcon <- mapUnit2Icon(x$unit)
     UnitIcon <- tagAppendAttributes(UnitIcon, class="tileicon")
     
-    if (isTruthy(x$formula)) {
-      if (grepl("$$", x$formula, fixed=TRUE)) {
-        Formula <- p(withMathJax(x$formula))
-      } else {
-        Formula <- p(x$formula, class="truncate")
-      }
-    } else {
-      Formula <- NULL # Formula <- p("Formula not available", class="h-inline")
-    }
+    # if (isTruthy(x$formula)) {
+    #   if (grepl("$$", x$formula, fixed=TRUE)) {
+    #     Formula <- p(withMathJax(x$formula))
+    #   } else {
+    #     Formula <- p(x$formula, class="truncate")
+    #   }
+    # } else {
+    #   Formula <- NULL # Formula <- p("Formula not available", class="h-inline")
+    # }
+
+    if (nchar(x$description) > 280) 
+      descr <- paste(substr(x$description, 1L, 280L), "...")
+    else
+      descr <- x$description
     
-    Box <- flipBox(
-      id = x$title,
+    Box <- shinydashboard::box(
+      id = x$id,
       width = 6L, # width: class="col-sm-6"
-      front = fixedRow(
-        column(10L,
-          class = "text-left",
-          #height = "400px",
-          div(
-            h4(x$title, class="truncate"),
-            title=x$title
-          ),
-          p(x$description),
-          div(span("domain", class="h-inline"), 
-              span(x$domain, class="highlight"))
-        ), 
-        column(2L, UnitIcon),
-        class = "box-body"
-      ),
-      back = fixedRow(
-        column(12L,
-          class = "text-left",
-          h4(x$title, class="truncate"),
-          Formula,
-          tags$table(
-            tags$tr(
-              tags$td(span("direction", class="h-inline")), 
-              tags$td(span(x$direction, class="highlight"))
-            ),
-            tags$tr(
-              tags$td(span("tags", class="h-inline")),
-              tags$td(span(x$tags, class="highlight"))
-            )
-          )
-        ),
-        class = "box-body"
+      height = "200px",
+      title = x$title,
+      column(10L, p(descr), class = "text-left"),
+      column(2L, UnitIcon),
+      column(12L,
+             div(span("domain", class="h-inline"),
+             span(x$domain, class="highlight"))
       )
-    )#flipbox
+    )
     
+    Box <- tagAppendAttributes(Box, class="truncate", .cssSelector = ".box-title")
+    Box <- tagAppendAttributes(Box, title = x$title, .cssSelector = ".box-header")
     Box <- tagAppendAttributes(Box, class="col-xs-12 col-md-6 col-lg-4")
     Box
   }
