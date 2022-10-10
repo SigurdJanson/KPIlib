@@ -347,15 +347,19 @@ server <- function(input, output, session) {
     
     Box <- shinydashboard::box(
       id = x$id,
-      width = 6L, # width: class="col-sm-6"
+      width = 6L, # equals class="col-sm-6"
       height = "200px",
+      solidHeader = TRUE, status = NULL,
       title = x$title,
-      column(10L, p(descr), class = "text-left"),
-      column(2L, UnitIcon),
+      column(12L, p(descr), class = "text-left"),
       column(12L,
-             div(span("domain", class="h-inline"),
-             span(x$domain, class="highlight"))
-      )
+        div(span("domain", class="h-inline"),
+        span(x$domain, class="highlight truncate"))),
+      #column(12L,
+      footer = div(UnitIcon, 
+             HTML(renderTableButton(x$id)),
+             class="box-icons")
+      #)
     )
     
     Box <- tagAppendAttributes(Box, class="truncate", .cssSelector = ".box-title")

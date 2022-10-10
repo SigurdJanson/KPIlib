@@ -85,7 +85,7 @@ renderTableButton <- function(id) {
     inputId = paste0(prefix, "%s"),
     label = "",
     icon = shiny::icon("eye"), 
-    class = "btn-light",
+    class = "btn-light btn-sm",
     onclick = "Shiny.onInputChange(\"btnViewKpi\", this.id, {priority: \"event\"})") |>
     paste0() |> 
     sprintf(id)

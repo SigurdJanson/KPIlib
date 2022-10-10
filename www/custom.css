@@ -39,6 +39,9 @@
   overflow-y: auto; /*scroll;*/
   scrollbar-width: thin;
   scrollbar-color: var(--dark) var(--light);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .box::-webkit-scrollbar {
     width: 10px;
@@ -51,6 +54,30 @@
   border-radius: 5px;
   border: 3px solid var(--light);
 }
+.box-body {
+  flex-grow:1;
+}
+.box-footer {
+  border-top: 1px solid var(--light);
+}
+.box-icons {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  line-height: 1;
+}
+.box-icons > i {
+  border: 0;
+  color: black;
+  padding: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+.box-icons > *:not(:last-child) {
+  margin-right: 10px;
+}
+
+
 
 .card-back td, .modal-body td { /* use it on cards and modal dialogs */
   padding:2px 4px 0px;
