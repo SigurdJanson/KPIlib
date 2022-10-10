@@ -27,8 +27,9 @@ ui <- dashboardPage(
     leftUi = tagList(
       radioGroupButtons(
         inputId = "KpiViewingMode",
-        choices = c(`<i class='fa fa-table'></i>` = "table", 
-                    `<i class="fa fa-grip-horizontal"></i>` = "grid"),
+        choices = 
+          c(`<i class='fa fa-table' aria-label='View as table'></i>` = "table", 
+            `<i class='fa fa-grip-horizontal' aria-label='View as tiles'></i>` = "grid"),
         justified = FALSE, size = "normal",
         disabled = FALSE
       )
@@ -40,9 +41,11 @@ ui <- dashboardPage(
   sidebar = dashboardSidebar(
     minified = (RunningMode == "Admin"), collapsed = TRUE,
     sidebarMenu(
-      menuItem("KPIs", tabName = "ContentArea", icon = icon("dashboard", verify_fa = FALSE)),
+      menuItem("KPIs", tabName = "ContentArea", 
+               icon = icon("dashboard", verify_fa = FALSE)),
       menuItemOutput("AdminMenu"),
-      menuItem("About KPi Kluster", tabName = "AboutApp", icon = icon("hand-sparkles", verify_fa = FALSE))
+      menuItem("About KPi Kluster", tabName = "AboutApp",
+               icon = icon("hand-sparkles", verify_fa = FALSE))
     )
   ),
   
@@ -103,9 +106,7 @@ ui <- dashboardPage(
   
   ## body =====
   body = dashboardBody(
-    # tags$head(
-    #   tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-    # ),
+    tags$html(lang="en"),
     includeCSS("www/custom.css"),
     setShadow(class = "dropdown-menu"),
     tabItems(
@@ -766,7 +767,7 @@ server <- function(input, output, session) {
   #
   #
   #
-  # HEADER SSECTION ========================
+  # HEADER SECTION ========================
   
   
   output$uiAuthorAbout <- renderUser({
