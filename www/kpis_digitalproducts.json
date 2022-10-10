@@ -1,16 +1,18 @@
 [
     {
         "title": "Unrealised Value",
-        "description": "Percentage of damaged roads/pavements made safe within one working day.",
+        "description": "The total sum of value estimates of the items in the product backlog.",
         "direction": "Maximize",
         "unit": "Money",
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "value",
         "domain": "Product Development",
-        "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00",
-        "id": 3000001
+        "framework": "EBM",
+        "created_at": "2022-10-10 18:00:00",
+        "updated_at": "2022-10-10 18:00:00",
+        "id": 3000001,
+        "intervention_needed": true
     },
     {
         "title": "Rate of Inventory Growth",
@@ -23,7 +25,8 @@
         "domain": "Retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000002
+        "id": 3000002,
+        "intervention_needed": true
     },
     {
         "title": "Buyer and seller growth",
@@ -36,7 +39,8 @@
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000003
+        "id": 3000003,
+        "intervention_needed": true
     },
     {
         "title": "Search Effectiveness: Precision",
@@ -52,7 +56,8 @@
         "formula": "Fraction of returned results that are relevant to your target group.",
         "interpretation": "Precision tells you, how well the search result fits the users' search terms. The lower the precision, the less successful the search. Causes could be an insufficient search algorithm or search inventory that does not contain requested content. One difficulty is to specify 'Relevance'. It could be measured by clicks or downloads.",
         "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
-        "id": 3000004
+        "id": 3000004,
+        "intervention_needed": false
     },
     {
         "title": "Search Effectiveness: Recall",
@@ -68,7 +73,8 @@
         "formula": "Fraction of relevant results retrieved.",
         "interpretation": "Recall tells you how well the search feature identifies correct items from the inventory based on the users' search request. One difficulty is to specify 'Relevance'. It could be measured by clicks or downloads.",
         "url": "https://en.wikipedia.org/wiki/Precision_and_recall",
-        "id": 3000005
+        "id": 3000005,
+        "intervention_needed": false
     },
     {
         "title": "Unique Visitors",
@@ -97,7 +103,8 @@
         "domain": "Web analytics",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000007
+        "id": 3000007,
+        "intervention_needed": true
     },
     {
         "title": "% Returning Visitors",
@@ -110,7 +117,8 @@
         "domain": "Web analytics",
         "created_at": "2007-07-12 06:20:00",
         "updated_at": "2016-04-06 09:24:00",
-        "id": 3000008
+        "id": 3000008,
+        "intervention_needed": true
     },
     {
         "title": "Registered visitors",
@@ -123,7 +131,8 @@
         "domain": "Web analytics",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000009
+        "id": 3000009,
+        "intervention_needed": true
     },
     {
         "title": "Visitor/seller ratio",
@@ -136,7 +145,8 @@
         "domain": "",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000010
+        "id": 3000010,
+        "intervention_needed": true
     },
     {
         "title": "Buyers (1+purchase)",
@@ -146,37 +156,41 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "",
-        "domain": "",
+        "domain": "Online retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000011
+        "id": 3000011,
+        "intervention_needed": true
     },
     {
         "title": "Engaged buyers (search in last d days)",
         "description": "Engaged buyers on a platform. An engaged buyer is usually as one having searched for an offering at least once in a certain time period.",
         "direction": "Maximize",
-        "unit": "",
+        "unit": "Ratio",
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, online, e-commerce",
-        "domain": "",
+        "domain": "Online retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000012
+        "id": 3000012,
+        "intervention_needed": true
     },
     {
         "title": "Engaged buyer/active seller ratio",
         "description": "Sometimes the ratio is even limited to actual transactions in a previous time period.",
-        "direction": "[None]",
+        "direction": "Range",
         "unit": "Ratio",
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "two-sided market, retail, online, e-commerce",
-        "domain": "",
+        "domain": "Online retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
         "formula": "$$\\frac{Buyer}{Seller}$$",
-        "id": 3000013
+        "interpretation": "An optimal ratio strongly depends on the type of business under observation.",
+        "id": 3000013,
+        "intervention_needed": false
     },
     {
         "title": "Active Sellers",
@@ -186,10 +200,11 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "two-sided market, retail, online, e-commerce",
-        "domain": "",
+        "domain": "Online retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000014
+        "id": 3000014,
+        "intervention_needed": false
     },
     {
         "title": "Listings",
@@ -199,10 +214,11 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "two-sided market, retail, online, e-commerce",
-        "domain": "",
+        "domain": "Online retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000015
+        "id": 3000015,
+        "intervention_needed": false
     },
     {
         "title": "Average listings/seller",
@@ -212,23 +228,25 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "two-sided market, retail, online, e-commerce",
-        "domain": "",
+        "domain": "Online retail",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000016
+        "id": 3000016,
+        "intervention_needed": false
     },
     {
         "title": "Visitor to Sales Ratio (conversion rate)",
-        "description": "How many visitors end up buying. There are several rates that describe important conversion. This rate however is often referred to as THE conversion rate.",
+        "description": "How many visitors end up buying. There are several rates that describe important conversions. This rate however is often referred to as THE conversion rate. It's point of conversion is the ultimate goal of most businesses: the sale.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "two-sided market, retail, online, e-commerce, conversion",
-        "domain": "",
+        "domain": "Online retail, Web analytics",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000017
+        "id": 3000017,
+        "intervention_needed": false
     },
     {
         "title": "Engagement Rate",
@@ -243,7 +261,8 @@
         "updated_at": "2022-09-25 00:00:00",
         "formula": "$$\\frac{Total Engagement}{Total Followers} \\cdot 100$$",
         "interpretation": "The engagement rate provides a more accurate representation of content performance than simply looking at absolute measures such as likes, shares, and comments.",
-        "id": 3000018
+        "id": 3000018,
+        "intervention_needed": false
     },
     {
         "title": "Bounce Rate",
@@ -259,7 +278,8 @@
         "formula": "$$\\frac{\\text{Single Page Visits (#)}}{\\text{Total visits (#)}} \\cdot 100$$",
         "interpretation": "The effectiveness or performance of an entry page to arouse the interest of visitors. A low bounce rate may be due to unclear entry pages and visitors do not understand the offer of the site. Alternatively, they could have come to the site with wrong expectations raised elsewhere.",
         "url": "https://en.wikipedia.org/wiki/Bounce_rate",
-        "id": 3000019
+        "id": 3000019,
+        "intervention_needed": false
     },
     {
         "title": "Task-Completion Rate",
@@ -273,7 +293,8 @@
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
         "formula": "$$\frac{\\text{# Tasks Completed by Participants}}{\\text{Total Tasks Performed}} \\cdot 100$$",
-        "id": 3000020
+        "id": 3000020,
+        "intervention_needed": false
     },
     {
         "title": "Link Rot",
@@ -287,59 +308,76 @@
         "created_at": "2022-09-30 00:00:00",
         "updated_at": "2022-09-30 00:00:00",
         "formula": "$$\frac{\\text{# Dead Links}}{\\text{Total Links}} \\cdot 100$$",
-        "id": 3000021
+        "id": 3000021,
+        "intervention_needed": false
     },
     {
-        "title": "",
-        "description": "",
-        "direction": "",
-        "unit": "",
+        "title": "Backlog Order Index (BOI)",
+        "description": "This index helps ordering the product backlog items. Assess each item with this index.",
+        "direction": "[None]",
+        "unit": "Score",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "",
-        "domain": "",
+        "tags": "software, requirement, backlog",
+        "framework": "EBM",
+        "domain": "Software development",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000022
+        "formula": "$$\frac{\\text{Business value} + \\text{Risk}}{\\text{Size}}$$",
+        "interpretation": "The index helps sorting the product backlog. The higher it's value a requirement deserves a higher position in the product backlog.",
+        "id": 3000022, 
+        "intervention_needed": false
     },
     {
-        "title": "",
-        "description": "",
-        "direction": "",
-        "unit": "",
+        "title": "Release Frequency",
+        "description": "The time needed to satisfy customers' needs with new and competitive features / products.",
+        "direction": "Range",
+        "unit": "Time",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "",
-        "domain": "",
-        "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00",
-        "id": 3000023
+        "tags": "release, software, time-to-market",
+        "framework": "EBM",
+        "domain": "IT Release management",
+        "formula": "$$\frac{\\text{Time}}{\\text{# Releases}}$$",
+        "interpretation": "The release frequency should match the users' needs. A high frequency indicates that a vendor has the ability to deliver value fast. When the frequency is high, however, it can overwhelm users.",
+        "created_at": "2022-10-10 18:00:00",
+        "updated_at": "2022-10-10 18:00:00",
+        "id": 3000023,
+        "intervention_needed": false
     },
     {
-        "title": "",
-        "description": "",
-        "direction": "",
-        "unit": "",
+        "title": "On-Product Index",
+        "description": "The time developers can work in exactly one project. The more they need to switch tasks between competing projects, the more delays are introduced.",
+        "direction": "Maximize",
+        "unit": "Percentage",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "",
-        "domain": "",
+        "tags": "software, time-to-market, staff",
+        "framework": "EBM",
+        "domain": "Software development, Project management",
+        "formula": "$$\frac{100% - (20% \\cdot (\\text{# Projects} - 1)}{\\text{# Projects}}$$",
+        "interpretation": "The formula assumes that for each product the FTE loses 20%. The index shows how much time an employee can invest in each project if the time is equally assigned to the projects.",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "id": 3000024
+        "id": 3000024,
+        "intervention_needed": false
     },
     {
-        "title": "",
-        "description": "",
-        "direction": "",
-        "unit": "",
+        "title": "Installed Version Index",
+        "description": "The distribution of customers across installed versions.",
+        "direction": "Maximize",
+        "unit": "Percentage",
         "rating_count": 0,
         "rating_avg": 0,
-        "tags": "",
-        "domain": "",
-        "created_at": "2022-09-25 00:00:00",
-        "updated_at": "2022-09-25 00:00:00",
-        "id": 3000025
+        "tags": "software, innovation",
+        "framework": "EBM",
+        "domain": "IT Release management",
+        "formula": "$$\frac{\\text{Latest Release}}{\\text{All installed releases}} \\cdot 100$$",
+        "interpretation": "The maintenance of older product versions has a negative impact on the ability to innovate and other important activities. It binds resources that can be used in further developments. It can also be an indicator that users consider the value of new versions lower than the cost of switching.",
+        "created_at": "2022-10-10 18:00:00",
+        "updated_at": "2022-10-10 18:00:00",
+        "id": 3000025,
+        "intervention_needed": false
     },
     {
         "title": "Average Cost per Study Participant",
@@ -352,9 +390,10 @@
         "domain": "Research",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
-        "formula": "$$\frac{\\text{Total Research Costs}}{\\text{# Participants}} \\cdot 100$$",
+        "formula": "$$\frac{\\text{Total Research Costs}}{\\text{# Participants}}$$",
         "interpretation": "",
-        "id": 3000026
+        "id": 3000026,
+        "intervention_needed": false
     },
     {
         "title": "Ratio of Fixed Usability Problems",
@@ -369,7 +408,8 @@
         "updated_at": "2022-09-25 00:00:00",
         "formula": "$$\\frac{\\text{Fixed Problems}}{\\text{Total Problems Identified}} \\cdot 100$$",
         "interpretation": "Finding usability issues is only worth something if you manage to fix those issues. This indicator tells you how well you do. If the value is low, you may want to invest less time in testing and more time in communication the results.",
-        "id": 3000027
+        "id": 3000027,
+        "intervention_needed": false
     },
     {
         "title": "Research Study Compliance Rate",
@@ -383,7 +423,8 @@
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
         "formula": "$$\\frac{\\text{# No-Shows}}{\\text{# Invited Participants}} \\cdot 100$$",
-        "id": 3000028
+        "id": 3000028,
+        "intervention_needed": false
     },
     {
         "title": "System Usability Scale (SUS)",
@@ -395,8 +436,26 @@
         "tags": "satisfaction, usability, user experience",
         "domain": "Software development",
         "created_at": "2008-05-27 08:55:00",
-        "updated_at": "2020-11-27 20:57:00",
+        "updated_at": "2022-10-10 20:57:00",
         "url": "http://en.wikipedia.org/wiki/System_Usability_Scale",
-        "id": 3000029
+        "id": 3000029,
+        "intervention_needed": false
+    },
+    {
+        "title": "Percentage of Users Who Pay (ARPU)",
+        "description": "There are some users who simply won't spend money in a service there are others who do (sometimes they spend even a lot of money. These users are often referred to as \"whales\"). Knowing the difference between the two—and finding ways to make more users purchase things within the application.",
+        "interpretation": "Is the key to a successfully monetized free mobile application. Treat your paying users as a separate customer base and track their behaviour, churn, and revenue separately from your non-paying ones. Both groups have different needs that need to be addressed specifically.",
+        "formula": "$$\frac{\\text{# Paying users}}{\\text{# Total users}} \\cdot 100$$",
+        "direction": "Range",
+        "unit": "Percentage",
+        "rating_count": 0,
+        "rating_avg": 0,
+        "tags": "freemium, sales",
+        "domain": "Software-as-a-Service, Sales",
+        "created_at": "2022-10-10 20:57:00",
+        "updated_at": "2022-10-10 20:57:00",
+        "url": "",
+        "id": 3000030,
+        "intervention_needed": false
     }
 ]
