@@ -54,7 +54,7 @@ mapUnit2Icon <- function(unit) {
           Distance = icon("ruler-horizontal", verify_fa = FALSE),
           Energy   = icon("battery-bolt", verify_fa = FALSE),
           Money    = icon("money-bill", verify_fa = FALSE),
-          Number   = icon("abacus", verify_fa = FALSE),
+          Number   = icon("hashtag", verify_fa = FALSE),
           Percentage = icon("percent", verify_fa = FALSE),
           Ratio    = icon("divide", verify_fa = FALSE),
           Score    = icon("star-half-alt", verify_fa = FALSE),
