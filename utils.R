@@ -1,4 +1,5 @@
-ShownTableLabels <- c(Title = "title", Description = "description", 
+# 'Constants' 
+strEmptySearchResult <- "Search does not yield any results"ShownTableLabels <- c(Title = "title", Description = "description", 
                       Direction = "direction", `Unit Type` = "unit", 
                       Tags = "tags", Domains = "domain")
 

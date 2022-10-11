@@ -373,7 +373,8 @@ server <- function(input, output, session) {
       searching=FALSE, 
       paging = FALSE, 
       pageLength = ShowPageLength(), 
-      info=FALSE, 
+      info=FALSE,
+      language = list(emptyTable = strEmptySearchResult),
       processing = FALSE), # needed for buttons?
     rownames = FALSE,
     colnames = ShownTableLabels,
@@ -388,15 +389,19 @@ server <- function(input, output, session) {
       dataTableOutput("KpiTable")
     } else if (input$KpiViewingMode == "grid") {
       data <- head(LiveKpi(), n = ShowPageLength())
-      Boxes <- tagList()
-      for (i in 1:nrow(data)) {
-        Boxes <- c(Boxes, tagList(MakeKpiBox(data[i,])))
+      if (nrow(data) > 0L) {
+        Boxes <- tagList()
+        for (i in 1:nrow(data)) {
+          Boxes <- c(Boxes, tagList(MakeKpiBox(data[i,])))
+        }
+        .html <- tagList(
+          fluidPage(fluidRow(Boxes))
+        )
+      } else {
+        .html <- tagList(
+          fluidPage(fluidRow(strEmptySearchResult))
+        )
       }
-      #Boxes <- tagList(Boxes)
-      
-      .html <- tagList(
-        fluidPage(fluidRow(Boxes))
-      )
       return(.html)
     }
   })
