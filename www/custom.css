@@ -13,7 +13,6 @@
 .tileicon {
   font-size:1.4vw;
   color: var(--light);
-  /* style="font-size:1.8vw" */
 }
 
 .highlight {
@@ -36,7 +35,6 @@
 
 /* Box CARDS */
 .box {
-  /*min-height:200px;*/
   overflow-y: auto; /*scroll;*/
   scrollbar-width: thin;
   scrollbar-color: var(--dark) var(--light);
@@ -101,4 +99,9 @@
   page-break-inside: avoid;
   -moz-column-break-inside: avoid;
   break-inside: avoid;
+}
+
+
+.kk-tabcontent {
+  padding-top: 12px;
 }

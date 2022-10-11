@@ -10,7 +10,7 @@ KpiDetailsModal <- function(Entry) {
       Formula <- p(Entry$formula, class="truncate")
     }
   } else {
-    Formula <- NULL # Formula <- p("Formula not available", class="h-inline")
+    Formula <- NULL
   }
   
   domainLabel <- ifelse(length.tagstr(Entry$domain) > 1, "Domains", "Domain")
@@ -18,49 +18,57 @@ KpiDetailsModal <- function(Entry) {
   
   modalDialog(
     tabsetPanel(
+      type = "pills",
       tabPanel("Description", 
-               #p(Entry$title),
-               fluidPage(
-               p(Entry$description),
-               if (isTruthy(Entry$url)) {
-                 p(
-                   tags$a("Further details", icon("link"), href=Entry$url)
-                 )
-               } else {
-                 NULL
-               },
                div(
-                 span(domainLabel, class="h-inline"), 
-                 span(Entry$domain, class="highlight")
-               ))
-      ),
-      tabPanel("Interpretation",
-               if (isTruthy(Entry$interpretation)) p(Entry$interpretation) else NULL,
-               tags$table(
-                 tags$tr(
-                   tags$td(span(mapField2Label("unit"), class="h-inline")), 
-                   tags$td(span(Entry$unit, class="highlight"))
+                 p(Entry$description),
+                 if (isTruthy(Entry$url)) {
+                   p(
+                     tags$a("Further details", icon("link"), href=Entry$url)
+                   )
+                 } else {
+                   NULL
+                 },
+                 div(
+                   span(domainLabel, class="h-inline"), 
+                   span(Entry$domain, class="highlight")
                  ),
-                 tags$tr(
-                   tags$td(span(mapField2Label("direction"), class="h-inline")), 
-                   tags$td(span(Entry$direction, class="highlight"))
-                 ),
-                 tags$tr(
-                   tags$td(span(tagLabel, class="h-inline")),
-                   tags$td(span(Entry$tags, class="highlight"))
-                 ),
-                 tags$tr(
-                   tags$td(span("Last update", class="h-inline")),
-                   tags$td(span(
-                     format(max(Entry$updated_at, Entry$created_at), "%B %Y"), class="highlight"))
-                 )
+                 class = "kk-tabcontent"
                )
       ),
-      if (isTruthy(Formula)) tabPanel("Formula", Formula) else NULL
+      tabPanel("Interpretation",
+               div(
+                 if (isTruthy(Entry$interpretation)) p(Entry$interpretation) else NULL,
+                 tags$table(
+                   tags$tr(
+                     tags$td(span(mapField2Label("unit"), class="h-inline")), 
+                     tags$td(span(Entry$unit, class="highlight"))
+                   ),
+                   tags$tr(
+                     tags$td(span(mapField2Label("direction"), class="h-inline")), 
+                     tags$td(span(Entry$direction, class="highlight"))
+                   ),
+                   tags$tr(
+                     tags$td(span(tagLabel, class="h-inline")),
+                     tags$td(span(Entry$tags, class="highlight"))
+                   ),
+                   tags$tr(
+                     tags$td(span("Last update", class="h-inline")),
+                     tags$td(span(
+                       format(max(Entry$updated_at, Entry$created_at), "%B %Y"), class="highlight"))
+                   )
+                 ),
+               class = "kk-tabcontent"
+               )
+               
+      ),
+      if (isTruthy(Formula)) 
+        tabPanel("Formula", div(Formula, class = "kk-tabcontent")) 
+      else 
+        NULL
     ),
     footer = tagList(
-      modalButton("Close")#,
-      #actionButton("ok", "OK")
+      modalButton("Close")
     ),
     size = "l",
     title = Entry$title,
