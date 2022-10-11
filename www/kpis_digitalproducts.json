@@ -16,7 +16,7 @@
     },
     {
         "title": "Rate of Inventory Growth",
-        "description": "The rate at which sellers are adding inventory. Also consider the completeness of those listings because incomplete ones may not add value to your business. Sometimes the diversity of listings should be cosidered, too, when duplicate or similar listings do not increase the offers from the buyers' point of view.",
+        "description": "The rate at which sellers are adding inventory. Also consider the completeness of those listings because incomplete ones may not add value to your business. Sometimes the diversity of listings should be considered, too, when duplicate or similar listings do not increase the offers from the buyers' point of view.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
@@ -32,7 +32,7 @@
     },
     {
         "title": "Buyer or Seller Growth",
-        "description": "The rate at which you're adding new buyers and sellers, respectively. Can be measured by returning visitors and divded by time.",
+        "description": "The rate at which you're adding new buyers and sellers, respectively. Can be measured by returning visitors and divided by time.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
@@ -472,7 +472,7 @@
         "intervention_needed": false
     },
     {
-        "title": "Content creation and Interaction",
+        "title": "Content Creation and Interaction",
         "description": "The percentage of visitors who interact with content in some way, from creating it to voting on it.",
         "interpretation": "Interaction can mean many things and needs to be measured in different ways. On sites like Wikipedia most users only consume content and only few create it. On other sites like Facebook most users do a lot more than just looking at other peoples posts.",
         "formula": "-",
@@ -531,6 +531,7 @@
         "unit": "Score",
         "rating_count": 0,
         "rating_avg": 0,
+        "framework": "EBM",
         "tags": "acceptance, software",
         "domain": "Software development, Software-as-a-Service, Internet, Social Media & E-business",
         "created_at": "2022-10-11 17:57:00",
