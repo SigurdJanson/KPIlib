@@ -21,7 +21,7 @@ KpiDetailsModal <- function(Entry) {
       type = "pills",
       tabPanel("Description", 
                div(
-                 p(Entry$description),
+                 p(HTML(Entry$description)),
                  if (isTruthy(Entry$url)) {
                    p(
                      tags$a("Further details", icon("link"), href=Entry$url)
