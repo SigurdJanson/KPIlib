@@ -1,9 +1,12 @@
 # 'Constants' 
-strEmptySearchResult <- "Search does not yield any results"ShownTableLabels <- c(Title = "title", Description = "description", 
+strEmptySearchResult <- "Search does not yield any results"
+ShownTableLabels <- c(Title = "title", Description = "description", 
                       Direction = "direction", `Unit Type` = "unit", 
                       Tags = "tags", Domains = "domain")
 
 
+
+#' Load the data from the files in "location"
 readKpiData <- function(location) {
   x <- NULL
   for (.loc in location) {

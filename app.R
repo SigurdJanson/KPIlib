@@ -13,9 +13,7 @@ source("DlgKpiDetails.R")
 RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
 
 ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain")
-ShownTableLabels <- c(Title = "title", Description = "description", 
-                      Direction = "direction", `Unit Type` = "unit", 
-                      Tags = "tags", Domains = "domain")
+
 
 
 # UI ==================================
@@ -60,14 +58,12 @@ ui <- dashboardPage(
                    btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
                    width = "auto"
                  )),
-        #tooltip("filterFree", "Search title and description fields"),
         tags$div(title="If activated the search will be case sensitive",
                  checkboxGroupButtons(
                    inputId = "cbCaseSensitivity", label = NULL,
                    choices = c(`<b>Aa</b>` = "CaseSensitive") # fa-font-case
                  )),
-        # tooltip("cbCaseSensitivity", "If activated this option the search will be case sensitive"),
-        
+
         tags$div(title="Filter for one or several domains",
                  pickerInput(
                    inputId = "filterName",
@@ -113,7 +109,6 @@ ui <- dashboardPage(
       tabItem(tabName = "ContentArea",
               h2("KPIs"),
               uiOutput("KpiList")
-              #dataTableOutput("KpiTable")
       ),
       
       tabItem(
@@ -165,10 +160,10 @@ ui <- dashboardPage(
                 The collection now available for download is the result of a community effort. 
                 The platform behind it was the KPI Library. It was founded in 2007 by Mirror42. 
                 Mirror42 was acquired by ServiceNow in July 2013."),
-              p("These data were extensively improved by the author. Over 2000 KPIs were merged 
+              p("These data were extensively improved by the author. Over 2500 KPIs were merged 
                 or eliminated."),
               tags$ul(
-                tags$li("Removal of duplicate indicators"),
+                tags$li("Removal of indicators without value to the user like duplicates or empty indicators"),
                 tags$li("Removal of indicators not complete enough to be understandable"),
                 tags$li("Spelling correction"),
                 tags$li("Removal of \"lonely\" tags that existed only once for clarity"),
@@ -177,7 +172,7 @@ ui <- dashboardPage(
               ),
               p("Despite all these efforts the library may still contain ambiguities, vagueness, 
                 and mistakes. It was not possible so far to fill all missing information.",
-                tags$b("Please note that you use KPi Kluster at your own risk.")),
+                tags$b("Please note that you use KPi Kluster at your own responsibility.")),
               h4("Working with KPIs"),
               p("Looking up KPIs in a data base means that the function you want to improve has
                 become a 'hygiene factor' of your business. You cannot excel in this area over
