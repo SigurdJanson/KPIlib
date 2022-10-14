@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# KPi Kluster <img src="man/figures/logo_KPI.svg" align="right" height="139" />
+# KPi Kluster <img src="man/figures/logo_kpi.svg" align="right" height="139" />
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -29,7 +29,7 @@ Some of the KPIs in the cluster are provided by me (the author Jan Seifert) coll
 
 Some of the KPIs have been gathered from the [KPI library](http://www.kpilibrary.com/). For almost 10 years the KPI Library offered professionals a platform to share, search, and discuss KPIs. The collection now available for download is the result of a community effort. The platform behind it was the KPI Library. It was founded in 2007 by Mirror42. Mirror42 was acquired by ServiceNow in July 2013.
 
-These data were extensively improved by the author. Over 2000 KPIs were merged or eliminated.
+These data were extensively improved by the author. Over 2500 KPIs were eliminated or merged.
 
 * Removal of duplicate indicators,
 * Removal of indicators not complete enough to be understandable
@@ -40,7 +40,7 @@ These data were extensively improved by the author. Over 2000 KPIs were merged o
 
 Despite all these efforts the library may still contain ambiguities, vagueness, and mistakes. It was not possible so far to fill all missing information.
 
-Please note that you use KPi Kluster at your own risk.
+Please note that you use KPi Kluster at your own responsibility.
 
 
 ## Working with KPIs
