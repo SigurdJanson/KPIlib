@@ -16,6 +16,8 @@ KpiDetailsModal <- function(Entry) {
   domainLabel <- ifelse(length.tagstr(Entry$domain) > 1, "Domains", "Domain")
   tagLabel <- ifelse(length.tagstr(Entry$tags) > 1, "Tags", "Tag")
   
+  HelpfulRatings <- as.integer(ceiling(Entry$rating_count * (Entry$rating_avg / 5)))
+  
   modalDialog(
     tabsetPanel(
       type = "pills",
@@ -42,11 +44,15 @@ KpiDetailsModal <- function(Entry) {
                  tags$table(
                    tags$tr(
                      tags$td(span(mapField2Label("unit"), class="h-inline")), 
-                     tags$td(span(Entry$unit, class="highlight"))
+                     tags$td(span(Entry$unit, mapUnit2Icon(Entry$unit, FALSE), class="highlight"))
                    ),
                    tags$tr(
                      tags$td(span(mapField2Label("direction"), class="h-inline")), 
-                     tags$td(span(Entry$direction, class="highlight"))
+                     tags$td(span(Entry$direction, mapDirection2Icon(Entry$direction, FALSE), class="highlight"))
+                   ),
+                   tags$tr(
+                     tags$td(span("Helpful flags", class="h-inline")),
+                     tags$td(span(HelpfulRatings, icon("thumbs-up"), class="highlight"))
                    ),
                    tags$tr(
                      tags$td(span(tagLabel, class="h-inline")),

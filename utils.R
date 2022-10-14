@@ -50,7 +50,7 @@ mapField2Label <- function(x) {
 #'
 #' @return A vector of icons
 #' @noRd
-mapUnit2Icon <- function(unit) {
+mapUnit2Icon <- function(unit, addDiv = TRUE) {
   .icon <- switch (
     as.character(unit),
           Area     = icon("square-full", verify_fa = FALSE),
@@ -69,7 +69,10 @@ mapUnit2Icon <- function(unit) {
           #thermometer-half
   )
   #browser()
-  tags$div(title=paste("Unit:", unit), .icon)
+  if (addDiv) 
+    return(tags$div(title=paste("Unit:", unit), .icon))
+  else
+    return(.icon)
 }
 
 
@@ -80,7 +83,7 @@ mapUnit2Icon <- function(unit) {
 #'
 #' @return A vector of icons
 #' @noRd
-mapDirection2Icon <- function(dir) {
+mapDirection2Icon <- function(dir, addDiv = TRUE) {
   .icon <- switch (
     as.character(dir),
     Minimize = icon("arrow-down", verify_fa = FALSE),
@@ -88,7 +91,10 @@ mapDirection2Icon <- function(dir) {
     Range    = icon("compress-alt", verify_fa = FALSE),
     icon("question", verify_fa = FALSE)
   )
-  tags$div(title=paste("Direction:", dir), .icon)
+  if (addDiv) 
+    tags$div(title=paste("Direction:", dir), .icon)
+  else
+    return(.icon)
 }
 
 
