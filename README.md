@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# KPi Kluster <img src="man/figures/logo_KPI.svg" align="right" height="139" />
+# KPi Kluster <img src="man/figures/logo_kpi.svg" align="right" height="139" />
 
 <!-- badges: start -->
 
