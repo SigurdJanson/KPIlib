@@ -51,19 +51,58 @@ ui <- dashboardPage(
   controlbar = dashboardControlbar(
     width = 280L, overlay = FALSE, collapsed = FALSE,
     div(class="content",
+        h4("Find a KPI"),
         tags$div(title="Search title and description fields",
                  searchInput(
-                   inputId = "filterFree", label = "Find a KPI",
+                   inputId = "filterFree", label = NULL,
                    placeholder = "Enter text to search for KPIs",
                    btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
                    width = "auto"
-                 )),
-        tags$div(title="If activated the search will be case sensitive",
-                 checkboxGroupButtons(
-                   inputId = "cbCaseSensitivity", label = NULL,
-                   choices = c(`<b>Aa</b>` = "CaseSensitive") # fa-font-case
-                 )),
-
+                 )
+        ),
+        div(id="TextSearchOptions-Parent", box(
+          id = "TextSearchOptions",
+          title = div("Text Search Settings"), #, `data-widget`="collapse" # has side effects
+          solidHeader = TRUE, headerBorder = FALSE,
+          collapsible = TRUE, collapsed = TRUE,
+          closable = FALSE,
+          boxToolSize = "lg",
+          width = 12L,
+            tags$div(title="Use free text search with wild cards * and ? or regular expressions",
+                     pickerInput(
+                       inputId = "cbSearchMode",
+                       label = NULL, 
+                       choices = c(`Standard Mode`="SearchDefault", `Reg.*Expressions`="Regex"),
+                       options = list(mobile=FALSE, showSubtext=FALSE, showTick=TRUE)
+                     )                 
+            ),
+            tags$div(title="If activated the search will be case sensitive",
+                     checkboxGroupButtons(
+                       inputId = "cbFreeTextSettings", label = NULL,
+                       choices = c(`Case sensitive <b>Aa</b>` = "CaseSensitive"),
+                       # checkIcon = list(yes = HTML("<b>Aa</b>"), no = HTML("<b>aa</b>"))
+                       checkIcon = list(
+                         yes = span(tags$i(class = "fa fa-check-square")),
+                         no = tags$i(class = "fa fa-square-o")
+                       )
+                     )
+            ),
+            conditionalPanel(
+              condition = "input.cbSearchMode == 'SearchDefault'",
+              tags$div(title="Search result must contain all search terms or just any of them",
+                       radioGroupButtons(
+                         inputId = "cbSearchOperator",
+                         choices = 
+                           c(`<b>||||</b> All` = "AND", # ⁞
+                             `<b>..|.</b> Any` = "OR"), # ︱
+                         justified = FALSE, size = "normal",
+                         disabled = FALSE
+                       )
+              )
+            )
+          #) #item
+        )),
+        # Domains
         tags$div(title="Filter for one or several domains",
                  pickerInput(
                    inputId = "filterName",
@@ -75,7 +114,8 @@ ui <- dashboardPage(
                    ),
                    multiple = TRUE,
                    width = "100%"
-                 )),
+                 )
+        ),
         tags$div(title="Filter for one or several tags",
                  pickerInput(
                    inputId = "filterTag",
@@ -130,6 +170,7 @@ ui <- dashboardPage(
               width = 12L, height = 400, collapsible = TRUE)
         ),
         column(3L,
+          infoBoxOutput("AdminDomainCount", width = 12L),
           infoBoxOutput("AdminLonelyNameCount", width = 12L),
           box(tableOutput("AdminLonelyNames"), "Lonely Domains", 
               width = 12L, height = 400, collapsible = TRUE)
@@ -281,20 +322,31 @@ server <- function(input, output, session) {
   
   
   
-  observeEvent(list(input$filterName, input$filterFree, input$filterTag, input$cbCaseSensitivity), {
-    IgnoreCase <- length(input$cbCaseSensitivity) == 0
+  #"cbSearchMode", "cbFreeTextSettings" == "CaseSensitive", "cbSearchOperator" == c("AND", "OR")
+  observeEvent(
+    list(input$filterName, input$filterFree, input$filterTag, 
+         input$cbSearchMode, input$cbFreeTextSettings, input$cbSearchOperator), 
+    {
+    Regex <- "Regex" %in% input$cbSearchMode
+    IgnoreCase <- !("CaseSensitive" %in% input$cbFreeTextSettings)
+    OperatorOr <- "OR" %in% input$cbSearchOperator
 
     RowFilter <- rep(FALSE, nrow(kpi))
     if (isTruthy(input$filterName) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
       
       if (isTruthy(input$filterFree))
+        if (Regex) {
+          SearchString <- input$filterFree# escapeRegex(input$filterFree)
+        } else { # default search
+          SearchString <- wc2Regex(input$filterFree, OperatorOr)
+        }
         RowFilter <- RowFilter | 
-          grepl(escapeRegex(input$filterFree), kpi$title, 
-                fixed = FALSE, ignore.case = IgnoreCase)  | 
-          grepl(escapeRegex(input$filterFree), kpi$description, 
-                fixed = FALSE, ignore.case = IgnoreCase) | 
-          grepl(escapeRegex(input$filterFree), kpi$interpretation, 
-                fixed = FALSE, ignore.case = IgnoreCase)
+          grepl(SearchString, kpi$title, 
+                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE)  | 
+          grepl(SearchString, kpi$description, 
+                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE) | 
+          grepl(SearchString, kpi$interpretation, 
+                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE)
 
       if (isTruthy(input$filterName)) {
         domainFilter <- escapeRegex(input$filterName)
@@ -303,8 +355,7 @@ server <- function(input, output, session) {
         else
           RowFilter <- RowFilter | domainFilter %isin% kpi$domain
       }
-      #  RowFilter <- RowFilter | kpi$domain %in% input$filterName
-      
+
       if (isTruthy(input$filterTag)) {
         if (length(input$filterTag) > 1)
           RowFilter <- RowFilter | apply(input$filterTag %isin% kpi$tags, 1L, any)
@@ -511,7 +562,20 @@ server <- function(input, output, session) {
   
 
     
-  ## Lonely Domains =====
+  ## Domains =====
+  output$AdminDomainCount <- renderInfoBox({
+    Doms <- sapply(kpi$domain, \(x) strsplit(x, ",")) |>
+      unlist() |>
+      unname() |>
+      trimws() |>
+      na.omit() |> tolower() |> unique()
+    infoBox(
+      "Total Domains", length(Doms), 
+      "All domains",
+      icon = icon("Flag"), color = "black"
+    )
+  })
+  
   AdminLonelyNames <- reactive({
     Names <- sapply(kpi$domain, \(x) strsplit(x, ",")) |>
       unlist() |>
@@ -541,7 +605,7 @@ server <- function(input, output, session) {
     }
     
     infoBox(
-      "Lonely Domains", InfoTxt, "Domains existing only once",
+      "Lonely Domains", InfoTxt, paste0("Domains existing only once (", Count, ")"),
       icon = Icon, color = Color
     )
   })

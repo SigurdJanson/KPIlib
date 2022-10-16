@@ -105,3 +105,31 @@
 .kk-tabcontent {
   padding-top: 12px;
 }
+
+/* controlbar */
+.kk-searchsettings div {
+  display: inline;
+}
+
+#TextSearchOptions {
+  background-color: transparent;
+  border:1px solid var(--light);
+}
+#TextSearchOptions .box-header {
+  color: var(--light);
+}
+#TextSearchOptions .box-header:hover {
+  color: white;
+  /* cursor:pointer; */
+}
+#TextSearchOptions .box-header h3 {
+  font-size: 14px;
+  /* position:relative; */
+}
+#TextSearchOptions .box-header>.box-tools {
+  color: var(--dark);
+  background-color:var(--light);
+} 
+#TextSearchOptions-Parent > div {
+  padding:0;
+}
