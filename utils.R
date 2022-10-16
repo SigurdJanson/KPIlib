@@ -107,6 +107,7 @@ RuningLocally <- function() {
 
 
 #' escapeRegex
+#' 
 #' @return Escapes characters in a string so that it can be used 
 #' as regular expression.
 #' @noRd
@@ -114,6 +115,40 @@ RuningLocally <- function() {
 escapeRegex <- function(string) {
   gsub('([.|()\\^{}+$*?]|\\[|\\])', '\\\\\\1', string)
 }
+
+
+#' wc2Regex
+#' 
+#' Change a string from a wildcard syntax into regular expression syntax.
+#' @param x A string
+#' @param OR Process several space-separated words with `OR` operator (`TRUE`, default)
+#' or with `AND` operator (`FALSE`).
+#' @return A string that works as regular expression and yields the same result
+#' as a wildcard search would have
+#' @noRd
+wc2Regex <- function(x, OR = TRUE) {
+  # 'escapeRegex' without wild card characters
+  x <- gsub('([.|()\\^{}+$]|\\[|\\])', '\\\\\\1', x)
+  
+  if (OR) {
+    x <- gsub(" ", '|', x)
+    if (substring(x, 1L, 1L) != "*")
+      x <- paste0("*", x)
+    if (substring(x, nchar(x), nchar(x)) != "*")
+      x <- paste0(x, "*")
+    x <- glob2rx(x, trim.head = FALSE, trim.tail = FALSE)
+  }
+  else { # AND - use "(?=.*s1)(?=.*s2)"
+    Operands <- strsplit(x, " ") |> 
+      unlist() |>
+      glob2rx(trim.head = TRUE, trim.tail = FALSE)
+    Operands <- sub("^\\^(.*)\\$$", "\\1", Operands)
+    x <- paste0("(?=.*", Operands, ")", collapse = "")
+  }
+  x
+}
+
+
 
 
 renderTableButton <- function(id) {
