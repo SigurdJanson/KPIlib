@@ -71,20 +71,19 @@ ui <- dashboardPage(
             tags$div(title="Use free text search with wild cards * and ? or regular expressions",
                      pickerInput(
                        inputId = "cbSearchMode",
-                       label = NULL, 
                        choices = c(`Standard Mode`="SearchDefault", `Reg.*Expressions`="Regex"),
-                       options = list(mobile=FALSE, showSubtext=FALSE, showTick=TRUE)
+                       options = list(mobile=FALSE, showSubtext=FALSE, showTick=TRUE),
+                       width="100%"
                      )                 
             ),
             tags$div(title="If activated the search will be case sensitive",
                      checkboxGroupButtons(
                        inputId = "cbFreeTextSettings", label = NULL,
                        choices = c(`Case sensitive <b>Aa</b>` = "CaseSensitive"),
-                       # checkIcon = list(yes = HTML("<b>Aa</b>"), no = HTML("<b>aa</b>"))
                        checkIcon = list(
-                         yes = span(tags$i(class = "fa fa-check-square")),
-                         no = tags$i(class = "fa fa-square-o")
-                       )
+                         yes = tags$i(class = "fa fa-check-square"),
+                         no = tags$i(class = "fa fa-square-o")),
+                       justified = TRUE
                      )
             ),
             conditionalPanel(
@@ -92,10 +91,9 @@ ui <- dashboardPage(
               tags$div(title="Search result must contain all search terms or just any of them",
                        radioGroupButtons(
                          inputId = "cbSearchOperator",
-                         choices = 
-                           c(`<b>||||</b> All` = "AND", # ⁞
-                             `<b>..|.</b> Any` = "OR"), # ︱
-                         justified = FALSE, size = "normal",
+                         choices = c(`<b>||||</b> All` = "AND",
+                                     `<b>..|.</b> Any` = "OR"),
+                         justified = TRUE, size = "normal",
                          disabled = FALSE
                        )
               )
