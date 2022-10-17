@@ -127,11 +127,15 @@ escapeRegex <- function(string) {
 #' as a wildcard search would have
 #' @noRd
 wc2Regex <- function(x, OR = TRUE) {
+  # Remove leading, trailing and repeated white spaces
+  x <- gsub("(?<=[\\s])\\s*|^\\s+|\\s+$", "", x, perl = TRUE)
+  # Remove surrounding spaces around an asterisk
+  x <- gsub("\\s*(\\*)\\s*", "\\1", x)
   # 'escapeRegex' without wild card characters
-  x <- gsub('([.|()\\^{}+$]|\\[|\\])', '\\\\\\1', x)
+  x <- gsub("([.|()\\^{}+$]|\\[|\\])", "\\\\\\1", x)
   
   if (OR) {
-    x <- gsub(" ", '|', x)
+    x <- gsub(" ", "|", x)
     if (substring(x, 1L, 1L) != "*")
       x <- paste0("*", x)
     if (substring(x, nchar(x), nchar(x)) != "*")

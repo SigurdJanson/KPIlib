@@ -1,13 +1,26 @@
 
 # =================
 
+
 test_that("wc2Regex: ", { # taken from glob2rx()
   expect_identical(wc2Regex("abc*"), "^.*abc.*$")
   expect_identical(wc2Regex("abc*."), "^.*abc.*\\\\..*$")
   expect_identical(wc2Regex("*.t*"), "^.*\\\\.t.*$")
   expect_identical(wc2Regex("*.t??"), "^.*\\\\.t...*$")
-  expect_identical(wc2Regex("*[*"), "^.*\\[.*$") # ?????
+  expect_identical(wc2Regex("*[*"), "^.*\\[.*$")
 })
+
+test_that("Multiple Spaces", {
+  expect_identical(wc2Regex("abc *"), "^.*abc.*$")
+  expect_identical(wc2Regex("abc  *"), "^.*abc.*$")
+  expect_identical(wc2Regex(" abc  *"), "^.*abc.*$")
+  expect_identical(wc2Regex("  abc  *"), "^.*abc.*$")
+  expect_identical(wc2Regex("  abc  *  "), "^.*abc.*$")
+  expect_identical(wc2Regex("abc cdf"), "^.*abc|cdf.*$")
+  expect_identical(wc2Regex("abc  cdf"), "^.*abc|cdf.*$")
+  expect_identical(wc2Regex("  abc  cdf  "), "^.*abc|cdf.*$")
+})
+
 
 
 # =================
