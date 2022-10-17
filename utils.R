@@ -131,18 +131,22 @@ wc2Regex <- function(x, OR = TRUE) {
   x <- gsub("(?<=[\\s])\\s*|^\\s+|\\s+$", "", x, perl = TRUE)
   # Remove surrounding spaces around an asterisk
   x <- gsub("\\s*(\\*)\\s*", "\\1", x)
-  # 'escapeRegex' without wild card characters
-  x <- gsub("([.|()\\^{}+$]|\\[|\\])", "\\\\\\1", x)
   
   if (OR) {
+    # Replace leading/Trailing wild cards by single ones
+    x <- gsub("^[\\*\\?]*(.*?)[\\*\\?]*$", "*\\1*", x)
+    # 'escapeRegex' without wild card characters
+    x <- gsub("([.|()\\^{}+$]|\\[|\\])", "\\\\\\1", x)
+    # Make it an 'OR' expression
     x <- gsub(" ", "|", x)
-    if (substring(x, 1L, 1L) != "*")
-      x <- paste0("*", x)
-    if (substring(x, nchar(x), nchar(x)) != "*")
-      x <- paste0(x, "*")
     x <- glob2rx(x, trim.head = FALSE, trim.tail = FALSE)
   }
   else { # AND - use "(?=.*s1)(?=.*s2)"
+    # Remove leading/Trailing wild cards
+    x <- gsub("^[\\*\\?]*(.*?)[\\*\\?]*$", "\\1", x)
+    # 'escapeRegex' without wild card characters
+    x <- gsub("([.|()\\^{}+$]|\\[|\\])", "\\\\\\1", x)
+    # Make it an 'AND' expression
     Operands <- strsplit(x, " ") |> 
       unlist() |>
       glob2rx(trim.head = TRUE, trim.tail = FALSE)

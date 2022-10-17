@@ -6,11 +6,11 @@ test_that("wc2Regex: ", { # taken from glob2rx()
   expect_identical(wc2Regex("abc*"), "^.*abc.*$")
   expect_identical(wc2Regex("abc*."), "^.*abc.*\\\\..*$")
   expect_identical(wc2Regex("*.t*"), "^.*\\\\.t.*$")
-  expect_identical(wc2Regex("*.t??"), "^.*\\\\.t...*$")
+  expect_identical(wc2Regex("*.t??t"), "^.*\\\\.t..t.*$")
   expect_identical(wc2Regex("*[*"), "^.*\\[.*$")
 })
 
-test_that("Multiple Spaces", {
+test_that("Multiple spaces are removed", {
   expect_identical(wc2Regex("abc *"), "^.*abc.*$")
   expect_identical(wc2Regex("abc  *"), "^.*abc.*$")
   expect_identical(wc2Regex(" abc  *"), "^.*abc.*$")
@@ -21,6 +21,31 @@ test_that("Multiple Spaces", {
   expect_identical(wc2Regex("  abc  cdf  "), "^.*abc|cdf.*$")
 })
 
+
+test_that("wc2Regex handles multiple leading/trailing wild cards", {
+  expect_identical(wc2Regex("*x"), "^.*x.*$")
+  expect_identical(wc2Regex("x*"), "^.*x.*$")
+  expect_identical(wc2Regex("*x*"), "^.*x.*$")
+  expect_identical(wc2Regex("?x*"), "^.*x.*$")
+  
+  expect_identical(wc2Regex("**x"), "^.*x.*$")
+  expect_identical(wc2Regex("x**"), "^.*x.*$")
+  expect_identical(wc2Regex("*x**"), "^.*x.*$")
+  expect_identical(wc2Regex("**x*"), "^.*x.*$")
+  expect_identical(wc2Regex("**x**"), "^.*x.*$")
+  
+  expect_identical(wc2Regex("?x?"), "^.*x.*$")
+  expect_identical(wc2Regex("?*x*?"), "^.*x.*$")
+  expect_identical(wc2Regex("??x??"), "^.*x.*$")
+  expect_identical(wc2Regex("*?x?*"), "^.*x.*$")
+  
+  expect_identical(wc2Regex("*?*?*?x*?*?*?"), "^.*x.*$")
+})
+
+
+# test_that("wc2Regex handles attempts to escape wild cards", {
+#   expect_identical(wc2Regex("\\*"), "^.*\\\\.*$")
+# })
 
 
 # =================

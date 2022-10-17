@@ -320,7 +320,7 @@ server <- function(input, output, session) {
   
   
   
-  #"cbSearchMode", "cbFreeTextSettings" == "CaseSensitive", "cbSearchOperator" == c("AND", "OR")
+  #
   observeEvent(
     list(input$filterName, input$filterFree, input$filterTag, 
          input$cbSearchMode, input$cbFreeTextSettings, input$cbSearchOperator), 
@@ -334,7 +334,7 @@ server <- function(input, output, session) {
       
       if (isTruthy(input$filterFree))
         if (Regex) {
-          SearchString <- input$filterFree# escapeRegex(input$filterFree)
+          SearchString <- input$filterFree 
         } else { # default search
           SearchString <- wc2Regex(input$filterFree, OperatorOr)
         }
