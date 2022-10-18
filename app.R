@@ -316,20 +316,20 @@ server <- function(input, output, session) {
 
     RowFilter <- rep(FALSE, nrow(kpi))
     if (isTruthy(input$filterDomain) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
-      
-      if (isTruthy(input$filterFree))
-        if (Regex) {
-          SearchString <- input$filterFree 
-        } else { # default search
+      # Free text search
+      if (isTruthy(input$filterFree)) {
+        SearchString <- input$filterFree 
+        if (!Regex) { # standard search
           SearchString <- wc2Regex(input$filterFree, OperatorOr)
         }
         RowFilter <- RowFilter | 
           grepl(SearchString, kpi$title, 
-                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE)  | 
+                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE) | 
           grepl(SearchString, kpi$description, 
                 fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE) | 
           grepl(SearchString, kpi$interpretation, 
                 fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE)
+      }
 
       if (isTruthy(input$filterDomain)) {
         domainFilter <- escapeRegex(input$filterDomain)
