@@ -291,31 +291,16 @@ server <- function(input, output, session) {
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
-    Names <- sapply(LiveKpi()$domain, \(x) strsplit(x, ",")) |>
-      unlist() |>
-      unname() |>
-      trimws() |>
-      tolower() |>
-      na.omit() |>
-      unique() |>
-      sort()
-    
+    Domains <- parseDomains(LiveKpi()$domain)
     updatePickerInput(
       session = session, inputId = "filterDomain",
-      choices = Names
+      choices = Domains
     )
     
-    Tags <- sapply(LiveKpi()$tags, \(x) strsplit(x, ",")) |>
-      unlist() |>
-      unname() |>
-      trimws() |>
-      tolower() |>
-      na.omit() |>
-      unique() |>
-      sort()
-    
+    Tags <- parseTags(LiveKpi()$tags)
     updatePickerInput(
-      session = session, inputId = "filterTag", choices = Tags)
+      session = session, inputId = "filterTag", 
+      choices = Tags)
   }, ignoreInit = FALSE)
   
   

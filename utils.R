@@ -24,6 +24,29 @@ readKpiData <- function(location) {
 }
 
 
+parseDomains <- function(Domains) {
+  sapply(Domains, \(x) strsplit(x, ",")) |>
+    unlist() |>
+    unname() |>
+    trimws() |>
+    tolower() |>
+    na.omit() |>
+    unique() |>
+    sort()
+}
+
+parseTags <- function(Tags) {
+  sapply(Tags, \(x) strsplit(x, ",")) |>
+    unlist() |>
+    unname() |>
+    trimws() |>
+    tolower() |>
+    na.omit() |>
+    unique() |>
+    sort()
+}
+
+
 #' filterKpiData
 #' Filter the dataset according to pre-defined criteria.
 #' * Is the flag `intervention_needed` set? 
