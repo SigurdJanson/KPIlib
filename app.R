@@ -78,7 +78,7 @@ ui <- dashboardPage(
             ),
             tags$div(title="If activated the search will be case sensitive",
                      checkboxGroupButtons(
-                       inputId = "cbFreeTextSettings", label = NULL,
+                       inputId = "cbFreeTextCasesense", label = NULL,
                        choices = c(`Case sensitive <b>Aa</b>` = "CaseSensitive"),
                        checkIcon = list(
                          yes = tags$i(class = "fa fa-check-square"),
@@ -103,7 +103,7 @@ ui <- dashboardPage(
         # Domains
         tags$div(title="Filter for one or several domains",
                  pickerInput(
-                   inputId = "filterName",
+                   inputId = "filterDomain",
                    label = "Domain", 
                    choices = "",
                    options = list(
@@ -260,7 +260,7 @@ server <- function(input, output, session) {
   ShowPageLength <- reactiveVal(20L)
 
   output$dataInfo <- renderTable({
-    filterCount <- sum(sapply(c(input$filterName, input$filterFree, input$filterTag), isTruthy))
+    filterCount <- sum(sapply(c(input$filterDomain, input$filterFree, input$filterTag), isTruthy))
     resultCount <- nrow(LiveKpi())
     matchStr <- ifelse(resultCount == 1, "matches", "match")
     filterStr <- if(filterCount == 0) 
@@ -301,7 +301,7 @@ server <- function(input, output, session) {
       sort()
     
     updatePickerInput(
-      session = session, inputId = "filterName",
+      session = session, inputId = "filterDomain",
       choices = Names
     )
     
@@ -322,15 +322,15 @@ server <- function(input, output, session) {
   
   #
   observeEvent(
-    list(input$filterName, input$filterFree, input$filterTag, 
-         input$cbSearchMode, input$cbFreeTextSettings, input$cbSearchOperator), 
+    list(input$filterDomain, input$filterFree, input$filterTag, 
+         input$cbSearchMode, input$cbFreeTextCasesense, input$cbSearchOperator), 
     {
     Regex <- "Regex" %in% input$cbSearchMode
-    IgnoreCase <- !("CaseSensitive" %in% input$cbFreeTextSettings)
+    IgnoreCase <- !("CaseSensitive" %in% input$cbFreeTextCasesense)
     OperatorOr <- "OR" %in% input$cbSearchOperator
 
     RowFilter <- rep(FALSE, nrow(kpi))
-    if (isTruthy(input$filterName) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
+    if (isTruthy(input$filterDomain) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
       
       if (isTruthy(input$filterFree))
         if (Regex) {
@@ -346,8 +346,8 @@ server <- function(input, output, session) {
           grepl(SearchString, kpi$interpretation, 
                 fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE)
 
-      if (isTruthy(input$filterName)) {
-        domainFilter <- escapeRegex(input$filterName)
+      if (isTruthy(input$filterDomain)) {
+        domainFilter <- escapeRegex(input$filterDomain)
         if (length(domainFilter) > 1)
           RowFilter <- RowFilter | apply(domainFilter %isin% kpi$domain, 1L, any)
         else
