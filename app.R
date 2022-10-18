@@ -823,8 +823,8 @@ server <- function(input, output, session) {
       image = "https://www.seifseit.de/images/Jan2013c.jpg", 
       title = "Dr. Jan Seifert",
       subtitle = "", 
-      footer = p("A service secretly supported by", 
-                 tags$a("changitors", href="https://www.changitors.com/en"), 
+      footer = p("This is a personal project by Jan Seifert under the patronage of", 
+                 tags$a("Changitors", href="https://www.changitors.com/en"), ".", 
                  class = "text-center"),
       fluidRow(
         dashboardUserItem(
