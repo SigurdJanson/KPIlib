@@ -10,7 +10,8 @@ ShownTableLabels <- c(Title = "title", Description = "description",
 readKpiData <- function(location) {
   x <- NULL
   for (.loc in location) {
-    x2 <- read_json(.loc, simplifyVector = TRUE)
+    x2 <- try(read_json(.loc, simplifyVector = TRUE))
+    if (inherits(x2, "try-error")) next
     x2$direction <- as.factor(x2$direction)
     x2$unit <- as.factor(x2$unit)
     x2$created_at <- as.POSIXct(x2$created_at)

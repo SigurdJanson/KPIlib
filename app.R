@@ -254,13 +254,15 @@ ui <- function(request) {
 server <- function(input, output, session) {
 
   kpi <- readKpiData(c("./www/kpis.json", "./www/kpis_digitalproducts.json"))
-  kpi <- filterKpiData(kpi)
+  if (!is.null(kpi)) kpi <- filterKpiData(kpi)
   
   LiveKpi <- reactiveVal(kpi)
   
   ShowPageLength <- reactiveVal(20L)
 
   output$dataInfo <- renderTable({
+    shiny::validate(need(LiveKpi(), "No data"))
+    
     filterCount <- sum(sapply(c(input$filterDomain, input$filterFree, input$filterTag), isTruthy))
     resultCount <- nrow(LiveKpi())
     matchStr <- ifelse(resultCount == 1, "matches", "match")
@@ -311,6 +313,8 @@ server <- function(input, output, session) {
     list(input$filterDomain, input$filterFree, input$filterTag, 
          input$cbSearchMode, input$cbFreeTextCasesense, input$cbSearchOperator), 
     {
+    req(LiveKpi())
+    
     Regex <- "Regex" %in% input$cbSearchMode
     IgnoreCase <- !("CaseSensitive" %in% input$cbFreeTextCasesense)
     OperatorOr <- "OR" %in% input$cbSearchOperator
@@ -395,6 +399,7 @@ server <- function(input, output, session) {
   
   
   output$KpiTable <- DT::renderDataTable({
+      #req(LiveKpi()) # not needed because this is nested in out..$KpiList
       result <- head(LiveKpi(), n = ShowPageLength())
       result <- cbind(result, Actions = renderTableButton(result$id))
       return(result[, c(ShownTableCols, "Actions")])
@@ -415,6 +420,8 @@ server <- function(input, output, session) {
   
   
   output$KpiList <- renderUI({
+    shiny::validate(need(LiveKpi(), "KPi Kluster did not manage to load any KPIs"))
+      
     if (input$KpiViewingMode == "table") {
       dataTableOutput("KpiTable")
     } else if (input$KpiViewingMode == "grid") {
