@@ -5,6 +5,7 @@ ShownTableLabels <- c(Title = "title", Description = "description",
                       Tags = "tags", Domains = "domain")
 
 
+# LOADING KPIS ================
 
 #' Load the data from the files in "location"
 readKpiData <- function(location) {
@@ -47,6 +48,9 @@ parseTags <- function(Tags) {
     sort()
 }
 
+
+
+# PROCESSING KPIS ================
 
 #' filterKpiData
 #' Filter the dataset according to pre-defined criteria.
@@ -122,6 +126,9 @@ mapDirection2Icon <- function(dir, addDiv = TRUE) {
 }
 
 
+
+# ... ================
+
 #' RuningLocally
 #' @return If the app is running locally it returns `TRUE` otherwise `FALSE`.
 #' @noRd
@@ -181,6 +188,7 @@ wc2Regex <- function(x, OR = TRUE) {
 }
 
 
+# RENDERING ================
 
 
 renderTableButton <- function(id) {
@@ -196,3 +204,5 @@ renderTableButton <- function(id) {
     paste0() |> 
     sprintf(id)
 }
+
+
