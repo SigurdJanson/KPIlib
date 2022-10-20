@@ -1,0 +1,12 @@
+[
+    {
+    "id": "ux",
+    "tags": ["quality", "usability", "experience", "research", "research ops", "e-commerce", "research repository"],
+    "domains": ["Social Media & E-business", "Research"]
+    },
+    {
+    "id": "changitors",
+    "tags": ["design system", "research ops", "research repository"],
+    "domains": ["Training & Coaching", "Process Performance"]
+    }
+]

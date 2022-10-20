@@ -206,3 +206,11 @@ renderTableButton <- function(id) {
 }
 
 
+# PRESETS ================
+
+#' Load the presets from the file
+readKpiPresets <- function(filename) {
+  x <- try(read_json(filename, simplifyVector = FALSE))
+  if (inherits(x, "try-error")) return(NULL)
+  return(x)
+}

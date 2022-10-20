@@ -868,23 +868,32 @@ server <- function(input, output, session) {
   ReadSetFromUrl <- observe({
     SetId <- "set"
     query <- parseQueryString(session$clientData$url_search)
+    
     if (!is.null(query[[SetId]])) {
-      if (query[[SetId]] == "\"ux\"") {
-        uxdomains <- tolower(c("Social Media & E-business", "Research"))
-        uxtags <- c("e-commerce", "web analytics", 
-                    "user", "experience", "design system", 
-                    "research ops")
-      }
-      Domains <- parseDomains(LiveKpi()$domain)
-      updatePickerInput(
-        session = session, inputId = "filterDomain",
-        choices = Domains, selected = uxdomains
-      )
+      Presets <- readKpiPresets("./www/presets.json")
       
-      Tags <- parseTags(LiveKpi()$tags)
-      updatePickerInput(
-        session = session, inputId = "filterTag",
-        choices = Tags, selected = uxtags)
+      if (is.null(Presets))  return
+      
+      for (set in Presets) {
+        if (paste0("\"", set$id, "\"") == query[[SetId]]) {
+          # uxdomains <- tolower(c("Social Media & E-business", "Research"))
+          # uxtags <- c("e-commerce", "web analytics", 
+          #             "user", "experience", "design system", 
+          #             "research ops")
+          Domains <- parseDomains(LiveKpi()$domain)
+          updatePickerInput(
+            session = session, inputId = "filterDomain",
+            choices = Domains, selected = tolower(set$domains)
+          )
+          
+          Tags <- parseTags(LiveKpi()$tags)
+          updatePickerInput(
+            session = session, inputId = "filterTag",
+            choices = Tags, selected = tolower(set$tags))
+          
+          break
+        }
+      }
     }
     # Destroy itself
     ReadSetFromUrl$destroy()
