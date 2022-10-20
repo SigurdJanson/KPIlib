@@ -17,57 +17,58 @@ ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain
 
 
 # UI ==================================
-ui <- dashboardPage(
-  skin = "black", # try "midnight" eventually
-  scrollToTop = TRUE,
-  header = dashboardHeader(
-    title = "KPi Kluster",
-    leftUi = tagList(
-      radioGroupButtons(
-        inputId = "KpiViewingMode",
-        choices = 
-          c(`<i class='fa fa-table' aria-label='View as table'></i>` = "table", 
-            `<i class='fa fa-grip-horizontal' aria-label='View as tiles'></i>` = "grid"),
-        justified = FALSE, size = "normal",
-        disabled = FALSE
+ui <- function(request) { 
+  dashboardPage(
+    skin = "black", # try "midnight" eventually
+    scrollToTop = TRUE,
+    header = dashboardHeader(
+      title = "KPi Kluster",
+      leftUi = tagList(
+        radioGroupButtons(
+          inputId = "KpiViewingMode",
+          choices = 
+            c(`<i class='fa fa-table' aria-label='View as table'></i>` = "table", 
+              `<i class='fa fa-grip-horizontal' aria-label='View as tiles'></i>` = "grid"),
+          justified = FALSE, size = "normal",
+          disabled = FALSE
+        )
+      ),
+      userOutput("uiAuthorAbout"),
+      controlbarIcon = shiny::icon("filter")
+    ),
+    
+    sidebar = dashboardSidebar(
+      minified = (RunningMode == "Admin"), collapsed = TRUE,
+      sidebarMenu(
+        menuItem("KPIs", tabName = "ContentArea", 
+                 icon = icon("dashboard", verify_fa = FALSE)),
+        menuItemOutput("AdminMenu"),
+        menuItem("About KPi Kluster", tabName = "AboutApp",
+                 icon = icon("hand-sparkles", verify_fa = FALSE))
       )
     ),
-    userOutput("uiAuthorAbout"),
-    controlbarIcon = shiny::icon("filter")
-  ),
-  
-  sidebar = dashboardSidebar(
-    minified = (RunningMode == "Admin"), collapsed = TRUE,
-    sidebarMenu(
-      menuItem("KPIs", tabName = "ContentArea", 
-               icon = icon("dashboard", verify_fa = FALSE)),
-      menuItemOutput("AdminMenu"),
-      menuItem("About KPi Kluster", tabName = "AboutApp",
-               icon = icon("hand-sparkles", verify_fa = FALSE))
-    )
-  ),
-  
-  ## filter control side bar =====
-  controlbar = dashboardControlbar(
-    width = 280L, overlay = FALSE, collapsed = FALSE,
-    div(class="content",
-        h4("Find a KPI"),
-        tags$div(title="Search title and description fields",
-                 searchInput(
-                   inputId = "filterFree", label = NULL,
-                   placeholder = "Enter text to search for KPIs",
-                   btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
-                   width = "auto"
-                 )
-        ),
-        div(id="TextSearchOptions-Parent", box(
-          id = "TextSearchOptions",
-          title = div("Text Search Settings"), #, `data-widget`="collapse" # has side effects
-          solidHeader = TRUE, headerBorder = FALSE,
-          collapsible = TRUE, collapsed = TRUE,
-          closable = FALSE,
-          boxToolSize = "lg",
-          width = 12L,
+    
+    ## filter control side bar =====
+    controlbar = dashboardControlbar(
+      width = 280L, overlay = FALSE, collapsed = FALSE,
+      div(class="content",
+          h4("Find a KPI"),
+          tags$div(title="Search title and description fields",
+                   searchInput(
+                     inputId = "filterFree", label = NULL,
+                     placeholder = "Enter text to search for KPIs",
+                     btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
+                     width = "auto"
+                   )
+          ),
+          div(id="TextSearchOptions-Parent", box(
+            id = "TextSearchOptions",
+            title = div("Text Search Settings"), #, `data-widget`="collapse" # has side effects
+            solidHeader = TRUE, headerBorder = FALSE,
+            collapsible = TRUE, collapsed = TRUE,
+            closable = FALSE,
+            boxToolSize = "lg",
+            width = 12L,
             tags$div(title="Use free text search with wild cards * and ? or regular expressions",
                      pickerInput(
                        inputId = "cbSearchMode",
@@ -98,150 +99,150 @@ ui <- dashboardPage(
                        )
               )
             )
-          #) #item
-        )),
-        # Domains
-        tags$div(title="Filter for one or several domains",
-                 pickerInput(
-                   inputId = "filterDomain",
-                   label = "Domain", 
-                   choices = "",
-                   options = list(
-                     `actions-box` = TRUE, size = 10L,
-                     `live-search` = TRUE, `dropdown-align-right` = "auto"
-                   ),
-                   multiple = TRUE,
-                   width = "100%"
-                 )
+          )),
+          # Domains
+          tags$div(title="Filter for one or several domains",
+                   pickerInput(
+                     inputId = "filterDomain",
+                     label = "Domain", 
+                     choices = "",
+                     options = list(
+                       `actions-box` = TRUE, size = 10L,
+                       `live-search` = TRUE, `dropdown-align-right` = "auto"
+                     ),
+                     multiple = TRUE,
+                     width = "100%"
+                   )
+          ),
+          tags$div(title="Filter for one or several tags",
+                   pickerInput(
+                     inputId = "filterTag",
+                     label = "Tag", 
+                     choices = "",
+                     options = list(
+                       `actions-box` = TRUE, size = 10L,
+                       `live-search` = TRUE, `dropdown-align-right` = TRUE
+                     ),
+                     multiple = TRUE,
+                     width = "100%"
+                   )),
+          br(),
+          h4("Search Result"),
+          tableOutput("dataInfo"),
+          sliderTextInput(
+            inputId = "inPageLength",
+            label = "Maximum to display", 
+            choices = c(20, 30, 40, 50, 100, 150, 200, 250),
+            grid = TRUE
+          )
+      )
+    ),
+    
+    ## body =====
+    body = dashboardBody(
+      tags$html(lang="en"),
+      includeCSS("www/custom.css"),
+      setShadow(class = "dropdown-menu"),
+      tabItems(
+        tabItem(tabName = "ContentArea",
+                h2("KPIs"),
+                uiOutput("KpiList")
         ),
-        tags$div(title="Filter for one or several tags",
-                 pickerInput(
-                   inputId = "filterTag",
-                   label = "Tag", 
-                   choices = "",
-                   options = list(
-                     `actions-box` = TRUE, size = 10L,
-                     `live-search` = TRUE, `dropdown-align-right` = TRUE
-                   ),
-                   multiple = TRUE,
-                   width = "100%"
-        )),
-        br(),
-        h4("Search Result"),
-        tableOutput("dataInfo"),
-        sliderTextInput(
-          inputId = "inPageLength",
-          label = "Maximum to display", 
-          choices = c(20, 30, 40, 50, 100, 150, 200, 250),
-          grid = TRUE
-        )
-    )
-  ),
-  
-  ## body =====
-  body = dashboardBody(
-    tags$html(lang="en"),
-    includeCSS("www/custom.css"),
-    setShadow(class = "dropdown-menu"),
-    tabItems(
-      tabItem(tabName = "ContentArea",
-              h2("KPIs"),
-              uiOutput("KpiList")
-      ),
-      
-      tabItem(
-        tabName = "AdminArea",
-        h2("KPI Administration"),
-        column(3L,
-          infoBoxOutput("AdminExactDuplicateCount", width = 12L),
-          infoBoxOutput("AdminLongTitleCount", width = 12L),
-          infoBoxOutput("AdminTitleDuplicateCount", width = 12L),
-          box(tableOutput("AdminTitleDuplicates"), "Duplicated Titles", 
-              width = 12L, height = 400, collapsible = TRUE)
+        
+        tabItem(
+          tabName = "AdminArea",
+          h2("KPI Administration"),
+          column(3L,
+                 infoBoxOutput("AdminExactDuplicateCount", width = 12L),
+                 infoBoxOutput("AdminLongTitleCount", width = 12L),
+                 infoBoxOutput("AdminTitleDuplicateCount", width = 12L),
+                 box(tableOutput("AdminTitleDuplicates"), "Duplicated Titles", 
+                     width = 12L, height = 400, collapsible = TRUE)
+          ),
+          column(3L,
+                 infoBoxOutput("AdminUpperLowerTagCount", width = 12L),
+                 box(tableOutput("AdminUpperLowerTags"), "Mixed Case Tags", 
+                     width = 12L, height = 400, collapsible = TRUE),
+                 infoBoxOutput("AdminLonelyTagCount", width = 12L),
+                 box(tableOutput("AdminLonelyTags"), "Lonely Tags", 
+                     width = 12L, height = 400, collapsible = TRUE)
+          ),
+          column(3L,
+                 infoBoxOutput("AdminDomainCount", width = 12L),
+                 infoBoxOutput("AdminLonelyNameCount", width = 12L),
+                 box(tableOutput("AdminLonelyNames"), "Lonely Domains", 
+                     width = 12L, height = 400, collapsible = TRUE)
+          ),
+          column(
+            3L,
+            infoBoxOutput("AdminMissingNameCount", width = 12L),
+            infoBoxOutput("AdminMissingDescrCount", width = 12L),
+            infoBoxOutput("AdminMissingUnitCount", width = 12L),
+            infoBoxOutput("AdminMissingTagsCount", width = 12L),
+            infoBoxOutput("AdminMissingFormulaCount", width = 12L)
+          )
         ),
-        column(3L,
-           infoBoxOutput("AdminUpperLowerTagCount", width = 12L),
-           box(tableOutput("AdminUpperLowerTags"), "Mixed Case Tags", 
-              width = 12L, height = 400, collapsible = TRUE),
-           infoBoxOutput("AdminLonelyTagCount", width = 12L),
-           box(tableOutput("AdminLonelyTags"), "Lonely Tags", 
-              width = 12L, height = 400, collapsible = TRUE)
-        ),
-        column(3L,
-          infoBoxOutput("AdminDomainCount", width = 12L),
-          infoBoxOutput("AdminLonelyNameCount", width = 12L),
-          box(tableOutput("AdminLonelyNames"), "Lonely Domains", 
-              width = 12L, height = 400, collapsible = TRUE)
-        ),
-        column(
-          3L,
-          infoBoxOutput("AdminMissingNameCount", width = 12L),
-          infoBoxOutput("AdminMissingDescrCount", width = 12L),
-          infoBoxOutput("AdminMissingUnitCount", width = 12L),
-          infoBoxOutput("AdminMissingTagsCount", width = 12L),
-          infoBoxOutput("AdminMissingFormulaCount", width = 12L)
-        )
-      ),
-      
-      tabItem(
-        tabName = "AboutApp",
-        column(width = 8L, offset = 2L,
-          wellPanel(
-            h2("About KPi Kluster"),
-            div(
-              p("The KPi Kluster is a large data base to get inspiration for 
+        
+        tabItem(
+          tabName = "AboutApp",
+          column(width = 8L, offset = 2L,
+                 wellPanel(
+                   h2("About KPi Kluster"),
+                   div(
+                     p("The KPi Kluster is a large data base to get inspiration for 
                 (Key) Performance Indicators you may want to track in your organisation."),
-              h4("Origins"),
-              p("Some of the KPIs in the cluster are provided by the author collected
+                h4("Origins"),
+                p("Some of the KPIs in the cluster are provided by the author collected
                 from various sources like books and professional experience."),
-              p("Some of the KPIs have been gathered from the KPI Library. For almost 10 years 
+                p("Some of the KPIs have been gathered from the KPI Library. For almost 10 years 
                 the KPI Library offered professionals a platform to share, search, and discuss KPIs. 
                 The collection now available for download is the result of a community effort. 
                 The platform behind it was the KPI Library. It was founded in 2007 by Mirror42. 
                 Mirror42 was acquired by ServiceNow in July 2013."),
-              p("These data were extensively improved by the author. Over 2500 KPIs were merged 
+                p("These data were extensively improved by the author. Over 2500 KPIs were merged 
                 or eliminated."),
-              tags$ul(
-                tags$li("Removal of indicators without value to the user like duplicates or empty indicators"),
-                tags$li("Removal of indicators not complete enough to be understandable"),
-                tags$li("Spelling correction"),
-                tags$li("Removal of \"lonely\" tags that existed only once for clarity"),
-                tags$li("Combination of redundancies between KPIs for clarity"),
-                tags$li("Correction of empty fields")
-              ),
-              p("Despite all these efforts the library may still contain ambiguities, vagueness, 
+                tags$ul(
+                  tags$li("Removal of indicators without value to the user like duplicates or empty indicators"),
+                  tags$li("Removal of indicators not complete enough to be understandable"),
+                  tags$li("Spelling correction"),
+                  tags$li("Removal of \"lonely\" tags that existed only once for clarity"),
+                  tags$li("Combination of redundancies between KPIs for clarity"),
+                  tags$li("Correction of empty fields")
+                ),
+                p("Despite all these efforts the library may still contain ambiguities, vagueness, 
                 and mistakes. It was not possible so far to fill all missing information.",
                 tags$b("Please note that you use KPi Kluster at your own responsibility.")),
-              h4("Working with KPIs"),
-              p("Looking up KPIs in a data base means that the function you want to improve has
+                h4("Working with KPIs"),
+                p("Looking up KPIs in a data base means that the function you want to improve has
                 become a 'hygiene factor' of your business. You cannot excel in this area over
                 your competitors. You cannot win anything by improving it ... but you will lose
                 if you don't."),
-              p("If you - however - need to track something to compete over, you need to find
+                p("If you - however - need to track something to compete over, you need to find
                 ways to differentiate yourself from your competitors. Which means: you need
                 to differentiate your KPIs. Because - in general - if two organisations measure
                 the same thing, they will end up doing the same thing."),
-              p("If you want to find ways to be different, you can use a KPI data base as inspiration.
+                p("If you want to find ways to be different, you can use a KPI data base as inspiration.
                 But you will track and work your KPIs in very different ways."),
-              p("If you have never worked intensively with numbers and KPIs, I can only recommend
+                p("If you have never worked intensively with numbers and KPIs, I can only recommend
                 that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
                 'scale level', I can only recommend that you get some help."),
-              h4("Version"),
-              p("This App is KPI Kluster, Version 0.9"),
-              h4("Mentions"),
-              p("I am a Changitor and I probably would never have done this without the support
+                h4("Version"),
+                p("This App is KPI Kluster, Version 0.9"),
+                h4("Mentions"),
+                p("I am a Changitor and I probably would never have done this without the support
                 from the ", 
                 tags$a("Changitor team", href="https://www.changitors.com/en", .noWS = "after"), 
                 "."),
-              p("Thank you", tags$a("ServiceNow", href="https://www.servicenow.com"), 
-                "for hosting the KPI library for many years.")
-            )
-          )
-        )#col
+                p("Thank you", tags$a("ServiceNow", href="https://www.servicenow.com"), 
+                  "for hosting the KPI library for many years.")
+                   )
+                 )
+          )#col
+        )#tabItem
       )
-    )
+    )#body
   )
-)
+}
 
 
 
@@ -294,13 +295,13 @@ server <- function(input, output, session) {
     Domains <- parseDomains(LiveKpi()$domain)
     updatePickerInput(
       session = session, inputId = "filterDomain",
-      choices = Domains
+      choices = Domains, selected = input$filterDomain
     )
     
     Tags <- parseTags(LiveKpi()$tags)
     updatePickerInput(
       session = session, inputId = "filterTag", 
-      choices = Tags)
+      choices = Tags, selected = input$filterTag)
   }, ignoreInit = FALSE)
   
   
@@ -851,9 +852,39 @@ server <- function(input, output, session) {
       )
     )
   })
+
+
+
+  #
+  # BOOKMARKS ==========
   
-  
+  ReadSetFromUrl <- observe({
+    SetId <- "set"
+    query <- parseQueryString(session$clientData$url_search)
+    if (!is.null(query[[SetId]])) {
+      if (query[[SetId]] == "\"ux\"") {
+        uxdomains <- tolower(c("Social Media & E-business", "Research"))
+        uxtags <- c("e-commerce", "web analytics", 
+                    "user", "experience", "design system", 
+                    "research ops")
+      }
+      Domains <- parseDomains(LiveKpi()$domain)
+      updatePickerInput(
+        session = session, inputId = "filterDomain",
+        choices = Domains, selected = uxdomains
+      )
+      
+      Tags <- parseTags(LiveKpi()$tags)
+      updatePickerInput(
+        session = session, inputId = "filterTag",
+        choices = Tags, selected = uxtags)
+    }
+    # Destroy itself
+    ReadSetFromUrl$destroy()
+  })
 }
 
+
 # Run the application 
+enableBookmarking(store = "url")
 shinyApp(ui = ui, server = server)
