@@ -8,6 +8,7 @@ library(DT)
 source("utils.R")
 source("tagstr.R")
 source("DlgKpiDetails.R")
+source("AdminModule.R")
 
 
 RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
@@ -151,36 +152,7 @@ ui <- function(request) {
         
         tabItem(
           tabName = "AdminArea",
-          h2("KPI Administration"),
-          column(3L,
-                 infoBoxOutput("AdminExactDuplicateCount", width = 12L),
-                 infoBoxOutput("AdminLongTitleCount", width = 12L),
-                 infoBoxOutput("AdminTitleDuplicateCount", width = 12L),
-                 box(tableOutput("AdminTitleDuplicates"), "Duplicated Titles", 
-                     width = 12L, height = 400, collapsible = TRUE)
-          ),
-          column(3L,
-                 infoBoxOutput("AdminUpperLowerTagCount", width = 12L),
-                 box(tableOutput("AdminUpperLowerTags"), "Mixed Case Tags", 
-                     width = 12L, height = 400, collapsible = TRUE),
-                 infoBoxOutput("AdminLonelyTagCount", width = 12L),
-                 box(tableOutput("AdminLonelyTags"), "Lonely Tags", 
-                     width = 12L, height = 400, collapsible = TRUE)
-          ),
-          column(3L,
-                 infoBoxOutput("AdminDomainCount", width = 12L),
-                 infoBoxOutput("AdminLonelyNameCount", width = 12L),
-                 box(tableOutput("AdminLonelyNames"), "Lonely Domains", 
-                     width = 12L, height = 400, collapsible = TRUE)
-          ),
-          column(
-            3L,
-            infoBoxOutput("AdminMissingNameCount", width = 12L),
-            infoBoxOutput("AdminMissingDescrCount", width = 12L),
-            infoBoxOutput("AdminMissingUnitCount", width = 12L),
-            infoBoxOutput("AdminMissingTagsCount", width = 12L),
-            infoBoxOutput("AdminMissingFormulaCount", width = 12L)
-          )
+          KlusterAdminUI("KpiKlusterAdminSection")
         ),
         
         tabItem(
@@ -227,7 +199,7 @@ ui <- function(request) {
                 that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
                 'scale level', I can only recommend that you get some help."),
                 h4("Version"),
-                p("This App is KPI Kluster, Version 0.9"),
+                p("This App is KPI Kluster, Version 1.0"),
                 h4("Mentions"),
                 p("I am a Changitor and I probably would never have done this without the support
                 from the ", 
@@ -461,363 +433,14 @@ server <- function(input, output, session) {
   #
   #
   # ADMIN SSECTION ========================
-
-  
   output$AdminMenu <- renderMenu(
     if (RunningMode == "Admin") {
       menuItem("Admin", tabName = "AdminArea", icon = icon("users-cog", verify_fa = FALSE))
     }
   )
-  
-  ## Exact Duplicates =====
-  output$AdminExactDuplicateCount <- renderInfoBox({
-    Count <- sum(duplicated(kpi))
-    
-    if (Count < 1L) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- "No exactly duplicate KPIs"
-    } else if (Count < 5L) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- "Less than 5 duplicated KPIs"
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- "MORE than 5 duplicated KPIs"
-    }
-      
-    infoBox(
-      "Exact Duplicates", InfoTxt, "Exact Duplicate (complete entry)",
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  ## Title Duplicates =====
-  output$AdminTitleDuplicateCount <- renderInfoBox({
-    Count <- sum(duplicated(tolower(kpi$title)))
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- "Less than 5% duplicate titles"
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- "Less than 10% duplicated titles"
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- "MORE than 10% duplicated titles"
-    }
-    
-    infoBox(
-      "Title Duplicates", InfoTxt, "Duplicated titles (case insensitive)",
-      icon = Icon, color = Color
-    )
-  })
-  output$AdminTitleDuplicates <- renderTable({
-    Dups <- kpi$title |> tolower() |> duplicated()
-    Dups <- kpi$title[Dups] |> unique()
-    data.frame(Duplicates = Dups)
-  })
-  
-  
-  
-  
-  ## Long Titles =====
-  output$AdminLongTitleCount <- renderInfoBox({
-    Threshold <- 40L
-    Count <- sum(nchar(kpi$title) > Threshold)
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- "Less than 5% long titles"
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- "Less than 10% long titles"
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- "MORE than 10% long titles"
-    }
-    
-    infoBox(
-      "Long Titles", InfoTxt, 
-      sprintf("Long titles with > %d characters", Threshold),
-      icon = Icon, color = Color
-    )
-  })
-  
-
-    
-  ## Domains =====
-  output$AdminDomainCount <- renderInfoBox({
-    Doms <- sapply(kpi$domain, \(x) strsplit(x, ",")) |>
-      unlist() |>
-      unname() |>
-      trimws() |>
-      na.omit() |> tolower() |> unique()
-    infoBox(
-      "Total Domains", length(Doms), 
-      "All domains",
-      icon = icon("Flag"), color = "black"
-    )
-  })
-  
-  AdminLonelyNames <- reactive({
-    Names <- sapply(kpi$domain, \(x) strsplit(x, ",")) |>
-      unlist() |>
-      unname() |>
-      trimws() |>
-      na.omit() |>
-      sort()
-    Runs <- Names |> rle()
-    Runs$values[Runs$lengths == 1]
-  })
-  
-  output$AdminLonelyNameCount <- renderInfoBox({
-    Count <- length(AdminLonelyNames())
-    
-    if (Count < nrow(kpi) * 0.01) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- "Less than 1% lonely domains"
-    } else if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- "Less than 5% lonely domains"
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- "MORE than 5% lonely domains"
-    }
-    
-    infoBox(
-      "Lonely Domains", InfoTxt, paste0("Domains existing only once (", Count, ")"),
-      icon = Icon, color = Color
-    )
-  })
-  
-  output$AdminLonelyNames <- renderTable({
-    return(data.frame(Lonelies = AdminLonelyNames()))
-  })
-  
-  
-  ## Tags  =====
-  AdminUpperLowerTags <- reactive({
-    Tags <- sapply(LiveKpi()$tags, \(x) strsplit(x, ",")) |>
-      unlist() |>
-      unname() |>
-      trimws() |>
-      na.omit() |>
-      unique()
-    TagsIroned <- tolower(Tags)
-    TagsIroned
-  })
-  
-  output$AdminUpperLowerTagCount <- renderInfoBox({
-    Dups <- AdminUpperLowerTags() |> duplicated()
-    Count <- sum(Dups)
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- "Less than 5% mixed tags"
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- "Less than 10% mixed tags"
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- "MORE than 10% mixed tags"
-    }
-    
-    infoBox(
-      "Mixed Tags", InfoTxt, "Tags with mixed upper/lower case",
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  output$AdminUpperLowerTags <- renderTable({
-    Dups <- AdminUpperLowerTags() |> duplicated()
-    data.frame(Duplicates = AdminUpperLowerTags()[Dups])
-  })
+  KlusterAdminServer("KpiKlusterAdminSection", kpi = kpi)
 
   
-  ## Lonely Tags  =====
-  AdminLonelyTags <- reactive({
-    Tags <- sapply(kpi$tags, \(x) strsplit(x, ",")) |>
-      unlist() |>
-      unname() |>
-      trimws() |>
-      na.omit() |>
-      sort()
-    Runs <- Tags |> rle()
-    Runs$values[Runs$lengths == 1]
-  })
-  
-  
-  output$AdminLonelyTagCount <- renderInfoBox({
-    Count <- length(AdminLonelyTags())
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- "Less than 5% lonely tags"
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- "Less than 10% lonely tags"
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- "MORE than 10% lonely tags"
-    }
-    
-    infoBox(
-      "Lonely Tags", InfoTxt, "Tags that exist only once",
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  output$AdminLonelyTags <- renderTable({
-    return(data.frame(Lonelies = AdminLonelyTags()))
-  })
-  
-  
-  
-  
-  ## Missing Pieces ======
-  output$AdminMissingDescrCount <- renderInfoBox({
-    Count <- nrow(kpi) - sum(sapply(kpi$description, isTruthy))
-    what <- "missing descriptions"
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- paste("Less than 5%", what)
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- paste("Less than 10%", what)
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- paste("MORE than 10%", what)
-    }
-    
-    infoBox(
-      "Missing Descriptions", InfoTxt, paste0("(", Count, ")"),
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  output$AdminMissingNameCount <- renderInfoBox({
-    Count <- nrow(kpi) - sum(sapply(kpi$domain, isTruthy))
-    what <- "missing domains"
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- paste("Less than 5%", what)
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- paste("Less than 10%", what)
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- paste("MORE than 10%", what)
-    }
-    
-    infoBox(
-      "Missing Domains", InfoTxt, paste0("(", Count, ")"),
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  
-  output$AdminMissingTagsCount <- renderInfoBox({
-    Count <- nrow(kpi) - sum(sapply(kpi$tags, isTruthy))
-    what <- "missing tags"
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- paste("Less than 5%", what)
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- paste("Less than 10%", what)
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- paste("MORE than 10%", what)
-    }
-    
-    infoBox(
-      "Missing Tags", InfoTxt, paste0("(", Count, ")"),
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  output$AdminMissingUnitCount <- renderInfoBox({
-    Count <- nrow(kpi) - sum(sapply(kpi$unit, isTruthy))
-    what <- "missing units"
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- paste("Less than 5%", what)
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- paste("Less than 10%", what)
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- paste("MORE than 10%", what)
-    }
-    
-    infoBox(
-      "Missing Units", InfoTxt, paste0("(", Count, ")"),
-      icon = Icon, color = Color
-    )
-  })
-  
-  
-  output$AdminMissingFormulaCount <- renderInfoBox({
-    Count <- nrow(kpi) - sum(sapply(kpi$formula, isTruthy))
-    what <- "missing formulae"
-    
-    if (Count < nrow(kpi) * 0.05) {
-      Icon <- icon("thumbs-up", lib = "glyphicon")
-      Color <- "green"
-      InfoTxt <- paste("Less than 5%", what)
-    } else if (Count < nrow(kpi) * 0.10) {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "yellow"
-      InfoTxt <- paste("Less than 10%", what)
-    } else {
-      Icon <- icon("thumbs-down", lib = "glyphicon")
-      Color <- "red"
-      InfoTxt <- paste("MORE than 10%", what)
-    }
-    
-    infoBox(
-      "Missing Formulas", InfoTxt, paste0("(", Count, ")"),
-      icon = Icon, color = Color
-    )
-  })
   
   #
   #
@@ -876,10 +499,6 @@ server <- function(input, output, session) {
       
       for (set in Presets) {
         if (paste0("\"", set$id, "\"") == query[[SetId]]) {
-          # uxdomains <- tolower(c("Social Media & E-business", "Research"))
-          # uxtags <- c("e-commerce", "web analytics", 
-          #             "user", "experience", "design system", 
-          #             "research ops")
           Domains <- parseDomains(LiveKpi()$domain)
           updatePickerInput(
             session = session, inputId = "filterDomain",
@@ -895,7 +514,7 @@ server <- function(input, output, session) {
         }
       }
     }
-    # Destroy itself
+    # Destroy itself - once used, it is not needed anymore
     ReadSetFromUrl$destroy()
   })
 }
