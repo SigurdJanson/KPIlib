@@ -395,7 +395,7 @@ server <- function(input, output, session) {
     shiny::validate(need(LiveKpi(), "KPi Kluster did not manage to load any KPIs"))
       
     if (input$KpiViewingMode == "table") {
-      dataTableOutput("KpiTable")
+      DT::dataTableOutput("KpiTable")
     } else if (input$KpiViewingMode == "grid") {
       data <- head(LiveKpi(), n = ShowPageLength())
       if (nrow(data) > 0L) {
@@ -432,13 +432,15 @@ server <- function(input, output, session) {
   #
   #
   #
-  # ADMIN SSECTION ========================
+  # ADMIN SECTION ========================
   output$AdminMenu <- renderMenu(
     if (RunningMode == "Admin") {
       menuItem("Admin", tabName = "AdminArea", icon = icon("users-cog", verify_fa = FALSE))
     }
   )
-  KlusterAdminServer("KpiKlusterAdminSection", kpi = kpi)
+  if (RunningMode == "Admin") {
+    KlusterAdminServer("KpiKlusterAdminSection", kpi = kpi)
+  }
 
   
   
