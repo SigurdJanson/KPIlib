@@ -154,17 +154,20 @@ test_that("%isin% works normally with 1-length vectors", {
     expect_false(e %isin% as.tagstr("design system,styleguide,design,operations"))
 })
 
+
 test_that("%isin% handles extra white space in first argument", {
   elements <- c("  design system ", " styleguide  ", " design ", "  operations  ")
   for (e in elements)
     expect_true(e %isin% as.tagstr("design system,styleguide,design,operations"))
 })
 
+
 test_that("%isin% works with multiple elemts in 'x'", {
   expect_identical(
     c("styleguide", "operations", "system design") %isin% as.tagstr("design system,styleguide,design,operations"),
     c(TRUE, TRUE, FALSE))
 })
+
 
 test_that("%isin% does not allow multi-tag strings", {
   expect_error("a,c" %isin% as.tagstr("design system,styleguide,design,operations"))
@@ -191,6 +194,12 @@ test_that("length works", {
     ),
     c(4L, 2L))
 })
+
+
+test_that("length works with arbitrary character vectors", {
+  expect_identical(length.tagstr(c("a,c", "x,y,z")), c(2L, 3L))
+})
+
 
 
 #

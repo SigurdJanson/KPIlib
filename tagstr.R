@@ -40,7 +40,7 @@ as.tagstr <- function(x) {
 #' @param t A `tagstr` object
 #' @details 
 #' @note The function does not test whether x is actually a `tagstr` object.
-#' Hence, any string can be used as argument.
+#' Hence, any string can be used as argument while assuming the separator is a comma.
 #' @return
 #' @nord
 `%isin%` <- function(x, t) {
@@ -55,7 +55,7 @@ as.tagstr <- function(x) {
     if (length(x) > 1) {
       sapply(x, \(y) grepl(y, t, ignore.case = TRUE, perl = TRUE)) |> unname()
     } else {
-        grepl(x, t, ignore.case = TRUE, perl = TRUE) |> unname()
+      grepl(x, t, ignore.case = TRUE, perl = TRUE) |> unname()
     }
   } else {
     stop("Invalid argument 'x'")
@@ -63,6 +63,16 @@ as.tagstr <- function(x) {
 }
 
 
+#' length.tagstr
+#' 
+#' Gives the number of tags in a tagged string.
+#' 
+#' @method length tagstr
+#' @param x A `tagstr` object
+#' @note The function does not test whether x is actually a `tagstr` object.
+#' Hence, any string can be used as argument while assuming the separator 
+#' is a comma. It will not check if the tags are not empty.
+#' @return An integer with the number of tags in the `tagstr` object.
 length.tagstr <- function(x) {
   sep <- attr(x, "separator")
   if (is.null(sep)) sep <- ","
@@ -74,8 +84,7 @@ length.tagstr <- function(x) {
 `+.tagstr` <- function(x, y) {
   if (!is.character(y)) stop("y must be of type 'character' or 'tagstr'")
   if (!inherits(x, "tagstr")) stop("x must be of type 'tagstr'")
-  #if (length(x) != 1L) stop("") # How can you get `length`
-  
+
   sep <- attr(x, "separator")
   if (is.null(sep)) sep <- ","
 
@@ -93,7 +102,7 @@ length.tagstr <- function(x) {
 }
 
 
-# work in progress
+
 `-.tagstr` <- function(x, y) {
   if (!is.character(y)) stop("y must be of type 'character' or 'tagstr'")
   if (!inherits(x, "tagstr")) stop("x must be of type 'tagstr'")
