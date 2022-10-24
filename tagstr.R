@@ -2,6 +2,7 @@
 # S3 Class for "Tag" Strings
 #
 # A string may contain tags separated by comma.
+#
 
 #' as.tagstr
 #' 
@@ -42,7 +43,8 @@ as.tagstr <- function(x) {
 #'
 #' @param x a character vector
 #' @param t A `tagstr` object
-#' @details The function does not test whether x is actually a `tagstr` object.
+#' @details 
+#' @note The function does not test whether x is actually a `tagstr` object.
 #' Hence, any string can be used as argument.
 #' @return
 #' @nord
@@ -77,6 +79,7 @@ length.tagstr <- function(x) {
 `+.tagstr` <- function(x, y) {
   if (!is.character(y)) stop("y must be of type 'character' or 'tagstr'")
   if (!inherits(x, "tagstr")) stop("x must be of type 'tagstr'")
+  #if (length(x) != 1L) stop("") # How can you get `length`
   
   sep <- attr(x, "separator")
   if (is.null(sep)) sep <- ","
@@ -84,13 +87,12 @@ length.tagstr <- function(x) {
   if (length(y) == 1L && !grepl(sep, y, fixed = TRUE)) {
     # case 1: y is a single string with a single tag
     if (y %isin% x)
-      return(as.tagstr(x))
+      return(x)
     else
       return(as.tagstr(paste(x, y, sep = sep)))
   }
   # case 2: y is a single string with multiple tags
   # case 3: y is a vector of multiple strings with single/multiple tags
-    
   paste(x, paste(y, collapse = sep), sep = sep, collapse = sep) |>
     as.tagstr()
 }
