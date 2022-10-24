@@ -57,6 +57,16 @@ test_that("multiple strings are correctly converted to 'tagstr'", {
 })
 
 
+test_that("duplicate tags are being eliminated", {
+  expect_identical(
+    as.tagstr("design system,styleguide, guideline, styleguide"),
+    as.tagstr("design system,styleguide, guideline"))
+  expect_identical(
+    as.tagstr(c("design system,styleguide", "guideline, styleguide")),
+    as.tagstr("design system,styleguide, guideline"))
+})
+
+
 
 test_that("abnormal strings are fixed", {
   expect_match(as.tagstr(" , ,design system, , "), "design system", fixed = TRUE)

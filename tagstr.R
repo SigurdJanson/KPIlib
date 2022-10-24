@@ -10,24 +10,19 @@
 #'
 #' @param x A character vector
 #' @details Any `NA` will be omitted. If any of the strings contains the separator
-#' character these will be assumed to be multiple tags.
+#' character these will be assumed to be multiple tags. Vectors will be collapsed
+#' into a single `tagstr` object.
 #' @return A `tagstr` object with all tags and strings collapsed into a character string
 #' of vector length 1.
 as.tagstr <- function(x) {
   tryCatch(x <- as.character(x), 
            error = function(e) stop("Cannot coerce 'x' to type 'tagstr'"))
-  sep <- trimws(",") # hard-coded
-  # Fix the string to desired pattern by removing white spaces
-  pattern <- paste0("\\s*", sep, "\\s*") #--paste0("\\s*(", sep, ")\\s*")
-  x <- gsub(pattern, sep, x)
-  # Remove leading/trailing separators
-  pattern <- paste0("^", sep, "*|", sep, "*$")
-  x <- gsub(pattern, "", x)
-  # Remove duplicate separators ",{2,}"
-  pattern <- paste0(sep, "{2,}")
-  x <- gsub(pattern, sep, x)
-  # Collapse into one string
-  x <- paste0(x, collapse = sep)
+  sep <- trimws(",") # !!hard-coded
+  # split and remove duplicates and empty tags
+  xn <- strsplit(x, sep) |> unlist() |> trimws() |> unique()
+  xn <- grep("^\\s*$", xn, value = TRUE, invert = TRUE)
+  # (Re-) Collapse into one string
+  x <- paste0(xn, collapse = sep)
   # Classify
   class(x) <- "tagstr"
   attr(x, "separator") <- sep
