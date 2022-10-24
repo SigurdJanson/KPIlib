@@ -96,6 +96,7 @@ length.tagstr <- function(x) {
 }
 
 
+# work in progress
 `-.tagstr` <- function(x, y) {
   if (!is.character(y)) stop("y must be of type 'character' or 'tagstr'")
   if (!inherits(x, "tagstr")) stop("x must be of type 'tagstr'")
@@ -103,6 +104,13 @@ length.tagstr <- function(x) {
   sep <- attr(x, "separator")
   if (is.null(sep)) sep <- ","
   
+  ally <- strsplit(y, ",") |> unlist() |> trimws()
+  
+  for (subtrahend in ally) {
+    pattern <- paste0("((?<=^|", sep,")\\s*)(", subtrahend, ")(\\s*(?=", sep, "|$))")
+    x <- gsub(pattern, "\\1\\3", x, perl = TRUE)
+  }
+  return(as.tagstr(x))
 }
 
 

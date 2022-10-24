@@ -85,7 +85,28 @@ test_that("tags are added", {
     as.tagstr("design system, design, operations") + c("newtag", "other"), 
     as.tagstr("design system,design,operations,newtag,other")
   )
+  
+  expect_identical(
+    as.tagstr("design system, design, operations") + c("new,tag", "other,tag"), 
+    as.tagstr("design system,design,operations,new,tag,other,tag")
+  )
 })
+
+
+
+test_that("only tagstr objects are allowed for additions", {
+  expect_error(
+    `+.tagstr`(
+      list(
+        as.tagstr("design system, design, operations"),
+        as.tagstr("styleguide, award, guideline")
+      ), 
+      "newtag"
+    ),
+    "x must be of type 'tagstr'"
+  )
+})
+
 
 
 test_that("existing tags are not duplicated", {
@@ -147,8 +168,9 @@ test_that("%isin% does not allow multi-tag strings", {
 
 test_that("length works", {
   expect_identical(length.tagstr("a,c"), 2L)
+  expect_identical(length(as.tagstr("design system")), 1L)
   expect_identical(length(as.tagstr("design system,styleguide,design,operations")), 4L)
-
+  
   # weird but possible
   expect_identical(
     length.tagstr(
@@ -158,4 +180,79 @@ test_that("length works", {
       )
     ),
     c(4L, 2L))
+})
+
+
+#
+#
+#
+# - (minus) -------------------------
+test_that("minus works (length x & y == 1)", {
+  # removal
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "ijk",
+    as.tagstr("abc, def, uvw, xyz")
+  )
+  # No removal
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "ikk",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )
+  # No removal of a "startswith" string
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "ij",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )  
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "ab",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "xy",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )
+  # No removal of an "endswith" string
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "jk",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "bc",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "yz",
+    as.tagstr("abc, def, ijk, uvw, xyz")
+  )
+})
+
+
+test_that("minus works (length x == 1; length y > 1)", {
+  # removal of 2
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - c("ijk", "def"),
+    as.tagstr("abc, uvw, xyz")
+  )
+  # removal of 2
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - "ijk, def",
+    as.tagstr("abc, uvw, xyz")
+  )
+  # 
+  expect_identical(
+    as.tagstr("abc, def, ijk, uvw, xyz") - c("ijk, ab, bc", "def"),
+    as.tagstr("abc, uvw, xyz")
+  )
+})
+
+test_that("minus only works with tagstr objects", {
+  # no `tagstr` yields an error
+  expect_error(
+    `-.tagstr`(
+      list(
+        as.tagstr("abc, def, ijk, uvw, xyz"),
+        as.tagstr("abc, def, ijk, uvw, xyz")
+      ), c("ijk", "def")
+    ), "x must be of type 'tagstr'"
+  )
 })
