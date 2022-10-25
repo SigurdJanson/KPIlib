@@ -41,11 +41,11 @@ Each data set can have these pieces of information:
   * **BiSL**: The "Business Information Services Library" (BiSL) provides a public domain standard approach for business information management.
   * **BMF**
   * [**Cobit**](https://en.wikipedia.org/wiki/COBIT) (Control Objectives for Information and Related Technologies) is a framework created by ISACA for information technology (IT) management and IT governance. It is business focused and defines a set of generic processes for the management of IT, with each process defined together with process inputs and outputs, key process-activities, process objectives, performance measures and an elementary maturity model.
-  * **EBM** stands for *evidence-based management* in an agile product development approach.
   * **HEART**: The HEART framework by Google.
   * **ITIL**: The Information Technology Infrastructure Library (ITIL) is a set of detailed practices for IT activities such as IT service management (ITSM) and IT asset management (ITAM) that focus on aligning IT services with the needs of business.
   * **MOF** refers to the [Microsoft Operations Framework](https://en.wikipedia.org/wiki/Microsoft_Operations_Framework).
   * **PMBOK** 
+  * **SAFe** (Scaled Agile Framework Enterprise) "is a set of organization and workflow patterns intended to guide enterprises in scaling lean and agile practices" (Wikipedia).
   * **Six Sigma**: [Six Sigma is a set of techniques and tools for process improvement.](https://en.wikipedia.org/wiki/Six_Sigma).
   * **SOX**: Compliance with the Sarbanes-Oxley Act, a United States federal law that mandates certain practices in financial record keeping and reporting for corporations.
   * **SCOR** refers the the "Supply Chain Operations Reference Model (SCOR)" developed by Supply Chain Council (SCC). The SCC is an independent not-for-profit organisation with the objective to develop a standard supply-chain process reference model enabling effective communication among the supply chain partners.
