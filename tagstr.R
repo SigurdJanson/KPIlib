@@ -19,14 +19,15 @@ as.tagstr <- function(x) {
            error = function(e) stop("Cannot coerce 'x' to type 'tagstr'"))
   sep <- trimws(",") # !!hard-coded
   # split and remove duplicates and empty tags
-  xn <- strsplit(x, sep) |> unlist() |> trimws() |> unique()
+  xn <- strsplit(x, sep) |> unlist() |> na.omit() |> trimws() |> unique()
   xn <- grep("^\\s*$", xn, value = TRUE, invert = TRUE)
+  #-xn <- xn[!grepl("^\\s*$", xn)] #-words[!grepl("^\\s+$", words)]
   # (Re-) Collapse into one string
-  x <- paste0(xn, collapse = sep)
+  x <- paste(xn, sep=sep, collapse=sep)
   # Classify
-  class(x) <- "tagstr"
-  attr(x, "separator") <- sep
-  return(x)
+  #-attr(x, "separator") <- sep
+  #-class(x) <- "tagstr"
+  return(structure(x, class = "tagstr", separator = sep))
 }
 
 
@@ -87,18 +88,27 @@ length.tagstr <- function(x) {
 
   sep <- attr(x, "separator")
   if (is.null(sep)) sep <- ","
-
+  
+  y <- na.omit(y)# |> unclass()
+  if (length(y) == 0L) return(x)
+  
   if (length(y) == 1L && !grepl(sep, y, fixed = TRUE)) {
     # case 1: y is a single string with a single tag
-    if (y %isin% x)
+    if (y %isin% x || is.na(y))
       return(x)
     else
-      return(as.tagstr(paste(x, y, sep = sep)))
+      return(as.tagstr(paste(x, y, sep = sep, collapse = sep)))
   }
   # case 2: y is a single string with multiple tags
   # case 3: y is a vector of multiple strings with single/multiple tags
-  paste(x, paste(y, collapse = sep), sep = sep, collapse = sep) |>
-    as.tagstr()
+  # paste(x, paste(y, collapse = sep), sep = sep, collapse = sep) |>
+  #   as.tagstr()
+  as.tagstr(paste(
+    x, 
+    paste(y, sep=sep, collapse=sep), 
+    sep=sep, 
+    collapse=sep
+  ))
 }
 
 
@@ -109,6 +119,9 @@ length.tagstr <- function(x) {
   
   sep <- attr(x, "separator")
   if (is.null(sep)) sep <- ","
+
+  y <- na.omit(y)# |> unclass()
+  if (length(y) == 0L) return(x)
   
   ally <- strsplit(y, ",") |> unlist() |> trimws()
   
