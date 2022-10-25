@@ -232,6 +232,7 @@ server <- function(input, output, session) {
   
   ShowPageLength <- reactiveVal(20L)
 
+  # Provide the number of filtered table entries in the filter sidebar
   output$dataInfo <- renderTable({
     shiny::validate(need(LiveKpi(), "No data"))
     
@@ -280,7 +281,7 @@ server <- function(input, output, session) {
   
   
   
-  #
+  # Apply the filter to the table whenever it changes
   observeEvent(
     list(input$filterDomain, input$filterFree, input$filterTag, 
          input$cbSearchMode, input$cbFreeTextCasesense, input$cbSearchOperator), 
@@ -317,7 +318,7 @@ server <- function(input, output, session) {
       }
 
       if (isTruthy(input$filterTag)) {
-        if (length(input$filterTag) > 1)
+        if (length(input$filterTag) > 1L)
           RowFilter <- RowFilter | apply(input$filterTag %isin% kpi$tags, 1L, any)
         else
           RowFilter <- RowFilter | input$filterTag %isin% kpi$tags
@@ -333,23 +334,23 @@ server <- function(input, output, session) {
   
   # OUTPUT ===================
   
+  # Render a tile with a KPI
   MakeKpiBox <- function(x) { # x is a kpi row
     domainLabel <- ifelse(length.tagstr(x$domain) > 1, "Domains", "Domain")
-    #tagLabel <- ifelse(length.tagstr(x$tags) > 1, "Tags", "Tag")
 
     UnitIcon <- mapUnit2Icon(x$unit)
     UnitIcon <- tagAppendAttributes(UnitIcon, class="tileicon")
     DirectionIcon <- mapDirection2Icon(x$direction)
     DirectionIcon <- tagAppendAttributes(DirectionIcon, class="tileicon")
     
-    if (nchar(x$description) > 280) 
+    if (nchar(x$description) > 280L) 
       descr <- paste(substr(x$description, 1L, 280L), "…")
     else
       descr <- x$description
     
     Box <- shinydashboard::box(
       id = x$id,
-      width = 6L, # equals class="col-sm-6"
+      width = 6L,
       height = "200px",
       solidHeader = TRUE, status = NULL,
       title = x$title,
@@ -369,7 +370,7 @@ server <- function(input, output, session) {
   }
   
   
-  
+  # Render `KpiList` as table
   output$KpiTable <- DT::renderDataTable({
       #req(LiveKpi()) # not needed because this is nested in out..$KpiList
       result <- head(LiveKpi(), n = ShowPageLength())
@@ -390,7 +391,7 @@ server <- function(input, output, session) {
   )
   
   
-  
+  # Output for the KPI list which is either a table or a list of tiles
   output$KpiList <- renderUI({
     shiny::validate(need(LiveKpi(), "KPi Kluster did not manage to load any KPIs"))
       
@@ -490,6 +491,7 @@ server <- function(input, output, session) {
   #
   # BOOKMARKS ==========
   
+  # Apply a filter from a given preset
   ReadSetFromUrl <- observe({
     SetId <- "set"
     query <- parseQueryString(session$clientData$url_search)
