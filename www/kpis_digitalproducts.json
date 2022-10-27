@@ -55,7 +55,7 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, search, information retrieval, document management",
-        "domain": "Search",
+        "domain": "Search, Documents, Knowledge",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
         "formula": "Fraction of returned results that are relevant to your target group.",
@@ -72,7 +72,7 @@
         "rating_count": 0,
         "rating_avg": 0,
         "tags": "retail, search, information retrieval, document management",
-        "domain": "Search",
+        "domain": "Search, Documents, Knowledge",
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
         "formula": "Fraction of relevant results retrieved.",
@@ -400,7 +400,7 @@
     },
     {
         "title": "Ratio of Fixed Usability Problems",
-        "description": "The ratio between the identified usability problem and those that could be fixed.",
+        "description": "The ratio between the identified usability problems and those that could be fixed. May be measured as percentage between counts or some measure of effort.",
         "direction": "Maximize",
         "unit": "Ratio",
         "rating_count": 0,
@@ -486,7 +486,7 @@
         "interpretation": "Interaction can mean many things and needs to be measured in different ways. On sites like Wikipedia most users only consume content and only few create it. On other sites like Facebook most users do a lot more than just looking at other peoples posts.",
         "formula": "",
         "direction": "Maximize",
-        "unit": "[None]",
+        "unit": "Percentage",
         "rating_count": 1,
         "rating_avg": 4,
         "framework": "HEART",
@@ -1136,15 +1136,60 @@
         "url": "",
         "id": 3000068,
         "intervention_needed": false
+    },
+    {
+        "title": "Average Visits Prior to Conversion",
+        "description": "How many times do users visit your site before they convert?",
+        "interpretation": "In a statistic of 2021 this indicator was between 4.2 and 2.4 averaged for various B2C industries.",
+        "formula": "$$\\frac{\\text{Sum of Pre-conversion visits}}{\\text{Total conversions}}$$ with pre-conversion visits being visits by users who ended up converting eventually.",
+        "direction": "Minimize",
+        "unit": "Number",
+        "rating_count": 0,
+        "rating_avg": 0,
+        "framework": "",
+        "tags": "online, e-commerce, website, visitor, web analytics",
+        "domain": "Social Media & E-business",
+        "created_at": "2022-10-12 00:00:00",
+        "updated_at": "2022-10-12 00:00:00",
+        "url": "",
+        "id": 3000069,
+        "intervention_needed": false
+    },
+    {
+        "title": "Search Results to Site Exits Ratio",
+        "description": "This indicators assesses how often users search something and just leave. It is the percentage of unsuccessful search queries.",
+        "interpretation": "Obviously, users are not satisfied with the search feature and/or it's results.",
+        "formula": "$$\\frac{\\text{# Search queries without follow-up action}}{\\text{Total searches}}$$ with total searches probably reduced by consecutive searches with modified search parameters.",
+        "direction": "Minimize",
+        "unit": "Number",
+        "rating_count": 0,
+        "rating_avg": 0,
+        "framework": "",
+        "tags": "retail, search, information retrieval, document management",
+        "domain": "Search, Documents, Knowledge, Social Media & E-business",
+        "created_at": "2022-10-12 00:00:00",
+        "updated_at": "2022-10-12 00:00:00",
+        "url": "",
+        "id": 3000070,
+        "intervention_needed": false
+    },
+    {
+        "title": "Average Cart Value (ACV)",
+        "description": "Average money each customer spends on your website. Also known as Average Order Value (AOV)",
+        "interpretation": "ACV can tell you how much you can spend on getting new customers, tune your price strategy, or compare the success of different marketing channels.",
+        "formula": "$$\\frac{\\text{Revenue}}{\\text{Total orders}}$$",
+        "direction": "Maximize",
+        "unit": "Money",
+        "rating_count": 0,
+        "rating_avg": 0,
+        "framework": "",
+        "tags": "retail, online, e-commerce, sales",
+        "domain": "Online retail, Social Media & E-business",
+        "created_at": "2022-10-12 00:00:00",
+        "updated_at": "2022-10-12 00:00:00",
+        "url": "",
+        "id": 3000071,
+        "intervention_needed": false
     }
 ]
-
-
-
-
-
-
-
-
-
 
