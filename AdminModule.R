@@ -6,6 +6,7 @@ KlusterAdminUI <- function(id) {
       3L,
       infoBoxOutput(ns("ExactDuplicateCount"), width = 12L),
       infoBoxOutput(ns("LongTitleCount"), width = 12L),
+      infoBoxOutput(ns("RedundantDescCount"), width = 12L),
       infoBoxOutput(ns("TitleDuplicateCount"), width = 12L),
       box(tableOutput(ns("TitleDuplicates")), "Duplicated Titles", 
           width = 12L, height = 400, collapsible = TRUE)
@@ -117,6 +118,16 @@ KlusterAdminServer <- function(id, kpi = NULL) {
 
       })
       
+      ## Redundant Descriptions =====
+      output$RedundantDescCount <- renderInfoBox({
+        Distance <- mapply(adist, x$title, x$description, 
+                           MoreArgs = list(ignore.case = TRUE))
+        .InfoBox(Count = sum(Distance < 5L, na.rm = TRUE), 
+                 Total = nrow(kpi), 
+                 Thresh1 = nrow(kpi) * 0.05,
+                 Thresh2 = nrow(kpi) * 0.10,
+                 Name = "Redundant Descriptions")
+      })
       
       
       ## Domains =====
