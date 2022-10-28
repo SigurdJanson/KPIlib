@@ -2,6 +2,7 @@ library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
 library(shinyWidgets)
+library(shinycssloaders)
 library(jsonlite)
 library(DT)
 
@@ -129,7 +130,8 @@ ui <- function(request) {
                    )),
           br(),
           h4("Search Result"),
-          tableOutput("dataInfo"),
+          tableOutput("dataInfo") |> 
+            withSpinner(color="white", proxy.height="75px"),
           sliderTextInput(
             inputId = "inPageLength",
             label = "Maximum to display", 
