@@ -166,3 +166,72 @@ test_that("... uses wild cards, correctly", {
 
 
 
+#
+# Category Search ==========
+#
+
+
+test_that("... single category is found correctly", {
+  SearchSpace <- c("Search", 
+                   "Documents, Search", 
+                   "Knowledge, Search, Internet, ", 
+                   "Internet", 
+                   "Social Media & E-business", 
+                   "Assets, Road services")
+  
+  # First, middle or last tag
+  FilterStr <- "Search"
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE))
+  
+  # Complex tag With '&' character
+  FilterStr <- "Social Media & E-business"
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE))
+  
+  # Not case sensitive
+  FilterStr <- "roaD Services"
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, c(FALSE, FALSE, FALSE, FALSE, FALSE, TRUE))
+})
+
+
+test_that("... partials are ignored", {
+  SearchSpace <- c("Search", 
+                   "Documents, Search", 
+                   "Knowledge, Search, Internet, ", 
+                   "Internet", 
+                   "Social Media & E-business", 
+                   "Assets, Road services")
+  
+  #  
+  FilterStr <- "Media"
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, rep(FALSE, length(SearchSpace)))
+  
+  #  
+  FilterStr <- "Social Media & E-"
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, rep(FALSE, length(SearchSpace)))
+  
+  #  
+  FilterStr <- "roaD"
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, rep(FALSE, length(SearchSpace)))
+})
+
+
+
+
+test_that("... multiple categories are found correctly", {
+  SearchSpace <- c("Search", 
+                   "Documents, Search", 
+                   "Knowledge, Search, Internet, ", 
+                   "Internet", 
+                   "Social Media & E-business", 
+                   "Assets, Road services")
+  
+  FilterStr <- c("Search", "Social Media & E-business", "roaD Services")
+  obs <- CategoryFilterKpi(FilterStr, SearchSpace)
+  expect_identical(obs, c(TRUE, TRUE, TRUE, FALSE, TRUE, TRUE))
+})

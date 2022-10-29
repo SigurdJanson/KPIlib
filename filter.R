@@ -57,13 +57,11 @@ wc2Regex <- function(x, OR = TRUE) {
 TextFilterKpi <- function(SearchString, Col1, Col2, Col3,
                           Options = list(Regex = FALSE, IgnoreCase = TRUE, OperatorOr = FALSE)) {
   
-  #RowFilter <- rep(FALSE, length(Col1))
-  
   if (!Options$Regex) { # standard search
     SearchString <- wc2Regex(SearchString, Options$OperatorOr)
   }
   
-  RowFilter <- #RowFilter | 
+  RowFilter <- 
     grepl(SearchString, Col1, 
           fixed = FALSE, ignore.case = Options$IgnoreCase, perl = TRUE) | 
     grepl(SearchString, Col2, 
@@ -75,3 +73,17 @@ TextFilterKpi <- function(SearchString, Col1, Col2, Col3,
 }
 
 
+
+
+
+
+CategoryFilterKpi <- function(SearchCategories, Col) {
+
+  CategoryFilter <- escapeRegex(SearchCategories)
+  if (length(CategoryFilter) > 1)
+    RowFilter <- apply(CategoryFilter %isin% Col, 1L, any)
+  else
+    RowFilter <- CategoryFilter %isin% Col
+  
+  return(RowFilter)
+}
