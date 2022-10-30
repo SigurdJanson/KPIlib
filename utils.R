@@ -164,3 +164,29 @@ readKpiPresets <- function(filename) {
   if (inherits(x, "try-error")) return(NULL)
   return(x)
 }
+
+
+
+# UTILITIES =============
+
+
+
+#' Gracious logical gate. If one of the arguments is "falsy" (at least roughly),
+#' `lg` returns the value of the truthy vector.
+lg <- function(x1, x2, operator = `&`) {
+  isValid <- \(x) is.logical(x) && length(x) > 0 && !any(is.na(x))
+  
+  if (isValid(x1)) {
+    if (isValid(x2)) {
+      return(operator(x1, x2))
+    } else {
+      return(x1)
+    }
+  } else {
+    if (isValid(x2)) {
+      return(x2)
+    } else {
+      stop("Both arguments are falsy.")
+    }
+  }
+}
