@@ -171,6 +171,17 @@ readKpiPresets <- function(filename) {
 
 
 
+#' Checks if two vectors are equal while ignoring the order of elements.
+#' @param v1,v2 a vector of **unique** elements
+#' @details
+#' * Empty vectors are considered equal, regardless of the type.
+#' * `NULL` is considered equal to an empty vector.
+vecEqual <- function(v1, v2) {
+  length(v1) == length(v2) && setequal(v1, v2)
+}
+
+
+
 #' Gracious logical gate. If one of the arguments is "falsy" (at least roughly),
 #' `lg` returns the value of the truthy vector.
 lg <- function(x1, x2, operator = `&`) {
