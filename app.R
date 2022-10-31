@@ -7,6 +7,7 @@ library(jsonlite)
 library(DT)
 
 source("utils.R")
+source("filter.R")
 source("tagstr.R")
 source("DlgKpiDetails.R")
 source("AdminModule.R")
@@ -226,11 +227,9 @@ ui <- function(request) {
 #
 # SERVER ==================================
 server <- function(input, output, session) {
-
+  # Load data and remove those with `intervention == true`
   kpi <- readKpiData(c("./www/kpis.json", "./www/kpis_digitalproducts.json"))
   if (!is.null(kpi)) kpi <- filterKpiData(kpi)
-  
-  LiveKpi <- reactiveVal(kpi)
   
   ShowPageLength <- reactiveVal(20L)
 
@@ -261,11 +260,58 @@ server <- function(input, output, session) {
   #
   #
   #
-  # KPI FILTER ========================
+  # KPI FILTER ============================================
+  LiveKpi <- reactiveVal(kpi) # the filtered data
   
+  TextSearchId = c("title", "description", "interpretation")
+  DomainSearchId = "domain"
+  TagSearchId = "tags"
+  
+  # Buffer data to avoid running the same search twice
+  Prev_SearchStr <- "" # use widget default here
+  Prev_TagsSelected <- NULL # use widget default here
+  Prev_DomainsSelected <- NULL # use widget default here
+  Prev_FreeTextResult <- NULL # logical vector of hits
+  Prev_CategoryResult <- NULL # logical vector of hits
+  
+  # 
+  CreateFilter <- function(Data, SearchStr, Domains, Tags) {
+    if (!vecEqual(SearchStr, Prev_SearchStr)) {
+      if (isTruthy(SearchStr)) {
+        Prev_FreeTextResult <<- TextFilterKpi(
+          SearchStr, 
+          Data[[TextSearchId[1L]]], Data[[TextSearchId[2L]]], Data[[TextSearchId[3L]]],
+          list(Regex = FALSE, IgnoreCase = TRUE, OperatorOr = FALSE))
+      } else {
+        Prev_FreeTextResult <<- ""
+      }
+      Prev_SearchStr <<- SearchStr
+    }
+    
+    if (!vecEqual(Domains, Prev_DomainsSelected) || !vecEqual(Tags, Prev_TagsSelected)) {
+      if (isTruthy(Domains)) {
+        Prev_CategoryResult <<- CategoryFilterKpi(Domains, Data[[DomainSearchId]])
+      } else {
+        Prev_CategoryResult <<- NULL
+      }
+      Prev_DomainsSelected <<- Domains
+      
+      if (isTruthy(Tags)) {
+        Prev_CategoryResult <<- lg(CategoryFilterKpi(Tags, Data[[TagSearchId]]), Prev_CategoryResult, `|`)
+      }
+      Prev_TagsSelected <<- Tags
+    }
+
+    return(lg(Prev_FreeTextResult, Prev_CategoryResult, `&`))
+  }
+  
+  
+  #
   observeEvent(input$inPageLength, {
     ShowPageLength(input$inPageLength)
   })
+  
+  
   
   # Update drop down lists once it's been initialized
   observeEvent(LiveKpi, {
@@ -288,48 +334,14 @@ server <- function(input, output, session) {
     list(input$filterDomain, input$filterFree, input$filterTag, 
          input$cbSearchMode, input$cbFreeTextCasesense, input$cbSearchOperator), 
     {
-    req(LiveKpi())
+      req(LiveKpi())
     
-    Regex <- "Regex" %in% input$cbSearchMode
-    IgnoreCase <- !("CaseSensitive" %in% input$cbFreeTextCasesense)
-    OperatorOr <- "OR" %in% input$cbSearchOperator
-
-    RowFilter <- rep(FALSE, nrow(kpi))
-    if (isTruthy(input$filterDomain) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {
-      # Free text search
-      if (isTruthy(input$filterFree)) {
-        SearchString <- input$filterFree 
-        if (!Regex) { # standard search
-          SearchString <- wc2Regex(input$filterFree, OperatorOr)
-        }
-        RowFilter <- RowFilter | 
-          grepl(SearchString, kpi$title, 
-                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE) | 
-          grepl(SearchString, kpi$description, 
-                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE) | 
-          grepl(SearchString, kpi$interpretation, 
-                fixed = FALSE, ignore.case = IgnoreCase, perl = TRUE)
+      if (isTruthy(input$filterDomain) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {    
+        RowFilter <- CreateFilter(kpi, input$filterFree, input$filterDomain, input$filterTag)
+        LiveKpi(kpi[RowFilter, ])
       }
-
-      if (isTruthy(input$filterDomain)) {
-        domainFilter <- escapeRegex(input$filterDomain)
-        if (length(domainFilter) > 1)
-          RowFilter <- RowFilter | apply(domainFilter %isin% kpi$domain, 1L, any)
-        else
-          RowFilter <- RowFilter | domainFilter %isin% kpi$domain
-      }
-
-      if (isTruthy(input$filterTag)) {
-        if (length(input$filterTag) > 1L)
-          RowFilter <- RowFilter | apply(input$filterTag %isin% kpi$tags, 1L, any)
-        else
-          RowFilter <- RowFilter | input$filterTag %isin% kpi$tags
-      }
-      
-      LiveKpi(kpi[RowFilter, ])
-    }
-    else
-      LiveKpi(kpi)
+      else
+        LiveKpi(kpi)
   })
   
   
