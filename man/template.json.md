@@ -55,7 +55,14 @@ Each data set can have these pieces of information:
 * A link providing further information.
 
 
+# Future Attributes
 
+These attributes need to be decided:
+
+1. Dimension: Reliability, Velocity, Adaptability, Cost, Asset, Innovation, Customer
+2. Control Type - preventive, reactive
+3. Dpt.: IT, Manufacturing, Marketing, R&D, Product dev., ... **TBD**
+4. Industry: Internet, 
 
 
 
