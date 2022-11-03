@@ -358,9 +358,9 @@ server <- function(input, output, session) {
     DirectionIcon <- tagAppendAttributes(DirectionIcon, class="tileicon")
     
     if (nchar(x$description) > 280L) 
-      descr <- paste(substr(x$description, 1L, 280L), "…")
+      descr <- paste(substr(stripHTML_a(x$description), 1L, 280L), "…")
     else
-      descr <- x$description
+      descr <- HTML(x$description)
     
     Box <- shinydashboard::box(
       id = x$id,

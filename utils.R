@@ -156,6 +156,12 @@ renderTableButton <- function(id) {
 }
 
 
+stripHTML_a <- function(x) {
+  gsub(r"{<a>|</a>|<\s*a\s+.*?>}", "", x)
+}
+
+
+
 # PRESETS ================
 
 #' Load the presets from the file

@@ -25,10 +25,11 @@ Each data set can have these pieces of information:
 ```
 
 * The `title` is the name of the KPI.
-* The `description` provides a brief explanation of what the KPI is and what it does. The more self-explanatory the title is, the shorter the description may be. - HTML tags are possible.
+* The `description` provides a brief explanation of what the KPI is and what it does. The more self-explanatory the title is, the shorter the description may be. 
+  * HTML tags are possible but will be stripped away in the tile view if the text is too long and it is cut off. The table view and the details dialogue both show links.
 * `id` is a unique identifier. Ids starting with a 9 are sourced from the ResearchNow platform. A starting 6 indicates a KPI added by the author that is not related to digital product development/e-business. A 3 is again author-defined but relevant for digital product development/e-business.
 * `formula` can be displayed as mathematical formula if it begins and ends with the two formula-defining characters `$$`.
-* The `interpretation` provides explanations how the indicator works, benchmarks for them, or ..................................
+* The `interpretation` provides explanations how the indicator works, benchmarks for them, or any caveats to be aware off.
 * `unit` is one of "Area", "Data", "Distance", "Energy", "Money", "Number", "Percentage", "Ratio", "Score", "Time", "Volume", "Weight".
   * A **ratio** is any fraction with different units involved. Any speed is considered a ratio (e.g. MB/s or km/s).
   * A ratio can be interpreted as **percentage** when the units in nominator and denominator are identical.
