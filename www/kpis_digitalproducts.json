@@ -431,7 +431,7 @@
     },
     {
         "title": "Perceived Product Quality (PPQ)",
-        "description": "Perceived product quality can be defined as the customer's opinion about the subjective quality of a product or service (also the brand itself) with respect to its purpose of use. It can be assessed using validated questionnaires. Examples: the <a href=\"http://en.wikipedia.org/wiki/System_Usability_Scale\">System Usability Scale (SUS)</a> gives a composite measure of the overall usability of a product. The <a href=\"https://visawi.uid.com/\">VisAWI</a> shows how users subjectively perceive the aesthetics of a graphical interface. <a href\"https://en.wikipedia.org/wiki/SERVQUAL\">Servqual</a> measures quality in the service sector.",
+        "description": "Perceived product quality can be defined as the customer's opinion about the subjective quality of a product or service (also the brand itself) with respect to its purpose of use. It can be assessed using validated questionnaires. Examples: the <a href=\"http://en.wikipedia.org/wiki/System_Usability_Scale\">System Usability Scale (SUS)</a> gives a composite measure of the overall usability of a product. The <a href=\"https://visawi.uid.com/\">VisAWI</a> shows how users subjectively perceive the aesthetics of a graphical interface. <a href=\"https://en.wikipedia.org/wiki/SERVQUAL\">Servqual</a> measures quality in the service sector.",
         "direction": "Maximize",
         "unit": "Score",
         "rating_count": 4,
