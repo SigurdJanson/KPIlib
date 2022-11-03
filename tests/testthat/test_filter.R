@@ -104,7 +104,6 @@ test_that("... allows hits in one column only", {
 
 
 test_that("... handles AND/OR correctly", {
-  Options <- list(Regex = FALSE, IgnoreCase = FALSE, OperatorOr = FALSE)
   
   Filterand1 <- c("Search", "Documents", "Knowledge", "Internet", "Social Media & E-business")
   Filterand2 <- c("Search", "Documents", "Knowledge", "Internet", "Social Media & E-business")
