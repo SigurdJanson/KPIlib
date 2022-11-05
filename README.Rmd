@@ -35,6 +35,7 @@ Specify your search terms similar similar to a file search on your system.
 * The order of search terms is ignored. Searching "mobile app" is identical to "app mobile".
 * By default KPi Kluster will search for **all given search terms**. If an entry does not match them all, it will be ignored. You can change the setting to tell the search that it is okay to find **any of the search terms**.
 * You can also decide whether the search shall be case sensitive or not. Be default it is not.
+* The different search items are logically combined like this: `free text AND (domains OR tags)`.
 
 
 **Wild cards** are placeholders that make your search more powerful. You can use the wild cards `?` and `*`.

@@ -33,6 +33,8 @@ system.
     of the search terms**.
 -   You can also decide whether the search shall be case sensitive or
     not. Be default it is not.
+-   The different search items are logically combined like this:
+    `free text AND (domains OR tags)`.
 
 **Wild cards** are placeholders that make your search more powerful. You
 can use the wild cards `?` and `*`.
