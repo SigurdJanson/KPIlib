@@ -37,4 +37,6 @@ dev.off()
 #any(apply(as.matrix(domdist), 1L, \(x) all(x > 0.8 | x < 0.00000001)))
 #> 
 
+#' Visualise results:
+#' `factoextra::fviz_cluster(mydata.hclust, domdist, choose.vars = 3:4)`
 
