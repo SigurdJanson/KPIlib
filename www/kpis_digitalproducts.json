@@ -944,7 +944,7 @@
     },
     {
         "title": "UI Coverage",
-        "description": "Describes how many patterns used in developed systems are listed in a pattern library or design system. ",
+        "description": "Describes how many patterns or components used in developed systems are listed in a pattern library or design system.",
         "interpretation": "Describes the coverage a design system or pattern library provides. The fewer elements a guideline covers, the less useful it is when using it or designing something new. A specific target is hard to recommend but without any further knowledge you may aim at 80% for a start.",
         "formula": "$$\\frac{\\text{# Documented patterns}}{\\text{# All identified patterns}}$$",
         "direction": "Maximize",
@@ -1242,6 +1242,24 @@
         "interpretation": "DCG penalizes highly relevant items that appear lower in the search by reducing the graded relevance value logarithmically proportional to the position of the result. It can be an effective metric to evaluate the ranking quality. However, it does not take irrelevant (but found) items into account or missing relevant ones.",
         "url": "https://en.wikipedia.org/wiki/Discounted_cumulative_gain",
         "id": 3000075,
+        "intervention_needed": false
+    },
+    {
+        "title": "Project Using Components",
+        "description": "The percentage of projects using a component in the design system. ",
+        "interpretation": "This indicator tells something about the value of the components maintained in the design system. It makes more sense to offer components that are used by many projects rather than few. Isolated components are dead weight. Optimize your design system to support mostly requirements shared by as many projects as possible. This indicator quantifies shared components but does not include missed opportunities.",
+        "formula": "$$Averaged \\left( \\frac{\\text{# Projects using a component}}{\\text{Total projects}} \\right) \\cdot 100\\%$$",
+        "direction": "Maximize",
+        "unit": "Percentage",
+        "rating_count": 0,
+        "rating_avg": 0,
+        "framework": "",
+        "tags": "design system, ui design",
+        "domain": "Software development, Software-as-a-Service, Internet, Social Media & E-business",
+        "created_at": "2022-10-12 00:00:00",
+        "updated_at": "2022-10-12 00:00:00",
+        "url": "",
+        "id": 3000076,
         "intervention_needed": false
     }
 ]
