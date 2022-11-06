@@ -6,13 +6,19 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
-KPi Kluster is a small app that provides a large database of (Key)
-Performance Indicators (KPI). These KPIs come from many different fields
-like online retail, user experience, accounting, IT, transportation and
-many more.
+[KPi Kluster](https://js-rapps.shinyapps.io/KPi_Kluster/) is a small app
+that provides a large database of (Key) Performance Indicators (KPI).
+These KPIs come from many different fields like online retail, user
+experience, accounting, IT, transportation and many more.
+
+If you are looking for KPIs in the “vicinity” of user experiences (UX)
+and human-centered design (HCD) you may use the link
+<https://js-rapps.shinyapps.io/KPi_Kluster/?_inputs_&set=%22ux%22>. It
+will limit narrow the set down to everything related to digital
+products, internet business including research-related KPIs.
 
 ## How To Search
 
@@ -121,7 +127,3 @@ Thank you also to [ServiceNow](https://www.servicenow.com) for hosting
 the [KPI library](http://www.kpilibrary.com/) for many years.
 
 Another thank you to [User Interface Design GmbH](https://www.uid.com).
-
-## Further Readings
-
-> TBD
