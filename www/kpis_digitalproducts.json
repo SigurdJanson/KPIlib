@@ -144,7 +144,7 @@
         "created_at": "2022-09-25 00:00:00",
         "updated_at": "2022-09-25 00:00:00",
         "formula": "",
-        "interpretation": "The number of registrations has the risk of being a vanity metric because a registration does not necessarily active engagement in the long run.",
+        "interpretation": "Registered visitors could be seen as an indicators of adoption. The number of registrations has the risk of being a vanity metric because a registration does not necessarily active engagement in the long run.",
         "id": 3000009,
         "intervention_needed": false
     },
@@ -819,8 +819,8 @@
     {
         "title": "Monthly Active User (MAU)",
         "description": "Monthly Active User is often used by online games, mobile apps and social networking sites. Also useful for design systems and research repositories. MAU is calculated by counting the number of unique users for a 30-day period. Also referred to as App Retention.",
-        "interpretation": "The uninstall rate is clearly an indicator for retention and loyalty.",
-        "formula": "",
+        "interpretation": "",
+        "formula": "$$\\frac{\\text{# Unique users (during time period}}{\\text{Total users}} \\cdot 100\\%$$",
         "direction": "Maximize",
         "unit": "Number",
         "rating_count": 0,
@@ -1260,6 +1260,24 @@
         "updated_at": "2022-10-12 00:00:00",
         "url": "",
         "id": 3000076,
+        "intervention_needed": false
+    },
+    {
+        "title": "Design System Development Savings",
+        "description": "The design relative to projected cost of individual component development related to total cost of ownership (of the design system).",
+        "interpretation": "This indicator assess a part of the value of the design system. It counts development and maintenance cot. It excludes the value created by the enhanced consistency between products and brand compliance.",
+        "formula": "$$\\frac{\\sum_i (\\text{Cost of development & maintenance component i} \\cdot \\text{# projects using component i})} {TCO}$$ with TCO being the total cost of ownership.",
+        "direction": "Maximize",
+        "unit": "Percentage",
+        "rating_count": 0,
+        "rating_avg": 0,
+        "framework": "",
+        "tags": "cost, value",
+        "domain": "design system, ui design",
+        "created_at": "2022-10-12 00:00:00",
+        "updated_at": "2022-11-08 00:00:00",
+        "url": "",
+        "id": 3000077,
         "intervention_needed": false
     }
 ]
