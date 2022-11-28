@@ -36,7 +36,8 @@ KlusterAdminUI <- function(id) {
       infoBoxOutput(ns("MissingDescrCount"), width = 12L),
       infoBoxOutput(ns("MissingUnitCount"), width = 12L),
       infoBoxOutput(ns("MissingTagsCount"), width = 12L),
-      infoBoxOutput(ns("MissingFormulaCount"), width = 12L)
+      infoBoxOutput(ns("MissingFormulaCount"), width = 12L),
+      infoBoxOutput(ns("MissingDirectionCount"), width = 12L)
     )
   )
 }
@@ -375,6 +376,31 @@ KlusterAdminServer <- function(id, kpi = NULL) {
         
         infoBox(
           "Missing Formulas", InfoTxt, paste0("(", Count, ")"),
+          icon = Icon, color = Color
+        )
+      })
+      
+      
+      output$MissingDirectionCount <- renderInfoBox({
+        Count <- sum(kpi$direction == "[None]", na.rm=TRUE) + sum(is.na(kpi$direction))
+        what <- "missing direction"
+        
+        if (Count < nrow(kpi) * 0.05) {
+          Icon <- icon("thumbs-up", lib = "glyphicon")
+          Color <- "green"
+          InfoTxt <- paste("Less than 5%", what)
+        } else if (Count < nrow(kpi) * 0.10) {
+          Icon <- icon("thumbs-down", lib = "glyphicon")
+          Color <- "yellow"
+          InfoTxt <- paste("Less than 10%", what)
+        } else {
+          Icon <- icon("thumbs-down", lib = "glyphicon")
+          Color <- "red"
+          InfoTxt <- paste("MORE than 10%", what)
+        }
+        
+        infoBox(
+          "Missing direction", InfoTxt, paste0("(", Count, ")"),
           icon = Icon, color = Color
         )
       })
