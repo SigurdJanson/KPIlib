@@ -55,6 +55,10 @@ Each data set can have these pieces of information:
   * **VRM** ????https://en.wikipedia.org/wiki/Vendor_relationship_management
 * A link providing further information.
 
+# Typical Formulas
+
+$$\\frac{\\text{}}{\\text{}}$$
+
 
 # Future Attributes
 
