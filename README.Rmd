@@ -90,11 +90,11 @@ If you have never worked intensively with numbers and KPIs, I can only recommend
 
 <img src="www/changitors.webp" align="right" />
 
-I am a [Changitor](https://www.changitors.com/en)! That means that you and I together are driving change - digitally, in an agile and people-centered manner. And I probably would never have done this project without the support from the [Changitor team](https://www.changitors.com/en). 
+I am a [Changitor](https://www.changitors.com/en)! That means that you and I together are driving change - digitally, in an agile and people-centered manner. Though the Kluster is my own private project, I probably would never have done this without the inspiration from the [Changitor team](https://www.changitors.com/en).
 
 Thank you also to [ServiceNow](https://www.servicenow.com) for hosting the [KPI library](http://www.kpilibrary.com/) for many years.
 
-Another thank you to [User Interface Design GmbH](https://www.uid.com).
+Another thank you to [UID GmbH](https://www.uid.com).
 
 
 
