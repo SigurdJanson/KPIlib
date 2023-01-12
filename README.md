@@ -30,25 +30,25 @@ expressions).
 Specify your search terms similar similar to a file search on your
 system.
 
--   Space characters separate search terms. Multiple spaces are ignored.
--   The order of search terms is ignored. Searching “mobile app” is
-    identical to “app mobile”.
--   By default KPi Kluster will search for **all given search terms**.
-    If an entry does not match them all, it will be ignored. You can
-    change the setting to tell the search that it is okay to find **any
-    of the search terms**.
--   You can also decide whether the search shall be case sensitive or
-    not. Be default it is not.
--   The different search items are logically combined like this:
-    `free text AND (domains OR tags)`.
+- Space characters separate search terms. Multiple spaces are ignored.
+- The order of search terms is ignored. Searching “mobile app” is
+  identical to “app mobile”.
+- By default KPi Kluster will search for **all given search terms**. If
+  an entry does not match them all, it will be ignored. You can change
+  the setting to tell the search that it is okay to find **any of the
+  search terms**.
+- You can also decide whether the search shall be case sensitive or not.
+  Be default it is not.
+- The different search items are logically combined like this:
+  `free text AND (domains OR tags)`.
 
 **Wild cards** are placeholders that make your search more powerful. You
 can use the wild cards `?` and `*`.
 
--   `?` is a placeholder that represents any single character.
--   `*` represents one or more characters.
--   That implies that you cannot search for ? or \* characters. They are
-    always placeholders.
+- `?` is a placeholder that represents any single character.
+- `*` represents one or more characters.
+- That implies that you cannot search for ? or \* characters. They are
+  always placeholders.
 
 ### Reg-Ex Mode
 
@@ -78,12 +78,12 @@ founded in 2007 by Mirror42. Mirror42 was acquired by ServiceNow in July
 These data were extensively improved by the author. Over 2500 KPIs were
 eliminated or merged.
 
--   Removal of duplicate indicators,
--   Removal of indicators not complete enough to be understandable
--   Spelling correction
--   Removal of “lonely” tags that existed only once for clarity
--   Combination of redundancies between KPIs for clarity
--   Correction of empty fields
+- Removal of duplicate indicators,
+- Removal of indicators not complete enough to be understandable
+- Spelling correction
+- Removal of “lonely” tags that existed only once for clarity
+- Combination of redundancies between KPIs for clarity
+- Correction of empty fields
 
 Despite all these efforts the library may still contain ambiguities,
 vagueness, and mistakes. It was not possible so far to fill all missing
@@ -119,11 +119,11 @@ get some help.
 
 I am a [Changitor](https://www.changitors.com/en)! That means that you
 and I together are driving change - digitally, in an agile and
-people-centered manner. And I probably would never have done this
-project without the support from the [Changitor
-team](https://www.changitors.com/en).
+people-centered manner. Though the Kluster is my own private project, I
+probably would never have done this without the inspiration from the
+[Changitor team](https://www.changitors.com/en).
 
 Thank you also to [ServiceNow](https://www.servicenow.com) for hosting
 the [KPI library](http://www.kpilibrary.com/) for many years.
 
-Another thank you to [User Interface Design GmbH](https://www.uid.com).
+Another thank you to [UID GmbH](https://www.uid.com).
