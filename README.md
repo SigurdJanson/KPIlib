@@ -120,7 +120,7 @@ get some help.
 I am a [Changitor](https://www.changitors.com/en)! That means that you
 and I together are driving change - digitally, in an agile and
 people-centered manner. Though the Kluster is my own private project, I
-probably would never have done this without the inspiration from the
+probably would never have done this without the inspiration in the
 [Changitor team](https://www.changitors.com/en).
 
 Thank you also to [ServiceNow](https://www.servicenow.com) for hosting
