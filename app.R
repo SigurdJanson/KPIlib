@@ -471,7 +471,7 @@ server <- function(input, output, session) {
       image = "https://www.seifseit.de/images/Jan2013c.jpg", 
       title = "Dr. Jan Seifert",
       subtitle = "", 
-      footer = p("This is a personal project by me under the patronage of", 
+      footer = p("This is a personal project by Jan Seifert inspired by my contributions to the", 
                  tags$a("Changitors", href="https://www.changitors.com/en"), ".", 
                  class = "text-center"),
       fluidRow(
