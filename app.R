@@ -56,17 +56,17 @@ ui <- function(request) {
       width = 280L, overlay = FALSE, collapsed = FALSE,
       div(class="content",
           h4("Find a KPI"),
-          tags$div(title="Search title and description fields",
+          tags$div(title="Title and description fields",
                    searchInput(
                      inputId = "filterFree", label = NULL,
-                     placeholder = "Enter text to search for KPIs",
+                     placeholder = "By title / description",
                      btnSearch = icon("magnifying-glass"), btnReset = icon("xmark"),
                      width = "auto"
                    )
           ),
           div(id="TextSearchOptions-Parent", box(
             id = "TextSearchOptions",
-            title = div("Text Search Settings"), #, `data-widget`="collapse" # has side effects
+            title = div("Advanced Settings"), #, `data-widget`="collapse" # has side effects
             solidHeader = TRUE, headerBorder = FALSE,
             collapsible = TRUE, collapsed = TRUE,
             closable = FALSE,
@@ -167,14 +167,14 @@ ui <- function(request) {
                      p("The KPi Kluster is a large data base to get inspiration for 
                 (Key) Performance Indicators you may want to track in your organisation."),
                 h4("Origins"),
-                p("Some of the KPIs in the cluster are provided by the author collected
-                from various sources like books and professional experience."),
-                p("Some of the KPIs have been gathered from the KPI Library. For almost 10 years 
-                the KPI Library offered professionals a platform to share, search, and discuss KPIs. 
-                The collection now available for download is the result of a community effort. 
+                p("Some of the KPIs in the cluster I have collected 
+                from various sources like books and my own professional experience.
+                Some of them I got from the KPI Library. For almost 10 years 
+                this library offered professionals a platform to share, search, and discuss KPIs. 
+                It is the result of a community effort. Now it is now available for download.
                 The platform behind it was the KPI Library. It was founded in 2007 by Mirror42. 
                 Mirror42 was acquired by ServiceNow in July 2013."),
-                p("These data were extensively improved by the author. Over 2500 KPIs were merged 
+                p("These data were extensively improved. Over 2500 KPIs were merged 
                 or eliminated."),
                 tags$ul(
                   tags$li("Removal of indicators without value to the user like duplicates or empty indicators"),
@@ -202,10 +202,10 @@ ui <- function(request) {
                 that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
                 'scale level', I can only recommend that you get some help."),
                 h4("Version"),
-                p("This App is KPI Kluster, Version 1.1"),
+                p("This App is KPI Kluster, Version 1.2"),
                 h4("Mentions"),
-                p("I am a Changitor and I probably would never have done this without the support
-                from the ", 
+                p("I am a Changitor and I probably would never have done this without the inspiration
+                in the ", 
                 tags$a("Changitor team", href="https://www.changitors.com/en", .noWS = "after"), 
                 "."),
                 p("Thank you", tags$a("ServiceNow", href="https://www.servicenow.com"), 
@@ -467,11 +467,11 @@ server <- function(input, output, session) {
   
   output$uiAuthorAbout <- renderUser({
     dashboardUser(
-      name = "Author", 
+      name = "About me", 
       image = "https://www.seifseit.de/images/Jan2013c.jpg", 
       title = "Dr. Jan Seifert",
       subtitle = "", 
-      footer = p("This is a personal project by Jan Seifert under the patronage of", 
+      footer = p("This is a personal project by me under the patronage of", 
                  tags$a("Changitors", href="https://www.changitors.com/en"), ".", 
                  class = "text-center"),
       fluidRow(
