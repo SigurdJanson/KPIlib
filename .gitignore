@@ -41,3 +41,11 @@ vignettes/*.pdf
 # user-defined
 .backup
 .experimental
+
+# 
+.frontmatter
+
+# Supplementary deployment files excluded
+deploy/*
+appfiles.manifest
+.rscignore
