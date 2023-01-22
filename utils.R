@@ -160,7 +160,9 @@ stripHTML_a <- function(x) {
   gsub(r"{<a>|</a>|<\s*a\s+.*?>}", "", x)
 }
 
-
+renderShowMore <- function() {
+  actionLink("btnShowMore", "Show more ...")
+}
 
 # PRESETS ================
 

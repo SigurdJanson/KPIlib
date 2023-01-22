@@ -17,6 +17,7 @@ RunningMode <- ifelse(RuningLocally(), "Admin", FALSE)
 
 ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain")
 
+PageLengthDelta <- 25L
 
 
 # UI ==================================
@@ -231,7 +232,7 @@ server <- function(input, output, session) {
   kpi <- readKpiData(c("./www/kpis.json", "./www/kpis_digitalproducts.json"))
   if (!is.null(kpi)) kpi <- filterKpiData(kpi)
   
-  ShowPageLength <- reactiveVal(20L)
+  ShowPageLength <- reactiveVal(PageLengthDelta)
 
   # Provide the number of filtered table entries in the filter sidebar
   output$dataInfo <- renderTable({
@@ -310,6 +311,7 @@ server <- function(input, output, session) {
   observeEvent(input$inPageLength, {
     ShowPageLength(input$inPageLength)
   })
+  observeEvent(input$btnShowMore, ShowPageLength(ShowPageLength()+PageLengthDelta))
   
   
   
@@ -410,7 +412,10 @@ server <- function(input, output, session) {
     shiny::validate(need(LiveKpi(), "KPi Kluster did not manage to load any KPIs"))
       
     if (input$KpiViewingMode == "table") {
-      DT::dataTableOutput("KpiTable")
+      fluidPage(
+        fluidRow(DT::dataTableOutput("KpiTable")),
+        fluidRow(column(12L, align="center", renderShowMore()))
+      )
     } else if (input$KpiViewingMode == "grid") {
       data <- head(LiveKpi(), n = ShowPageLength())
       if (nrow(data) > 0L) {
@@ -419,7 +424,10 @@ server <- function(input, output, session) {
           Boxes <- c(Boxes, tagList(MakeKpiBox(data[i,])))
         }
         .html <- tagList(
-          fluidPage(fluidRow(Boxes))
+          fluidPage(
+            fluidRow(Boxes),
+            fluidRow(column(12L, align="center", renderShowMore()))
+          )
         )
       } else {
         .html <- tagList(
