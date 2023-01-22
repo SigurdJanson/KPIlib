@@ -27,6 +27,8 @@ ui <- function(request) {
     header = dashboardHeader(
       title = "KPi Kluster",
       leftUi = tagList(
+        renderNavBarMenuItem("KPIs", tabName="ContentArea", selected = TRUE,
+                             icon = icon("dashboard", verify_fa = FALSE)),
         radioGroupButtons(
           inputId = "KpiViewingMode",
           choices = 
@@ -34,14 +36,21 @@ ui <- function(request) {
               `<i class='fa fa-grip-horizontal' aria-label='View as tiles'></i>` = "grid"),
           justified = FALSE, size = "normal",
           disabled = FALSE
-        )
+        ),
+        renderNavBarMenuItem("Admin", tabName="AdminArea", 
+                             icon = icon("users-cog", verify_fa = FALSE)),
+        renderNavBarMenuItem("About KPi Kluster", tabName="AboutApp", 
+                             icon = icon("hand-sparkles", verify_fa = FALSE))
       ),
       userOutput("uiAuthorAbout"),
       controlbarIcon = shiny::icon("filter")
     ),
     
+    # The side bar is hidden; users can select the tabs using 
+    # the `renderNavBarMenuItem()` items in the `leftUi` argument of `header`.
     sidebar = dashboardSidebar(
-      minified = (RunningMode == "Admin"), collapsed = TRUE,
+      disable = TRUE,
+      minified = FALSE, collapsed = TRUE,
       sidebarMenu(
         menuItem("KPIs", tabName = "ContentArea", 
                  icon = icon("dashboard", verify_fa = FALSE)),

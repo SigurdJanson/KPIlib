@@ -140,6 +140,72 @@ RuningLocally <- function() {
 
 # RENDERING ================
 
+renderNavBarMenuItem <- function(text, ..., icon = NULL, 
+                                 badgeLabel = NULL, badgeColor = "green", 
+                                 tabName = NULL, href = NULL, selected = NULL) {
+  if (!is.null(icon))
+    shinydashboardPlus:::tagAssert(icon, type = "i")
+
+  isTabItem <- FALSE
+  target <- NULL
+  if (!is.null(tabName)) {
+    shinydashboardPlus:::validateTabName(tabName)
+    isTabItem <- TRUE
+    href <- paste0("#shiny-tab-", tabName)
+  }
+  else if (is.null(href)) {
+    href <- "#"
+  }
+  else {
+    if (newtab) 
+      target <- "_blank"
+  }
+  
+  isExpanded <- FALSE
+  expandedName = as.character(gsub("[[:space:]]", "", text))
+  subItems <- list(...)
+  
+  if (!is.null(badgeLabel)) {
+    badgeTag <- tags$small(class = paste0("badge pull-right bg-", badgeColor), badgeLabel)
+  }
+  else {
+    badgeTag <- NULL
+  }
+
+  if (length(subItems) == 0) {
+    return(tags$li(
+      class=if (isTRUE(selected)) "dropdown active" else "dropdown",
+      a(icon, text, href = href, 
+        class="dropdown-toggle",
+        `data-toggle` = if (isTabItem) "tab", 
+        `data-value` = if (!is.null(tabName)) tabName, 
+        `data-start-selected` = if (isTRUE(selected)) 1 else NULL, 
+        `aria-selected` = if (isTRUE(selected)) "true" else "false", 
+        `aria-expanded`="true",
+        tabindex = if (isTRUE(selected)) 0 else -1, 
+        target = target, 
+        badgeTag)))
+  }
+  
+  # Currently not used ... but taken from 
+  tags$li(
+    class = "dropdown", 
+    a(href = href, 
+      icon, 
+      span(text), 
+      shiny::icon("angle-left", class = "pull-right"),
+      `data-toggle`="tab", 
+      `data-value`="ContentArea", tabindex=-1, 
+      `aria-expanded`="false", `aria-selected`="false"), 
+    do.call(tags$ul, 
+            c(class = paste0("treeview-menu", 
+            if (isExpanded) " menu-open" else ""), 
+            style = paste0("display: ", if (isExpanded) "block;" else "none;"), 
+            `data-expanded` = expandedName, subItems))
+    )
+}
+
+
 
 renderTableButton <- function(id) {
   # "<div class = "btn-group">" # not needed at the moment
