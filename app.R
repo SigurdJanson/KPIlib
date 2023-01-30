@@ -26,7 +26,7 @@ ui <- function(request) {
     scrollToTop = TRUE,
     header = dashboardHeader(
       title = "KPi Kluster",
-      leftUi = tagList(
+      leftUi = clearTagList(tagList(
         renderNavBarMenuItem("KPIs", tabName="ContentArea", selected = TRUE,
                              icon = icon("dashboard", verify_fa = FALSE)),
         radioGroupButtons(
@@ -38,10 +38,11 @@ ui <- function(request) {
           disabled = FALSE
         ),
         renderNavBarMenuItem("Admin", tabName="AdminArea", 
-                             icon = icon("users-cog", verify_fa = FALSE)),
+                             icon = icon("users-cog", verify_fa = FALSE), 
+                             hidden=!RuningLocally()),
         renderNavBarMenuItem("About KPi Kluster", tabName="AboutApp", 
                              icon = icon("hand-sparkles", verify_fa = FALSE))
-      ),
+      )),
       userOutput("uiAuthorAbout"),
       controlbarIcon = shiny::icon("filter")
     ),

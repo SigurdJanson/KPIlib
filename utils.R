@@ -140,9 +140,23 @@ RuningLocally <- function() {
 
 # RENDERING ================
 
+#' clearTagList
+#' Removes all `NULL` elements from a tag list.
+#' @param x A tag list element
+#'
+#' @return A modified tag list with all entries being `NULL` removed.
+clearTagList <- function(x) {
+  x[!sapply(x, is.null)]
+}
+
+
+
 renderNavBarMenuItem <- function(text, ..., icon = NULL, 
                                  badgeLabel = NULL, badgeColor = "green", 
-                                 tabName = NULL, href = NULL, selected = NULL) {
+                                 tabName = NULL, href = NULL, selected = NULL, 
+                                 hidden=FALSE) {
+  if (hidden) return(NULL)
+  
   if (!is.null(icon))
     shinydashboardPlus:::tagAssert(icon, type = "i")
 
