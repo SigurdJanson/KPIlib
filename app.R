@@ -342,7 +342,7 @@ server <- function(input, output, session) {
       title = "Dr. Jan Seifert",
       subtitle = "", 
       footer = p("This is a personal project by Jan Seifert inspired by my contributions to the", 
-                 tags$a("Changitors", href="https://www.changitors.com/en"), ".", 
+                 tags$a("Changitors", href="https://www.changitors.com/en", .noWS="after"), ".", 
                  class = "text-center"),
       fluidRow(
         dashboardUserItem(
