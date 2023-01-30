@@ -141,9 +141,9 @@ RuningLocally <- function() {
 # RENDERING ================
 
 #' clearTagList
-#' Removes all `NULL` elements from a tag list.
+#' Removes all `NULL` elements from a tag list. Some functions cannot handle `NULL`
+#' elements in `tagList`s, especially extra packages. Therefore they must be removed.
 #' @param x A tag list element
-#'
 #' @return A modified tag list with all entries being `NULL` removed.
 clearTagList <- function(x) {
   x[!sapply(x, is.null)]
@@ -151,6 +151,24 @@ clearTagList <- function(x) {
 
 
 
+#' renderNavBarMenuItem
+#' Creates a fake menu item for the Nav Bar. This is a little of a hack to
+#' aloow a navbar menu in a shiny dashboard. Code has mainly been taken from
+#' `dropdownMenu()`.
+#' @param text A title to display.
+#' @param ... 
+#' @param icon Optional icon to appear next to the nav item's title.
+#' @param badgeLabel Not used.
+#' @param badgeColor Not used.
+#' @param tabName Internal id to refer to the tab (will be part of the #anchor).
+#' @param href Not used.
+#' @param selected Is the rendered tab the selected one.
+#' @param hidden Shall `NULL` be returned instead of a hidden tab.
+#'
+#' @return
+#' @export
+#'
+#' @examples
 renderNavBarMenuItem <- function(text, ..., icon = NULL, 
                                  badgeLabel = NULL, badgeColor = "green", 
                                  tabName = NULL, href = NULL, selected = NULL, 
