@@ -57,7 +57,13 @@ Each data set can have these pieces of information:
 
 # Typical Formulas
 
-$$\\frac{\\text{}}{\\text{}}$$
+
+| Type | Formula |
+|---|---|
+| Ratio      | $$\\frac{\\text{}}{\\text{}}$$ |
+| Percentage | $$\\frac{\\text{}}{\\text{}} \\cdot 100$$ |
+| Difference | $$\\text{} - \\text{}$$ |
+
 
 
 # Future Attributes
