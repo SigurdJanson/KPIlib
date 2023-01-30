@@ -116,7 +116,7 @@ mapDirection2Icon <- function(dir, addDiv = TRUE) {
     as.character(dir),
     Minimize = icon("arrow-down", verify_fa = FALSE),
     Maximize = icon("arrow-up", verify_fa = FALSE),
-    Range    = icon("compress-alt", verify_fa = FALSE),
+    Range    = icon("ruler-horizontal", verify_fa = FALSE),
     icon("question", verify_fa = FALSE)
   )
   if (addDiv) 
