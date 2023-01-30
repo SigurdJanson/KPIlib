@@ -110,7 +110,7 @@ ways.
 
 If you have never worked intensively with numbers and KPIs, I can only
 recommend that you get some help. If you e.g. have never heard the terms
-‘spurious correlation’ or ‘scale level’, I can only recommend that you
+‘spurious correlation’ or ‘scale level’, I seriously recommend that you
 get some help.
 
 ## Mentions
