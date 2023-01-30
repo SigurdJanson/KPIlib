@@ -285,11 +285,12 @@
     },
     {
         "title": "Task-Completion Rate",
-        "description": "The Task-Completion Rate quantifies the proportion of people successfully completing tasks.",
+        "description": "The Task-Completion Rate quantifies the proportion of people successfully completing tasks. Also referred to as Success Rate.",
         "direction": "Maximize",
         "unit": "Percentage",
         "rating_count": 0,
         "rating_avg": 0,
+        "interpretation": "A common target for top tasks is 80%.",
         "framework": "HEART",
         "tags": "usability, experience, research",
         "domain": "Research",
@@ -333,7 +334,7 @@
     },
     {
         "title": "Release Frequency",
-        "description": "The time needed to satisfy customers' needs with new and competitive features / products.",
+        "description": "The time needed to satisfy customers' needs with new and competitive features / products. Other names: time to release/update",
         "direction": "Range",
         "unit": "Time",
         "rating_count": 0,
@@ -1245,8 +1246,8 @@
         "intervention_needed": false
     },
     {
-        "title": "Project Using Components",
-        "description": "The percentage of projects using a component in the design system. ",
+        "title": "Design System Penetration",
+        "description": "How many products had adopted any given component or design token at least once in their codebase? The penetration is the percentage of projects using a component in the design system. The total penetration can be determined using an average or - preferably - the median.",
         "interpretation": "This indicator tells something about the value of the components maintained in the design system. It makes more sense to offer components that are used by many projects rather than few. Isolated components are dead weight. Optimize your design system to support mostly requirements shared by as many projects as possible. This indicator quantifies shared components but does not include missed opportunities.",
         "formula": "$$Averaged \\left( \\frac{\\text{# Projects using a component}}{\\text{Total projects}} \\right) \\cdot 100\\%$$",
         "direction": "Maximize",
