@@ -234,6 +234,7 @@ renderAboutContent <- function() {
            div(
              p("The KPi Kluster is a large data base to get inspiration for 
                 (Key) Performance Indicators you may want to track in your organisation."),
+             
              h4("Origins"),
              p("Some of the KPIs in the cluster I have collected 
                 from various sources like books and my own professional experience.
@@ -255,6 +256,7 @@ renderAboutContent <- function() {
              p("Despite all these efforts the library may still contain ambiguities, vagueness, 
                 and mistakes. It was not possible so far to fill all missing information.",
                tags$b("Please note that you use KPi Kluster at your own responsibility.")),
+             
              h4("Working with KPIs"),
              p("Looking up KPIs in a data base means that the function you want to improve has
                 become a 'hygiene factor' of your business. You cannot excel in this area over
@@ -269,8 +271,14 @@ renderAboutContent <- function() {
              p("If you have never worked intensively with numbers and KPIs, I can only recommend
                 that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
                 'scale level', I can only recommend that you get some help."),
+             
              h4("Version"),
              p("This App is KPI Kluster, Version 1.2"),
+             p("If you find any issues, you can post it on", 
+               tags$a("Github", href="https://github.com/SigurdJanson/KPIlib/issues", 
+                      .noWS = "after", target="_blank"),
+               "."),
+             
              h4("Mentions"),
              p("I am a Changitor and I probably would never have done this without the inspiration
                 in the ", 
