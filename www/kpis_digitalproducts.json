@@ -912,15 +912,21 @@
         "description": "The proportion of heavy users compared to total users of an app or site.",
         "interpretation": "The more people use your service regularly, the higher the value.",
         "formula": "$$\\frac{\\text{# Daily active users (DAU)}}{\\text{Total active users}} \\cdot 100\\%$$",
+        "interpretation": "The success of a product depends on its consistent use — a fact that underlines the importance of creating products that not only captivate new users but also sustain their ongoing engagement. The more people use your service regularly, the higher the value.",
+        "formula": "$$\\frac{\\text{# Daily active users (DAU)}}{\\text{# Monthly active users}} \\cdot 100\\%$$ with DAU being daily active users; weekly active users can be used, too.",
         "direction": "Maximize",
         "unit": "Percentage",
         "rating_count": 0,
         "rating_avg": 0,
+        "rating_count": 1,
+        "rating_avg": 5,
         "framework": "",
         "tags": "loyalty, retention, user, internet, mobile app, design system, research repository",
+        "tags": "adoption, loyalty, retention, user, internet, mobile app, design system, research repository",
         "domain": "Software development, Software-as-a-Service, Internet, Social Media & E-business",
         "created_at": "2022-10-12 00:00:00",
         "updated_at": "2022-10-12 00:00:00",
+        "updated_at": "2023-08-20 00:00:00",
         "url": "",
         "id": 3000056,
         "intervention_needed": false
@@ -1352,6 +1358,36 @@
         "url": "",
         "id": 3000081,
         "intervention_needed": false
+    },
+    {
+      "title": "Adoption Rate",
+      "description": "The rate at which a new product, service, feature, or innovation is adopted by a target audience within a given time period.",
+      "direction": "Maximize",
+      "unit": "Percentage",
+      "rating_count": 5,
+      "rating_avg": 4,
+      "tags": "innovation, adoption, website, internet, online, mobile app, retail, web analytics, design system",
+      "domain": "Social Media & E-business, Internet",
+      "created_at": "2009-04-21 11:58:00",
+      "updated_at": "2023-08-18 00:00:00",
+      "id": 9001346,
+      "intervention_needed": false,
+      "formula": "$$\\frac{\\text{# Adopters}}{\\text{Total potential users}}$$",
+      "interpretation": "A high adoption rate suggests that the innovation is resonating well with the intended users and gaining traction in the market. Conversely, a low adoption rate might indicate that the offering is facing challenges in capturing the interest or addressing the needs of the target audience."
+    },
+    {
+      "title": "Frequency of Use",
+      "description": "Measure how often users use a specific product or feature.",
+      "formula": "$$\\frac{\\text{# User sessions}}{\\text{# Number of Active Users}}$$",
+      "direction": "Maximize",
+      "unit": "Ratio",
+      "rating_count": 2,
+      "rating_avg": 3,
+      "tags": "frequency, adoption",
+      "domain": "Knowledge",
+      "created_at": "2023-08-20 00:00:00",
+      "updated_at": "2023-08-20 00:00:00",
+      "id": 3000084
     }
 ]
 
