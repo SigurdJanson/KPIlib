@@ -121,7 +121,7 @@ KlusterAdminServer <- function(id, kpi = NULL) {
       
       ## Redundant Descriptions =====
       output$RedundantDescCount <- renderInfoBox({
-        Distance <- mapply(adist, x$title, x$description, 
+        Distance <- mapply(adist, kpi$title, kpi$description, 
                            MoreArgs = list(ignore.case = TRUE))
         .InfoBox(Count = sum(Distance < 5L, na.rm = TRUE), 
                  Total = nrow(kpi), 
