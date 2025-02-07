@@ -22,6 +22,7 @@ ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain
 # UI ==================================
 ui <- function(request) { 
   dashboardPage(
+    title = "KPi Kluster",
     skin = "black", # try "midnight" eventually
     scrollToTop = TRUE,
     header = dashboardHeader(
@@ -69,7 +70,7 @@ ui <- function(request) {
     body = dashboardBody(
       tags$html(lang="en"),
       includeCSS("www/custom.css"),
-      setShadow(class = "dropdown-menu"),
+      #setShadow(class = "dropdown-menu"),
       tabItems(
         tabItem(tabName = "ContentArea",
                 h2("KPIs"),
