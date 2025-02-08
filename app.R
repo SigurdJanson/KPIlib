@@ -68,6 +68,7 @@ ui <- function(request) {
     
     ## body =====
     body = dashboardBody(
+      tags$head(tags$link(rel="shortcut icon", href="favicon.ico")),
       tags$html(lang="en"),
       includeCSS("www/custom.css"),
       #setShadow(class = "dropdown-menu"),
