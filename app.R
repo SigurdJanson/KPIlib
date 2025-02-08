@@ -351,22 +351,22 @@ server <- function(input, output, session) {
         dashboardUserItem(
           width = 4L,
           socialButton(
-            href = "https://twitter.com/usernaut",
-            icon = icon("twitter", style="color:white") # overwrite color in shinydashboardPlus v. 2.0.3
+            href = "https://sueden.social/@usernaut",
+            icon = icon("mastodon", style="")
           )
         ),
         dashboardUserItem(
           width = 4L,
           socialButton(
             href = "https://github.com/SigurdJanson",
-            icon = icon("github", style="color:white") # overwrite color in shinydashboardPlus v. 2.0.3
+            icon = icon("github", style="")
           )
         ),
         dashboardUserItem(
           width = 4L,
           socialButton(
             href = "https://de.linkedin.com/in/jan-seifert-3194951b1",
-            icon = icon("linkedin", style="color:white") # overwrite color in shinydashboardPlus v. 2.0.3
+            icon = icon("linkedin", style="")
           )
         )
       )
