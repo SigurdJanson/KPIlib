@@ -118,6 +118,8 @@ mapDirection2Icon <- function(dir, addDiv = TRUE) {
     Maximize = icon("arrow-up", verify_fa = FALSE),
     Range    = icon("ruler-horizontal", verify_fa = FALSE),
     Value    = icon("arrows-to-circle", verify_fa =FALSE),
+    Contextual= icon("people-arrows", verify_fa =FALSE),
+    Monitor  =  icon("magnifying-glass-chart", verify_fa =FALSE),
     icon("question", verify_fa = FALSE)
   )
   if (addDiv) 
