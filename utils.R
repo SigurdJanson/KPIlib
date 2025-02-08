@@ -355,7 +355,7 @@ renderFilterSideBar <- function() {
                      choices = c(`Standard Mode`="SearchDefault", `Reg.*Expressions`="Regex"),
                      options = list(mobile=FALSE, showSubtext=FALSE, showTick=TRUE),
                      width="100%"
-                   )                 
+                   )
           ),
           tags$div(title="If activated the search will be case sensitive",
                    checkboxGroupButtons(
@@ -384,7 +384,7 @@ renderFilterSideBar <- function() {
         tags$div(title="Filter for one or several domains",
                  pickerInput(
                    inputId = "filterDomain",
-                   label = "Domain", 
+                   label = "Domain",
                    choices = "",
                    options = list(
                      `actions-box` = TRUE, size = 10L,
