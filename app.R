@@ -359,14 +359,14 @@ server <- function(input, output, session) {
           width = 4L,
           socialButton(
             href = "https://github.com/SigurdJanson",
-            icon = icon("github", style="")
+            icon = icon("github", style="color:white")
           )
         ),
         dashboardUserItem(
           width = 4L,
           socialButton(
             href = "https://de.linkedin.com/in/jan-seifert-3194951b1",
-            icon = icon("linkedin", style="")
+            icon = icon("linkedin", style="color:white")
           )
         )
       )
