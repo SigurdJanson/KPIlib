@@ -267,48 +267,41 @@ renderAboutContent <- function() {
          wellPanel(
            h2("About KPi Kluster"),
            div(
-             p("The KPi Kluster is a large data base to get inspiration for 
-                (Key) Performance Indicators you may want to track in your organisation."),
+             p("The KPi Kluster is a huge database to get inspiration for (key) performance indicators you might want to track in your organisation."),
              
              h4("Origins"),
-             p("Some of the KPIs in the cluster I have collected 
-                from various sources like books and my own professional experience.
-                Some of them I got from the KPI Library. For almost 10 years 
-                this library offered professionals a platform to share, search, and discuss KPIs. 
-                It is the result of a community effort. Now it is now available for download.
-                The platform behind it was the KPI Library. It was founded in 2007 by Mirror42. 
-                Mirror42 was acquired by ServiceNow in July 2013."),
-             p("These data were extensively improved. Over 2500 KPIs were merged 
-                or eliminated."),
+             p("Some of the KPIs in the cluster I have collected from various sources such as books and my own professional experience. 
+               Many of them came from the former KPI Library. For almost 10 years, this library has provided a platform for professionals to share, 
+               search and discuss KPIs. It is the result of a community effort. Now it is available for download. 
+               The platform behind this was the KPI Library. It was founded by Mirror42 in 2007. Mirror42 was acquired by ServiceNow in July 2013."),
+             p("This data has been extensively enhanced. Over 2500 KPIs have been merged or eliminated."),
              tags$ul(
                tags$li("Removal of indicators without value to the user like duplicates or empty indicators"),
                tags$li("Removal of indicators not complete enough to be understandable"),
                tags$li("Spelling correction"),
-               tags$li("Removal of \"lonely\" tags that existed only once for clarity"),
+               tags$li("Removal of 'lonely' tags that existed only once for clarity"),
                tags$li("Combination of redundancies between KPIs for clarity"),
-               tags$li("Correction of empty fields")
+               tags$li("Correction of empty fields, adding meaningful names, descriptions, and formulas")
              ),
-             p("Despite all these efforts the library may still contain ambiguities, vagueness, 
-                and mistakes. It was not possible so far to fill all missing information.",
+             p("Despite these efforts, the library may still contain ambiguities, inaccuracies and errors. 
+               It has not yet been possible to fill in all the missing information. But I still improve it 
+               every now and then, when I find the time.",
                tags$b("Please note that you use KPi Kluster at your own responsibility.")),
              
              h4("Working with KPIs"),
-             p("Looking up KPIs in a data base means that the function you want to improve has
-                become a 'hygiene factor' of your business. You cannot excel in this area over
-                your competitors. You cannot win anything by improving it ... but you will lose
-                if you don't."),
-             p("If you - however - need to track something to compete over, you need to find
-                ways to differentiate yourself from your competitors. Which means: you need
-                to differentiate your KPIs. Because - in general - if two organisations measure
-                the same thing, they will end up doing the same thing."),
-             p("If you want to find ways to be different, you can use a KPI data base as inspiration.
-                But you will track and work your KPIs in very different ways."),
-             p("If you have never worked intensively with numbers and KPIs, I can only recommend
-                that you get some help. If you e.g. have never heard the terms 'spurious correlation' or
-                'scale level', I can only recommend that you get some help."),
+             p("Looking up KPIs in a database means that the function you want to improve has become a 'hygiene factor' of your business. 
+               You cannot outperform your competitors in this area. 
+               You have nothing to gain by improving it... but you lose if you don't."),
+             p("However, if you have to pursue something in order to compete, you need to find ways to differentiate yourself from your competitors. 
+               That means you need to differentiate your KPIs. 
+               After all, if two organisations measure the same thing, they will end up doing the same thing."),
+             p("If you want to find ways to be different, you can use a KPI database for inspiration."),
+             p("But you will track and work with your KPIs in very different ways.
+                If you have never worked intensively with numbers and KPIs, I can only recommend that you get some help. 
+                For example, if you have never heard of 'spurious correlation' or 'scale level', I can only recommend that you get some help."),
              
              h4("Version"),
-             p("This App is KPI Kluster, Version 1.2"),
+             p("This app is KPI Kluster, Version 1.4"),
              p("If you find any issues, you can post it on", 
                tags$a("Github", href="https://github.com/SigurdJanson/KPIlib/issues", 
                       .noWS = "after", target="_blank"),
