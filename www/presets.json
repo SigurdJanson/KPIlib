@@ -8,5 +8,10 @@
     "id": "changitors",
     "tags": ["design system", "research", "operations", "research repository"],
     "domains": ["Training & Coaching", "Process Performance"]
+    },
+    {
+    "id": "kpikpi",
+    "tags": [],
+    "domains": ["Key Performance Indicators"]
     }
 ]
