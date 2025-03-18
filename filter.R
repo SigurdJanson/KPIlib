@@ -55,10 +55,10 @@ wc2Regex <- function(x, OR = TRUE) {
 #' @Note This function does not check the length of Col1-3 or any 
 #' other preconditions.
 TextFilterKpi <- function(SearchString, Col1, Col2, Col3,
-                          Options = list(Regex = FALSE, IgnoreCase = TRUE, OperatorOr = FALSE)) {
+                          Options = list(Regex = FALSE, IgnoreCase = TRUE, MatchAny = FALSE)) {
   
   if (!Options$Regex) { # standard search
-    SearchString <- wc2Regex(SearchString, Options$OperatorOr)
+    SearchString <- wc2Regex(SearchString, Options$MatchAny)
   }
   
   RowFilter <- 
