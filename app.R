@@ -22,6 +22,7 @@ ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain
 # UI ==================================
 ui <- function(request) { 
   dashboardPage(
+  shinydashboardPlus::dashboardPage(
     title = "KPi Kluster",
     skin = "black", # try "midnight" eventually
     scrollToTop = TRUE,
@@ -143,9 +144,12 @@ server <- function(input, output, session) {
   # Buffer data to avoid running the same search twice
   Prev_SearchStr <- "" # use widget default here
   Prev_TagsSelected <- NULL # use widget default here
+  Prev_TagsSelected <- NULL    # use widget default here
   Prev_DomainsSelected <- NULL # use widget default here
   Prev_FreeTextResult <- NULL # logical vector of hits
   Prev_CategoryResult <- NULL # logical vector of hits
+  Prev_FreeTextResult <- NULL  # logical vector of hits
+  Prev_CategoryResult <- NULL  # logical vector of hits
   
   # 
   CreateFilter <- function(Data, SearchStr, Domains, Tags) {
@@ -203,6 +207,7 @@ server <- function(input, output, session) {
   
   
   # Apply the filter to the table whenever it changes
+  # Apply the FILTER to the table whenever it changes
   observeEvent(
     list(input$filterDomain, input$filterFree, input$filterTag, 
          input$cbSearchMode, input$cbFreeTextCasesense, input$cbSearchOperator), 
@@ -305,6 +310,7 @@ server <- function(input, output, session) {
   
   
   # when "view" button is clicked show modal dialog with details
+  # when "view" button is clicked show modal dialogue with details
   observeEvent(input$btnViewKpi, {
     selectedId <- as.numeric(strsplit(input$btnViewKpi, "_")[[1]][2])
     selectedRow <- LiveKpi()$id == selectedId
