@@ -142,27 +142,30 @@ server <- function(input, output, session) {
   TagSearchId = "tags"
   
   # Buffer data to avoid running the same search twice
+  Prev_SearchOptions <- list(Regex=logical(), 
+                             IgnoreCase=logical(), 
+                             MatchAny=logical())
   Prev_SearchStr <- "" # use widget default here
-  Prev_TagsSelected <- NULL # use widget default here
   Prev_TagsSelected <- NULL    # use widget default here
   Prev_DomainsSelected <- NULL # use widget default here
-  Prev_FreeTextResult <- NULL # logical vector of hits
-  Prev_CategoryResult <- NULL # logical vector of hits
   Prev_FreeTextResult <- NULL  # logical vector of hits
   Prev_CategoryResult <- NULL  # logical vector of hits
   
-  # 
-  CreateFilter <- function(Data, SearchStr, Domains, Tags) {
-    if (!vecEqual(SearchStr, Prev_SearchStr)) {
+  #' @returns A logical vector iwht the length of `nrow(Data)`, matches are `TRUE`.
+  CreateFilter <- function(Data, SearchStr, Domains, Tags, RegEx, IgnoreCase, MatchAny) {
+    SearchOptions <- list(Regex=RegEx, IgnoreCase=IgnoreCase, MatchAny=MatchAny)
+    if (!vecEqual(SearchStr, Prev_SearchStr) || 
+        !identical(SearchOptions, Prev_SearchOptions)) {
       if (isTruthy(SearchStr)) {
         Prev_FreeTextResult <<- TextFilterKpi(
           SearchStr, 
           Data[[TextSearchId[1L]]], Data[[TextSearchId[2L]]], Data[[TextSearchId[3L]]],
-          list(Regex = FALSE, IgnoreCase = TRUE, OperatorOr = FALSE))
+          Options = SearchOptions)
       } else {
         Prev_FreeTextResult <<- ""
       }
       Prev_SearchStr <<- SearchStr
+      Prev_SearchOptions <<- SearchOptions
     }
     
     if (!vecEqual(Domains, Prev_DomainsSelected) || !vecEqual(Tags, Prev_TagsSelected)) {
@@ -206,7 +209,6 @@ server <- function(input, output, session) {
   
   
   
-  # Apply the filter to the table whenever it changes
   # Apply the FILTER to the table whenever it changes
   observeEvent(
     list(input$filterDomain, input$filterFree, input$filterTag, 
@@ -214,8 +216,12 @@ server <- function(input, output, session) {
     {
       req(LiveKpi())
     
-      if (isTruthy(input$filterDomain) || isTruthy(input$filterFree) || isTruthy(input$filterTag)) {    
-        RowFilter <- CreateFilter(kpi, input$filterFree, input$filterDomain, input$filterTag)
+      if (isTruthy(input$filterFree) || isTruthy(input$filterDomain) || isTruthy(input$filterTag)) {    
+        RowFilter <- CreateFilter(kpi, input$filterFree, 
+                                  input$filterDomain, input$filterTag,
+                                  RegEx =(input$cbSearchMode == "Regex"),
+                                  IgnoreCase = is.null(input$cbFreeTextCasesense),
+                                  MatchAny = (input$cbSearchOperator == "OR"))
         LiveKpi(kpi[RowFilter, ])
       }
       else
@@ -235,6 +241,7 @@ server <- function(input, output, session) {
     DirectionIcon <- mapDirection2Icon(x$direction)
     DirectionIcon <- tagAppendAttributes(DirectionIcon, class="tileicon")
     
+    # Limit of x characters without truncation
     if (nchar(x$description) > 280L) 
       descr <- paste(substr(stripHTML_a(x$description), 1L, 280L), "…")
     else
