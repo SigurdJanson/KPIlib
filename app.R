@@ -21,7 +21,6 @@ ShownTableCols <- c("title", "description", "direction", "unit", "tags", "domain
 
 # UI ==================================
 ui <- function(request) { 
-  dashboardPage(
   shinydashboardPlus::dashboardPage(
     title = "KPi Kluster",
     skin = "black", # try "midnight" eventually
@@ -316,7 +315,6 @@ server <- function(input, output, session) {
   })
   
   
-  # when "view" button is clicked show modal dialog with details
   # when "view" button is clicked show modal dialogue with details
   observeEvent(input$btnViewKpi, {
     selectedId <- as.numeric(strsplit(input$btnViewKpi, "_")[[1]][2])
