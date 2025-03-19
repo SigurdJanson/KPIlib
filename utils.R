@@ -427,6 +427,19 @@ readKpiPresets <- function(filename) {
 
 # UTILITIES =============
 
+#' Tests if two lists are strictly identical
+#' The test is not recursive.
+#' @param l1
+#' @param ...
+listEqual <- function(l1, ...) {
+  l2 = list(...)
+  return(identical(l1, l2))
+  # if (length(l1) != length(l2)) 
+  #   return(FALSE)
+  # result <- mapply(vecEqual, l1, l2) |>
+  #   all()
+  # return(result)
+}
 
 
 #' Checks if two vectors are equal while ignoring the order of elements.
