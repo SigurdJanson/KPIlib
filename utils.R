@@ -156,7 +156,7 @@ clearTagList <- function(x) {
 
 #' renderNavBarMenuItem
 #' Creates a fake menu item for the Nav Bar. This is a little of a hack to
-#' aloow a navbar menu in a shiny dashboard. Code has mainly been taken from
+#' allow a navbar menu in a shiny dashboard. Code has mainly been taken from
 #' `dropdownMenu()`.
 #' @param text A title to display.
 #' @param ... 
@@ -334,12 +334,12 @@ renderFilterSideBar <- function() {
                    width = "auto"
                  )
         ),
-        div(id="TextSearchOptions-Parent", box(
+        div(id="TextSearchOptions-Parent", shinydashboardPlus::box(
           id = "TextSearchOptions",
-          title = div("Advanced Settings"), #, `data-widget`="collapse" # has side effects
-          solidHeader = TRUE, headerBorder = FALSE,
+          title = div("Advanced Settings"),
+          solidHeader = FALSE, headerBorder = FALSE,
           collapsible = TRUE, collapsed = TRUE,
-          closable = FALSE,
+          closable = FALSE, 
           boxToolSize = "lg",
           width = 12L,
           tags$div(title="Use free text search with wild cards * and ? or regular expressions",
