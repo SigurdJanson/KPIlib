@@ -49,3 +49,4 @@ vignettes/*.pdf
 deploy/*
 appfiles.manifest
 .rscignore
+man/Operationalisations.md.lnk
